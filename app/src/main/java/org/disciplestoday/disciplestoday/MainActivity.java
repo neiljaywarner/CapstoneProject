@@ -118,24 +118,13 @@ public class MainActivity extends AppCompatActivity
             }
 
             List<ExtraField> extraFields = item.getExtraFields();
-            Log.e("NJW7", "sie extrafields" + extraFields.size());
-            /*
-            Log.i("NJW", "Extrafield 2=type" + extraFields.get(2).getName());
-            String imageUrl = extraFields.get(2).getValue();
-            Log.e("NJW", "imageUrl="  + imageUrl);
-            */
+
             holder.mContentView.setText(name);
-            //  holder.mContentView.setText(name);
-            // holder.mIdView.setText(mValues.get(position).id);
-            // holder.mContentView.setText(mValues.get(position).content);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   // Toast.makeText(v.getContext(), "IN ONCLICK LISTENER", Toast.LENGTH_LONG).show();
-                    String link = item.getLink();
-                    Log.i("NJW", "link=" + link);
-                  //  openInBrowser(link);
+
 
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();

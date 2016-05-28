@@ -78,10 +78,9 @@ public class ArticleDetailFragment extends Fragment {
         }
         */
 
-       // ((WebView) rootView.findViewById(R.id.article_detail)).loadData(mLink, "text/html", null);
         WebView webview = (WebView) rootView.findViewById(R.id.article_detail);
-        String summary = "<html><body>You scored <b>192</b> points.</body></html>";
         mLink = mLink.replace("images/", "http://disciplestoday.org/images/");
+
         webview.loadData(mLink, "text/html", null);
 
         return rootView;

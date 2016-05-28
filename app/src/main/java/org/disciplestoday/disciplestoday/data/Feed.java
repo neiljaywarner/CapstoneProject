@@ -20,4 +20,6 @@ public class Feed {
         return items;
     }
 
+    //TODO: Make package for network and in the network model the network/json classes can go, then in data package contnet provider and pojos go.
+
 }
