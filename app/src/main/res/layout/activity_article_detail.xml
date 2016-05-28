@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
+            app:expandedTitleTextAppearance="@style/TextAppearanceDetailExpandedTitle"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@+id/toolbar">
@@ -30,7 +31,15 @@
             NONTE: rgvchurch one is the only one of ten that has main image in fulltext, so that's a data error....
 
             -->
+
+            <TextView
+                android:layout_gravity="bottom"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:id="@+id/expanded_app_bar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <android.support.v7.widget.Toolbar
+
                 android:id="@+id/detail_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"

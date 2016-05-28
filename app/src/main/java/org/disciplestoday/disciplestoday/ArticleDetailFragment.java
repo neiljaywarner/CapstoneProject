@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.TextView;
 
 
 /**
@@ -62,6 +63,9 @@ public class ArticleDetailFragment extends Fragment {
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
                 appBarLayout.setTitle(mTitle);
+                TextView textViewTitle = (TextView) activity.findViewById(R.id.expanded_app_bar_title);
+                textViewTitle.setText(mTitle);
+                //TODO: Consider if the picture like in his is better.
             }
         }
     }
