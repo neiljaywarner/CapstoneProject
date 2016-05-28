@@ -23,8 +23,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
 
-
-    //public static final String BASE_URL = "https://api.github.com";
     public static final String BASE_URL = "http://www.disciplestoday.org";
 
 
@@ -62,7 +60,6 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
                 .addConverterFactory(gsonConverterFactory)
                 .build();
 
-        Log.i("NJW", "built retrofit");
         DTService service = retrofit.create(DTService.class);
         Call<Feed> call = service.listHighlights();  //Featured News=353?
         try {
@@ -80,10 +77,6 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
 
     protected void onPostExecute(Feed feed   ) {
         List<Item> items =  feed.getItems();
-        Log.i("NJW", "onPOstExecute: repoCount=" + items.size());
-        Item repo = items.get(0);
-        Log.i("NJW", "repoItem1 name" + repo.getTitle());
-        //Toast.makeText(this.g)
         mRepos = items;
         listener.onTaskCompleted();
     }

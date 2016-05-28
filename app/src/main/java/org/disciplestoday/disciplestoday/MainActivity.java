@@ -114,7 +114,10 @@ public class MainActivity extends AppCompatActivity
             Log.e("NJW4", "****imageUrl=" + imageUrl);
             if (!imageUrl.isEmpty())
             {
-                Picasso.with(holder.mImageView.getContext()).load(imageUrl).into(holder.mImageView);
+
+                Picasso.with(holder.mImageView.getContext()).load(imageUrl)
+                        .fit()
+                        .into(holder.mImageView);
             }
 
             List<ExtraField> extraFields = item.getExtraFields();
