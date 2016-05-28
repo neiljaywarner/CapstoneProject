@@ -22,6 +22,14 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@+id/toolbar">
 
+            <!--
+            http://antonioleiva.com/collapsing-toolbar-layout/
+
+            TODO: Cleanup so that parsed object gets validated and 'article' has reasonable
+            fulltext, image, etc, wherever it came from.
+            NONTE: rgvchurch one is the only one of ten that has main image in fulltext, so that's a data error....
+
+            -->
             <android.support.v7.widget.Toolbar
                 android:id="@+id/detail_toolbar"
                 android:layout_width="match_parent"

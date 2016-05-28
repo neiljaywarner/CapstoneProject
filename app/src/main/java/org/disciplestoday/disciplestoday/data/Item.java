@@ -13,6 +13,8 @@ public class Item {
 
     String title;
     private String introtext;
+    private String fulltext;
+
 
     //TODO: Clean up unneeded getters/setters.
 
@@ -28,6 +30,7 @@ public class Item {
 
 
     public String getFulltext() {
+        Log.e("NJW", "fulltext=" + fulltext);
         return fulltext;
     }
 
@@ -35,7 +38,6 @@ public class Item {
         this.fulltext = fulltext;
     }
 
-    private String fulltext;
 
     //NOTE: Must match json. TODO: use annotation so it doesn't have to.
     @SerializedName("extra_fields")

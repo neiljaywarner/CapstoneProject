@@ -1,5 +1,6 @@
 package org.disciplestoday.disciplestoday;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -107,7 +108,6 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onBindViewHolder(final SimpleItemRecyclerViewAdapter.ViewHolder holder, int position) {
-            holder.mItem = mValues.get(position);
             final Item item = mItems.get(position);
             String name = item.getTitle();
             String imageUrl = item.getImage();
@@ -132,14 +132,16 @@ public class MainActivity extends AppCompatActivity
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "IN ONCLICK LISTENER", Toast.LENGTH_LONG).show();
+                   // Toast.makeText(v.getContext(), "IN ONCLICK LISTENER", Toast.LENGTH_LONG).show();
                     String link = item.getLink();
                     Log.i("NJW", "link=" + link);
-                    openInBrowser(link);
-                    /*
+                  //  openInBrowser(link);
+
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putString(ArticleDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        arguments.putString(ArticleDetailFragment.ARG_ITEM_TITLE, item.getTitle());
+                        arguments.putString(ArticleDetailFragment.ARG_ITEM_FULLTEXT, item.getFulltext());
+
                         ArticleDetailFragment fragment = new ArticleDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
@@ -148,11 +150,11 @@ public class MainActivity extends AppCompatActivity
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, ArticleDetailActivity.class);
-                        intent.putExtra(ArticleDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-
+                        intent.putExtra(ArticleDetailFragment.ARG_ITEM_TITLE, item.getTitle());
+                        intent.putExtra(ArticleDetailFragment.ARG_ITEM_FULLTEXT, item.getFulltext());
                         context.startActivity(intent);
                     }
-                    */
+
                 }
             });
         }
@@ -166,7 +168,6 @@ public class MainActivity extends AppCompatActivity
             public final View mView;
             public final ImageView mImageView;
             public final TextView mContentView;
-            public Item mItem;
 
             public ViewHolder(View view) {
                 super(view);
