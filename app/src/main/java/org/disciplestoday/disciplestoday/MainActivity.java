@@ -1,8 +1,14 @@
 package org.disciplestoday.disciplestoday;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,9 +18,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
+
+import org.disciplestoday.disciplestoday.data.ExtraField;
+import org.disciplestoday.disciplestoday.data.FeedLoaderAsyncTask;
+import org.disciplestoday.disciplestoday.data.Item;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, FeedLoaderAsyncTask.OnTaskCompleted {
+
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private boolean mTwoPane;
+    private List<Item> mItems;
+    private FeedLoaderAsyncTask asyncTask;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,14 +48,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -40,7 +58,135 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Log.i("NJW", "Executing Async Task");
+        asyncTask = new FeedLoaderAsyncTask(MainActivity.this);
+        asyncTask.execute();
+
+        recyclerView = (RecyclerView) findViewById(R.id.article_list);
+        assert recyclerView != null;
+
+        if (findViewById(R.id.article_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+        }
     }
+
+    @Override
+    public void onTaskCompleted() {
+        mItems = asyncTask.getItems();
+        Log.i(TAG, "NJW: + lastItem" +  mItems.get(mItems.size()-2).getTitle());
+        setupRecyclerView(recyclerView);
+
+    }
+
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mItems));
+    }
+
+
+
+    public class SimpleItemRecyclerViewAdapter
+            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+
+        private final List<Item> mValues;
+
+        public SimpleItemRecyclerViewAdapter(List<Item> items) {
+            mValues = items;
+        }
+
+        @Override
+        public SimpleItemRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.article_list_content, parent, false);
+            return new SimpleItemRecyclerViewAdapter.ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(final SimpleItemRecyclerViewAdapter.ViewHolder holder, int position) {
+            holder.mItem = mValues.get(position);
+            final Item item = mItems.get(position);
+            String name = item.getTitle();
+            String imageUrl = item.getImage();
+            Log.e("NJW4", "****imageUrl=" + imageUrl);
+            if (!imageUrl.isEmpty())
+            {
+                Picasso.with(holder.mImageView.getContext()).load(imageUrl).into(holder.mImageView);
+            }
+
+            List<ExtraField> extraFields = item.getExtraFields();
+            Log.e("NJW7", "sie extrafields" + extraFields.size());
+            /*
+            Log.i("NJW", "Extrafield 2=type" + extraFields.get(2).getName());
+            String imageUrl = extraFields.get(2).getValue();
+            Log.e("NJW", "imageUrl="  + imageUrl);
+            */
+            holder.mContentView.setText(name);
+            //  holder.mContentView.setText(name);
+            // holder.mIdView.setText(mValues.get(position).id);
+            // holder.mContentView.setText(mValues.get(position).content);
+
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), "IN ONCLICK LISTENER", Toast.LENGTH_LONG).show();
+                    String link = item.getLink();
+                    Log.i("NJW", "link=" + link);
+                    openInBrowser(link);
+                    /*
+                    if (mTwoPane) {
+                        Bundle arguments = new Bundle();
+                        arguments.putString(ArticleDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        ArticleDetailFragment fragment = new ArticleDetailFragment();
+                        fragment.setArguments(arguments);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.article_detail_container, fragment)
+                                .commit();
+                    } else {
+                        Context context = v.getContext();
+                        Intent intent = new Intent(context, ArticleDetailActivity.class);
+                        intent.putExtra(ArticleDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+
+                        context.startActivity(intent);
+                    }
+                    */
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return mValues.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            public final View mView;
+            public final ImageView mImageView;
+            public final TextView mContentView;
+            public Item mItem;
+
+            public ViewHolder(View view) {
+                super(view);
+                mView = view;
+                mImageView = (ImageView) view.findViewById(R.id.imageViewThumbnail);
+                mContentView = (TextView) view.findViewById(R.id.content);
+            }
+
+            @Override
+            public String toString() {
+                return super.toString() + " '" + mContentView.getText() + "'";
+            }
+        }
+    }
+
+    private void openInBrowser(String link) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+        startActivity(browserIntent);
+    }
+    // http://stackoverflow.com/questions/2201917/how-can-i-open-a-url-in-androids-web-browser-from-my-application
 
     @Override
     public void onBackPressed() {
