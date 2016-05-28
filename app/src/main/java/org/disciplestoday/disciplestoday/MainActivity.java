@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private boolean mTwoPane;
-    private List<Item> mItems;
+    private List<Article> mArticles;
     private FeedLoaderAsyncTask asyncTask;
     private RecyclerView recyclerView;
 
@@ -78,14 +78,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onTaskCompleted() {
-        mItems = asyncTask.getItems();
-        Log.i(TAG, "NJW: + lastItem" +  mItems.get(mItems.size()-2).getTitle());
+        mArticles = asyncTask.getItems();
         setupRecyclerView(recyclerView);
-
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mItems));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mArticles));
     }
 
 
@@ -93,9 +91,9 @@ public class MainActivity extends AppCompatActivity
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<Item> mValues;
+        private final List<Article> mValues;
 
-        public SimpleItemRecyclerViewAdapter(List<Item> items) {
+        public SimpleItemRecyclerViewAdapter(List<Article> items) {
             mValues = items;
         }
 
@@ -108,9 +106,9 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onBindViewHolder(final SimpleItemRecyclerViewAdapter.ViewHolder holder, int position) {
-            final Item item = mItems.get(position);
+            final Article item = mArticles.get(position);
             String name = item.getTitle();
-            String imageUrl = item.getImage();
+            String imageUrl = item.getImageLink();
             Log.e("NJW4", "****imageUrl=" + imageUrl);
             if (!imageUrl.isEmpty())
             {
@@ -120,7 +118,6 @@ public class MainActivity extends AppCompatActivity
                         .into(holder.mImageView);
             }
 
-            List<ExtraField> extraFields = item.getExtraFields();
 
             holder.mContentView.setText(name);
 
@@ -132,7 +129,7 @@ public class MainActivity extends AppCompatActivity
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
                         arguments.putString(ArticleDetailFragment.ARG_ITEM_TITLE, item.getTitle());
-                        arguments.putString(ArticleDetailFragment.ARG_ITEM_FULLTEXT, item.getFulltext());
+                        arguments.putString(ArticleDetailFragment.ARG_ITEM_FULLTEXT, item.getFullText());
 
                         ArticleDetailFragment fragment = new ArticleDetailFragment();
                         fragment.setArguments(arguments);
@@ -143,7 +140,7 @@ public class MainActivity extends AppCompatActivity
                         Context context = v.getContext();
                         Intent intent = new Intent(context, ArticleDetailActivity.class);
                         intent.putExtra(ArticleDetailFragment.ARG_ITEM_TITLE, item.getTitle());
-                        intent.putExtra(ArticleDetailFragment.ARG_ITEM_FULLTEXT, item.getFulltext());
+                        intent.putExtra(ArticleDetailFragment.ARG_ITEM_FULLTEXT, item.getFullText());
                         context.startActivity(intent);
                     }
 

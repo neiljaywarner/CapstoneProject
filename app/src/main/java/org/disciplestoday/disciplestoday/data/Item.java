@@ -43,6 +43,8 @@ public class Item {
     @SerializedName("extra_fields")
     private List<ExtraField> extra_fields;
 
+    private String created_by_alias;
+
     public List<ExtraField> getExtraFields() {
         Log.e("NJW2", "extra fields size=" + extra_fields.size());
         return extra_fields;
@@ -133,4 +135,7 @@ public class Item {
         return image;
     }
 
+    public String getCreated_by_alias() {
+        return created_by_alias;
+    }
 }

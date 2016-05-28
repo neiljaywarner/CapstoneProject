@@ -7,6 +7,8 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.disciplestoday.disciplestoday.Article;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
 
     private OnTaskCompleted listener;
 
-    private List<Item> mRepos;
+    private List<Article> mArticles;
 
 
     public FeedLoaderAsyncTask(OnTaskCompleted listener){
@@ -76,12 +78,11 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
     }
 
     protected void onPostExecute(Feed feed   ) {
-        List<Item> items =  feed.getItems();
-        mRepos = items;
+        mArticles = Article.getArticles(feed);
         listener.onTaskCompleted();
     }
 
-    public List<Item> getItems() {
-        return mRepos;
+    public List<Article> getItems() {
+        return mArticles;
     }
 }
