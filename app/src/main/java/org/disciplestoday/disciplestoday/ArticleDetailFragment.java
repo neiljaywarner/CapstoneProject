@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -25,6 +29,8 @@ public class ArticleDetailFragment extends Fragment {
      */
     public static final String ARG_ITEM_TITLE = "item_title";
     public static final String ARG_ITEM_FULLTEXT = "item_fulltext";
+    public static final String ARG_ITEM_IMAGE_URL = "item_image_url";
+
 
 
     //TOOD: Use parcelable and/or remove these items
@@ -51,7 +57,9 @@ public class ArticleDetailFragment extends Fragment {
         if (getArguments().containsKey(ARG_ITEM_TITLE)) {
             mTitle = getArguments().getString(ARG_ITEM_TITLE);
             mLink = getArguments().getString(ARG_ITEM_FULLTEXT);
-            Log.e("NJW", "mLink=" + mLink);
+            mImageUrl = getArguments().getString(ARG_ITEM_IMAGE_URL);
+
+            Log.e("NJW", "mimageurl=" + mImageUrl);
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
@@ -63,9 +71,18 @@ public class ArticleDetailFragment extends Fragment {
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
                 appBarLayout.setTitle(mTitle);
-                TextView textViewTitle = (TextView) activity.findViewById(R.id.expanded_app_bar_title);
-                textViewTitle.setText(mTitle);
-                //TODO: Consider if the picture like in his is better.
+                appBarLayout.setExpandedTitleColor(ContextCompat.getColor(activity, android.R.color.transparent));
+                //TextView textViewTitle = (TextView) activity.findViewById(R.id.expanded_app_bar_title);
+               // textViewTitle.setText(mTitle);
+
+
+                ImageView imageView = (ImageView) activity.findViewById(R.id.article_detail_image);
+                Picasso.with(imageView.getContext()).load(mImageUrl)
+                        .fit()
+                        .into(imageView);
+
+
+                //TODO: Try adding introtext as textview/metabar so it does't look like a wall of text
             }
         }
     }
@@ -86,6 +103,7 @@ public class ArticleDetailFragment extends Fragment {
         mLink = mLink.replace("images/", "http://disciplestoday.org/images/");
 
         webview.loadData(mLink, "text/html", null);
+
 
         return rootView;
     }

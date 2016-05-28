@@ -58,6 +58,8 @@ public class ArticleDetailActivity extends AppCompatActivity {
                     getIntent().getStringExtra(ArticleDetailFragment.ARG_ITEM_TITLE));
             arguments.putString(ArticleDetailFragment.ARG_ITEM_FULLTEXT,
                     getIntent().getStringExtra(ArticleDetailFragment.ARG_ITEM_FULLTEXT));
+            arguments.putString(ArticleDetailFragment.ARG_ITEM_IMAGE_URL,
+                    getIntent().getStringExtra(ArticleDetailFragment.ARG_ITEM_IMAGE_URL));
             ArticleDetailFragment fragment = new ArticleDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

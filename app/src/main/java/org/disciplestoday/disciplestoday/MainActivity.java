@@ -130,6 +130,8 @@ public class MainActivity extends AppCompatActivity
                         Bundle arguments = new Bundle();
                         arguments.putString(ArticleDetailFragment.ARG_ITEM_TITLE, item.getTitle());
                         arguments.putString(ArticleDetailFragment.ARG_ITEM_FULLTEXT, item.getFullText());
+                        arguments.putString(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, item.getImageLink());
+
 
                         ArticleDetailFragment fragment = new ArticleDetailFragment();
                         fragment.setArguments(arguments);
@@ -141,6 +143,7 @@ public class MainActivity extends AppCompatActivity
                         Intent intent = new Intent(context, ArticleDetailActivity.class);
                         intent.putExtra(ArticleDetailFragment.ARG_ITEM_TITLE, item.getTitle());
                         intent.putExtra(ArticleDetailFragment.ARG_ITEM_FULLTEXT, item.getFullText());
+                        intent.putExtra(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, item.getImageLink());
                         context.startActivity(intent);
                     }
 
