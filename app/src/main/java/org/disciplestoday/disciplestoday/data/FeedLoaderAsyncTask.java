@@ -1,6 +1,7 @@
 package org.disciplestoday.disciplestoday.data;
 
 import android.os.AsyncTask;
+import android.support.annotation.IdRes;
 import android.util.Log;
 
 import com.google.gson.FieldNamingPolicy;
@@ -8,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.disciplestoday.disciplestoday.Article;
+import org.disciplestoday.disciplestoday.R;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,7 +28,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
 
     public static final String BASE_URL = "http://www.disciplestoday.org";
-
+    private static final String TAG = FeedLoaderAsyncTask.class.getSimpleName() ;
+    private @IdRes int menuItemId;
 
     public interface OnTaskCompleted{
         void onTaskCompleted();
@@ -37,33 +40,17 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
     private List<Article> mArticles;
 
 
-    public FeedLoaderAsyncTask(OnTaskCompleted listener){
+    public FeedLoaderAsyncTask(OnTaskCompleted listener, @IdRes int menuItemId){
         super();
         Log.e("NJW", "in constructor");
         this.listener = listener;
+        this.menuItemId = menuItemId;
     }
 
     @Override
     protected Feed doInBackground(Void... params) {
-        Log.i("NJW", "in doonbackgrond"); HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .create();
-
-        //TODO: Why doesn't this work to get extra_fields
-
-        GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson);
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(gsonConverterFactory)
-                .build();
-
-        DTService service = retrofit.create(DTService.class);
-        Call<Feed> call = service.listHighlights();  //Featured News=353?
+        Call<Feed> call = getCall();
         try {
             Response<Feed> feedResponse = call.execute();
             Feed feed = feedResponse.body();
@@ -73,6 +60,40 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
             e.printStackTrace();
             return null;
 
+        }
+    }
+
+    /**
+     * get call based on mItemId
+     * @return
+     */
+    public Call<Feed> getCall() {
+        Log.i(TAG, "in doonbackgrond");
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .create();
+
+        GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(gsonConverterFactory)
+                .build();
+
+        DTService service = retrofit.create(DTService.class);
+
+        switch (menuItemId) {
+
+            case R.id.nav_singles:
+                Log.i(TAG, "SINGLES FEED");
+                return service.listSingles();
+            default:
+                Log.i(TAG, "DEFAULT FEED");
+                return service.listHighlights();
         }
     }
 

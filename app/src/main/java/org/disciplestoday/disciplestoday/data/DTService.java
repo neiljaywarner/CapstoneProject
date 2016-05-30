@@ -10,6 +10,9 @@ public interface DTService {
     @GET("component/k2/itemlist?format=json&moduleID=353")
     Call<Feed> listHighlights();
 
+    @GET("component/k2/itemlist?format=json&moduleID=273")
+    Call<Feed> listSingles();
+
 
     // http://www.disciplestoday.org/component/k2/itemlist?format=json&moduleID=353
 }

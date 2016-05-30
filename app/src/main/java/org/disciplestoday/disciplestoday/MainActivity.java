@@ -68,8 +68,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         setupLocator();
-        asyncTask = new FeedLoaderAsyncTask(MainActivity.this);
-        asyncTask.execute();
 
         recyclerView = (RecyclerView) findViewById(R.id.article_list);
         assert recyclerView != null;
@@ -87,11 +85,15 @@ public class MainActivity extends AppCompatActivity
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+
+        showNews(R.id.nav_highlighted);
+
     }
 
 
     @Override
     public void onTaskCompleted() {
+        Log.e("NJW", "in OnTaskCompleted");
         mArticles = asyncTask.getItems();
         Article featuredArticle = mArticles.get(0);
             //NOTE: The first (0th) article as of May 30th has right and left padding when the others don't
@@ -265,7 +267,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -275,7 +276,11 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
             gotoLocator();
         } else if (id == R.id.nav_highlighted) {
-            showNews(item.getItemId());
+            showNews(id);
+        } else if (id == R.id.nav_campus) {
+            showNews(id);
+        }  else if (id == R.id.nav_singles) {
+        showNews(id);
         }
 
         //TODO: Let this be loaded from local storage so the user doesn't see the ones s/he's not interested in.
@@ -286,6 +291,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showNews(int itemId) {
+
+
+        asyncTask = new FeedLoaderAsyncTask(MainActivity.this, itemId);
+        asyncTask.execute();
         webviewLocator.setVisibility(View.GONE);
         mLayoutNews.setVisibility(View.VISIBLE);
     }
