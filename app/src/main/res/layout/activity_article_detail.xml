@@ -24,8 +24,6 @@
             app:toolbarId="@+id/toolbar">
 
             <!--
-            http://antonioleiva.com/collapsing-toolbar-layout/
-
             TODO: Cleanup so that parsed object gets validated and 'article' has reasonable
             fulltext, image, etc, wherever it came from.
             NONTE: rgvchurch one is the only one of ten that has main image in fulltext, so that's a data error....

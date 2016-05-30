@@ -14,6 +14,9 @@ public class Item {
     String title;
     private String introtext;
     private String fulltext;
+   // private String image;
+    String link;
+    private String created_by_alias;
 
 
     //TODO: Clean up unneeded getters/setters.
@@ -22,31 +25,18 @@ public class Item {
         return "http://disciplestoday.org/" + link;
     }
 
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    String link;
-
-
     public String getFulltext() {
-        Log.e("NJW", "fulltext=" + fulltext);
         return fulltext;
     }
 
-    public void setFulltext(String fulltext) {
-        this.fulltext = fulltext;
-    }
 
 
     //NOTE: Must match json. TODO: use annotation so it doesn't have to.
     @SerializedName("extra_fields")
     private List<ExtraField> extra_fields;
 
-    private String created_by_alias;
 
     public List<ExtraField> getExtraFields() {
-        Log.e("NJW2", "extra fields size=" + extra_fields.size());
         return extra_fields;
     }
     //TODO: Use extra fields when needed.
@@ -63,15 +53,7 @@ public class Item {
         return introtext;
     }
 
-    public void setIntroText(String introText) {
-        this.introtext = introtext;
-    }
-
-    public void setExtraFields(List<ExtraField> extraFields) {
-        this.extra_fields = extraFields;
-    }
-
-    public String getImage()
+    public String getImageUrl()
     {
         String imageUrl;
         imageUrl = getImageUrl(introtext, "jpg");
@@ -112,7 +94,10 @@ public class Item {
 
 
 
-        return "";
+        //TODO: utilize json fields image,imageSmall, imageMedium fields as needed.
+
+
+        return "https://pbs.twimg.com/profile_images/186752127/DToday_logo_Gradient_Orange_400x400.jpg";
 
     }
 

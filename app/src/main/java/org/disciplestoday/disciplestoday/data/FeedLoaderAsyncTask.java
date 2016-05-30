@@ -66,7 +66,6 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
         Call<Feed> call = service.listHighlights();  //Featured News=353?
         try {
             Response<Feed> feedResponse = call.execute();
-            Log.i("NJW", "code=" + feedResponse.code());
             Feed feed = feedResponse.body();
             return feed;
         } catch (IOException e) {
