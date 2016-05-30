@@ -82,7 +82,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onTaskCompleted() {
         mArticles = asyncTask.getItems();
-        Article featuredArticle = mArticles.get(2);
+        Article featuredArticle = mArticles.get(0);
+            //NOTE: The first (0th) article as of May 30th has right and left padding when the others don't
+            // either a) they should fix or b) a color from pallette can be the background...
         mArticles.remove(0);
         setupRecyclerView(recyclerView);
 
@@ -91,12 +93,6 @@ public class MainActivity extends AppCompatActivity
 
     private void setupFeaturedArticle(Article article) {
         if (imageViewFeatured != null) {
-
-            /*
-            Picasso.with(imageViewFeatured.getContext()).load(article.getImageLink())
-                    .fit()
-                    .into(imageViewFeatured);
-                    */
 
             if (URLUtil.isValidUrl(article.getImageLink())) {
 
