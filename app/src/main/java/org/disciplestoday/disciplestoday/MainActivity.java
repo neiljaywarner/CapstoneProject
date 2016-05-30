@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity
     private List<Article> mArticles;
     private FeedLoaderAsyncTask asyncTask;
     private RecyclerView recyclerView;
+    private ImageView imageViewFeatured;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,10 @@ public class MainActivity extends AppCompatActivity
         recyclerView = (RecyclerView) findViewById(R.id.article_list);
         assert recyclerView != null;
 
+        imageViewFeatured = (ImageView) findViewById(R.id.featured_image);
+
+
+
         if (findViewById(R.id.article_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
@@ -80,6 +85,12 @@ public class MainActivity extends AppCompatActivity
     public void onTaskCompleted() {
         mArticles = asyncTask.getItems();
         setupRecyclerView(recyclerView);
+
+        if (imageViewFeatured != null) {
+            Picasso.with(imageViewFeatured.getContext()).load(mArticles.get(0).getImageLink())
+                    .fit()
+                    .into(imageViewFeatured);
+        }
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -109,7 +120,6 @@ public class MainActivity extends AppCompatActivity
             final Article item = mArticles.get(position);
             String name = item.getTitle();
             String imageUrl = item.getImageLink();
-            Log.e("NJW4", "****imageUrl=" + imageUrl);
             if (!imageUrl.isEmpty())
             {
 
