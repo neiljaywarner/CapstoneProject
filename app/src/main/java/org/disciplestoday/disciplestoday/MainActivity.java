@@ -2,13 +2,13 @@ package org.disciplestoday.disciplestoday;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -20,15 +20,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import org.disciplestoday.disciplestoday.data.ExtraField;
 import org.disciplestoday.disciplestoday.data.FeedLoaderAsyncTask;
-import org.disciplestoday.disciplestoday.data.Item;
 
 import java.util.List;
 
@@ -42,6 +41,7 @@ public class MainActivity extends AppCompatActivity
     private FeedLoaderAsyncTask asyncTask;
     private RecyclerView recyclerView;
     private ImageView imageViewFeatured;
+    private TextView textViewFeaturedTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +49,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -61,7 +59,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Log.i("NJW", "Executing Async Task");
         asyncTask = new FeedLoaderAsyncTask(MainActivity.this);
         asyncTask.execute();
 
@@ -69,6 +66,7 @@ public class MainActivity extends AppCompatActivity
         assert recyclerView != null;
 
         imageViewFeatured = (ImageView) findViewById(R.id.featured_image);
+        textViewFeaturedTitle = (TextView) findViewById(R.id.featured_article_title);
 
 
 
@@ -84,13 +82,49 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onTaskCompleted() {
         mArticles = asyncTask.getItems();
+        Article featuredArticle = mArticles.get(2);
+        mArticles.remove(0);
         setupRecyclerView(recyclerView);
 
+        setupFeaturedArticle(featuredArticle);
+    }
+
+    private void setupFeaturedArticle(Article article) {
         if (imageViewFeatured != null) {
-            Picasso.with(imageViewFeatured.getContext()).load(mArticles.get(0).getImageLink())
+
+            /*
+            Picasso.with(imageViewFeatured.getContext()).load(article.getImageLink())
                     .fit()
                     .into(imageViewFeatured);
+                    */
+
+            if (URLUtil.isValidUrl(article.getImageLink())) {
+
+                Picasso.with(imageViewFeatured.getContext()).load(article.getImageLink())
+                        .fit()
+                        .into(imageViewFeatured, new Callback() {
+                            @Override public void onSuccess() {
+                                Bitmap bitmap = ((BitmapDrawable) imageViewFeatured.getDrawable()).getBitmap();
+                                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                                    public void onGenerated(Palette palette) {
+                                        updateTextView(textViewFeaturedTitle, palette);
+
+                                    }
+                                });
+                            }
+
+                            @Override public void onError() {
+
+                            }
+                        });
+            }
+
+
         }
+
+        textViewFeaturedTitle.setText(article.getTitle());
+
+
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -246,5 +280,18 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    //credit to https://github.com/antoniolg/MaterializeYourApp/blob/master/app/src/main/java/com/antonioleiva/materializeyourapp/DetailActivity.java
+    private void updateTextView(TextView view, Palette palette) {
+        int lightVibrantColor = palette.getLightVibrantColor(getResources().getColor(android.R.color.white));
+        int darkVibrantColor = palette.getDarkVibrantColor(getResources().getColor(android.R.color.black));
+
+        view.setBackgroundColor(lightVibrantColor);
+        view.setTextColor(darkVibrantColor);
+       // palette.getDarkVibrantSwatch().getBodyTextColor();
+        //view.setBackgroundColor(p);
+      //  view.setBackgroundColor(lightVibrantColor);
+       // view.setVisibility(View.VISIBLE);
     }
 }
