@@ -22,6 +22,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.webkit.URLUtil;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,12 +41,15 @@ public class MainActivity extends AppCompatActivity
 
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String LOCATOR_URL = "http://www.dtodayinfo.net/Dtoday";
     private boolean mTwoPane;
     private List<Article> mArticles;
     private FeedLoaderAsyncTask asyncTask;
     private RecyclerView recyclerView;
     private ImageView imageViewFeatured;
     private TextView textViewFeaturedTitle;
+    private WebView webviewLocator;
+    private View mLayoutNews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +67,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        setupLocator();
         asyncTask = new FeedLoaderAsyncTask(MainActivity.this);
         asyncTask.execute();
 
@@ -68,6 +76,7 @@ public class MainActivity extends AppCompatActivity
 
         imageViewFeatured = (ImageView) findViewById(R.id.featured_image);
         textViewFeaturedTitle = (TextView) findViewById(R.id.featured_article_title);
+        mLayoutNews = findViewById(R.id.layout_news);
 
 
 
@@ -80,6 +89,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
     @Override
     public void onTaskCompleted() {
         mArticles = asyncTask.getItems();
@@ -90,6 +100,7 @@ public class MainActivity extends AppCompatActivity
         setupRecyclerView(recyclerView);
 
         setupFeaturedArticle(featuredArticle);
+        webviewLocator.setVisibility(View.GONE);
     }
 
     private void setupFeaturedArticle(final Article article) {
@@ -260,23 +271,51 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_locator) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            gotoLocator();
+        } else if (id == R.id.nav_highlighted) {
+            showNews(item.getItemId());
         }
+
+        //TODO: Let this be loaded from local storage so the user doesn't see the ones s/he's not interested in.
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showNews(int itemId) {
+        webviewLocator.setVisibility(View.GONE);
+        mLayoutNews.setVisibility(View.VISIBLE);
+    }
+
+
+    /**
+     * This is loaded in a webview invisibly so it seems instant.
+     */
+    private void setupLocator() {
+        webviewLocator = (WebView) findViewById(R.id.webview_locator);
+        webviewLocator.loadUrl(LOCATOR_URL);
+        WebSettings webSettings = webviewLocator.getSettings();
+        webviewLocator.setWebViewClient(new WebViewClient());
+
+        webSettings.setJavaScriptEnabled(true);
+        webviewLocator.setVisibility(View.GONE);
+    }
+
+
+    /**
+     * Temporary locator via webview
+     */
+    private void gotoLocator() {
+
+        webviewLocator.setVisibility(View.VISIBLE);
+        mLayoutNews.setVisibility(View.GONE);
+
+        if (webviewLocator.getUrl().equals(LOCATOR_URL)) {
+            webviewLocator.loadUrl(LOCATOR_URL);
+        }
     }
 
     //credit to https://github.com/antoniolg/MaterializeYourApp/blob/master/app/src/main/java/com/antonioleiva/materializeyourapp/DetailActivity.java

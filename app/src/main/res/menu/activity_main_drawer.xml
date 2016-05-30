@@ -1,36 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
-    </group>
 
-    <item android:title="Communicate">
+    <item
+        android:id="@+id/nav_locator"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:title="Locator" />
+
+    <item
+        android:id="@+id/nav_share"
+        android:icon="@drawable/ic_menu_share"
+        android:title="Share" />
+
+    <item android:title="News">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:icon="@drawable/ic_menu_gallery"
+                android:id="@+id/nav_highlighted"
+                android:title="Highlighted" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/nav_hope"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="HOPEworldwide" />
+            <item
+                android:id="@+id/nav_campus"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Campus" />
+            <item
+                android:id="@+id/nav_singles"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Singles" />
+            <item
+                android:id="@+id/nav_youth_and_family"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Youth \u0026 Family" />
+            <item
+                android:id="@+id/nav_man_up"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Man Up!" />
+
+
+            <item
+                android:id="@+id/nav_women"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Women Today" />
+
+            <item
+                android:id="@+id/nav_bible_study"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Bible Study" />
+
         </menu>
     </item>
-
+<!-- TODO: Section for feedback/account/etc?  if so, put invite down here -->
 </menu>

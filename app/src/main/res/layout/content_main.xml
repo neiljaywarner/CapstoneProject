@@ -12,11 +12,20 @@
     tools:layout_editor_absoluteY="81dp">
 
 
+    <WebView
+        android:id="@+id/webview_locator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <!-- TODO: Replace with native interface when API is ready. This is in content main so it loads immediately etc -->
+
     <LinearLayout
+        android:id="@+id/layout_news"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
+
+
 
         <LinearLayout
             android:id="@+id/featured_layout"
