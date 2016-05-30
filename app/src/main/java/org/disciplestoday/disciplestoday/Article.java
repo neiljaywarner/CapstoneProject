@@ -60,15 +60,7 @@ public class Article {
         String title = item.getExtraFields().get(0).getValue();
         String description = item.getExtraFields().get(1).getValue();
         String image = item.getImageUrl();
-        //TODO: Skip 'intenrational news bulletin' if needed?
-        Log.e("NJW", "title=" + title);
 
-        if (title.contains("International News Bulletin"))
-        {
-            image = "http://www.disciplestoday.org/media/k2/items/cache/48feebd427d6991de4b81c1aad4efc08_L.jpg";
-            //TODO: Can try M, XL, etc after this.
-
-        }
         return new Article(title, image, author, description, item.getFulltext());
     }
 

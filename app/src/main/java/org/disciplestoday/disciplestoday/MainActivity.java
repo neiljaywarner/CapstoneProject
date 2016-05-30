@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity
         setupFeaturedArticle(featuredArticle);
     }
 
-    private void setupFeaturedArticle(Article article) {
+    private void setupFeaturedArticle(final Article article) {
         if (imageViewFeatured != null) {
 
             if (URLUtil.isValidUrl(article.getImageLink())) {
@@ -110,24 +111,24 @@ public class MainActivity extends AppCompatActivity
                             }
 
                             @Override public void onError() {
-
+                                Log.e(TAG, "Picasso:Error loading:" + article.getImageLink());
                             }
                         });
             }
-
-
         }
 
         textViewFeaturedTitle.setText(article.getTitle());
-
-
+        textViewFeaturedTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showArticle(article);
+            }
+        });
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mArticles));
     }
-
-
 
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
@@ -164,29 +165,7 @@ public class MainActivity extends AppCompatActivity
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-
-                    if (mTwoPane) {
-                        Bundle arguments = new Bundle();
-                        arguments.putString(ArticleDetailFragment.ARG_ITEM_TITLE, item.getTitle());
-                        arguments.putString(ArticleDetailFragment.ARG_ITEM_FULLTEXT, item.getFullText());
-                        arguments.putString(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, item.getImageLink());
-
-
-                        ArticleDetailFragment fragment = new ArticleDetailFragment();
-                        fragment.setArguments(arguments);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.article_detail_container, fragment)
-                                .commit();
-                    } else {
-                        Context context = v.getContext();
-                        Intent intent = new Intent(context, ArticleDetailActivity.class);
-                        intent.putExtra(ArticleDetailFragment.ARG_ITEM_TITLE, item.getTitle());
-                        intent.putExtra(ArticleDetailFragment.ARG_ITEM_FULLTEXT, item.getFullText());
-                        intent.putExtra(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, item.getImageLink());
-                        context.startActivity(intent);
-                    }
-
+                    showArticle(item);
                 }
             });
         }
@@ -212,6 +191,28 @@ public class MainActivity extends AppCompatActivity
             public String toString() {
                 return super.toString() + " '" + mContentView.getText() + "'";
             }
+        }
+    }
+
+    private void showArticle(Article item) {
+        if (mTwoPane) {
+            Bundle arguments = new Bundle();
+            arguments.putString(ArticleDetailFragment.ARG_ITEM_TITLE, item.getTitle());
+            arguments.putString(ArticleDetailFragment.ARG_ITEM_FULLTEXT, item.getFullText());
+            arguments.putString(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, item.getImageLink());
+
+
+            ArticleDetailFragment fragment = new ArticleDetailFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.article_detail_container, fragment)
+                    .commit();
+        } else {
+            Intent intent = new Intent(this, ArticleDetailActivity.class);
+            intent.putExtra(ArticleDetailFragment.ARG_ITEM_TITLE, item.getTitle());
+            intent.putExtra(ArticleDetailFragment.ARG_ITEM_FULLTEXT, item.getFullText());
+            intent.putExtra(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, item.getImageLink());
+            startActivity(intent);
         }
     }
 
@@ -285,9 +286,5 @@ public class MainActivity extends AppCompatActivity
 
         view.setBackgroundColor(lightVibrantColor);
         view.setTextColor(darkVibrantColor);
-       // palette.getDarkVibrantSwatch().getBodyTextColor();
-        //view.setBackgroundColor(p);
-      //  view.setBackgroundColor(lightVibrantColor);
-       // view.setVisibility(View.VISIBLE);
     }
 }
