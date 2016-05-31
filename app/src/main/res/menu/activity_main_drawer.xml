@@ -50,6 +50,11 @@
                 android:icon="@drawable/ic_menu_gallery"
                 android:title="Bible Study" />
 
+            <item
+                android:id="@+id/nav_kingdom_kids"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Kingdom Kids" />
+
         </menu>
     </item>
 <!-- TODO: Section for feedback/account/etc?  if so, put invite down here -->

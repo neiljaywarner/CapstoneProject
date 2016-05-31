@@ -85,16 +85,28 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
                 .build();
 
         DTService service = retrofit.create(DTService.class);
-
+        String moduleId = "";
         switch (menuItemId) {
 
             case R.id.nav_singles:
                 Log.i(TAG, "SINGLES FEED");
-                return service.listSingles();
+                moduleId = "273";
+                break;
+            case R.id.nav_kingdom_kids:
+                Log.i(TAG, "KINGDOM KIDS FEED");
+                moduleId = "281";
+                break;
+            case R.id.nav_campus:
+                Log.i(TAG, "CAMPUS FEED");
+                moduleId = "285";
+                break;
             default:
                 Log.i(TAG, "DEFAULT FEED");
+                moduleId = "353";
                 return service.listHighlights();
         }
+
+        return service.listFeed(moduleId);
     }
 
     protected void onPostExecute(Feed feed   ) {

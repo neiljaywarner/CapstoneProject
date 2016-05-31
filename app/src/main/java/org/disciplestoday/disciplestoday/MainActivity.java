@@ -271,16 +271,25 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+/*
         if (id == R.id.nav_locator) {
             // Handle the camera action
             gotoLocator();
         } else if (id == R.id.nav_highlighted) {
             showNews(id);
-        } else if (id == R.id.nav_campus) {
-            showNews(id);
-        }  else if (id == R.id.nav_singles) {
-        showNews(id);
+        }
+        //TODO: Other links... invites, etc.
+*/
+        switch (id) {
+
+            case R.id.nav_locator:
+                Log.i(TAG, "SINGLES FEED");
+                gotoLocator();
+                break;
+            default:
+                Log.i(TAG, "Navdrawer->Show appropriate news feed.");
+                showNews(id);
+                break;
         }
 
         //TODO: Let this be loaded from local storage so the user doesn't see the ones s/he's not interested in.
