@@ -9,17 +9,10 @@ import retrofit2.http.Query;
  */
 public interface DTService {
 
-    public static final String DISCIPLES_TODAY_BASE_URL = "http://disciplestoday.org/";
-
-    @GET("component/k2/itemlist?format=json&moduleID=353")
-    Call<Feed> listHighlights();
-
-    @GET("component/k2/itemlist?format=json&moduleID=273")
-    Call<Feed> listSingles();
+    public static String DISCIPLES_TODAY_BASE_URL = "http://disciplestoday.org/";
 
     @GET("component/k2/itemlist?format=json")
     Call<Feed> listFeed(@Query("moduleID") String moduleId);
 
-
-    // http://www.disciplestoday.org/component/k2/itemlist?format=json&moduleID=353
+    // e.g. Featured - http://www.disciplestoday.org/component/k2/itemlist?format=json&moduleID=353
 }

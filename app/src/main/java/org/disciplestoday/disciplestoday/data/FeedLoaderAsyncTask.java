@@ -105,6 +105,11 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
                 Log.i(TAG, "Y&F Feed");
                 moduleId = "271";
                 break;
+            case R.id.nav_man_up:
+                Log.i(TAG, "Man up");
+                moduleId = "272";
+                break;
+
             default:
                 Log.i(TAG, "DEFAULT FEED");
                 moduleId = "353";

@@ -39,7 +39,6 @@
                 android:icon="@drawable/ic_menu_gallery"
                 android:title="Youth \u0026 Family" />
             <item
-                android:visible="false"
                 android:id="@+id/nav_man_up"
                 android:icon="@drawable/ic_menu_gallery"
                 android:title="Man Up!" />
@@ -49,6 +48,7 @@
                 android:id="@+id/nav_women"
                 android:icon="@drawable/ic_menu_gallery"
                 android:title="Women Today" />
+            <!-- note: the ones false don't seem to have RSS feed as of May 30, 2016 -->
 
             <item
                 android:visible="false"

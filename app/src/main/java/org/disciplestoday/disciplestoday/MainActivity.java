@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -166,7 +167,6 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onBindViewHolder(final SimpleItemRecyclerViewAdapter.ViewHolder holder, int position) {
             final Article item = mArticles.get(position);
-            String name = item.getTitle();
             String imageUrl = item.getImageLink();
             if (!imageUrl.isEmpty())
             {
@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity
             }
 
 
-            holder.mContentView.setText(name);
+            holder.mContentView.setText(Html.fromHtml(item.getTitle()));
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
