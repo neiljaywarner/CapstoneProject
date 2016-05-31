@@ -164,6 +164,9 @@ public class MainActivity extends AppCompatActivity
             return new SimpleItemRecyclerViewAdapter.ViewHolder(view);
         }
 
+     //   todo: switch to ArticleListFragment, shoud lresolve problem b/c reload entire fragment when navigate via Activity
+       //         and make cleaner code hopefully...
+
         @Override
         public void onBindViewHolder(final SimpleItemRecyclerViewAdapter.ViewHolder holder, int position) {
             final Article item = mArticles.get(position);
@@ -180,12 +183,8 @@ public class MainActivity extends AppCompatActivity
 
             holder.mContentView.setText(Html.fromHtml(item.getTitle()));
 
-            holder.mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showArticle(item);
-                }
-            });
+            holder.mView.setOnClickListener( view->showArticle(item));
+
         }
 
         @Override
