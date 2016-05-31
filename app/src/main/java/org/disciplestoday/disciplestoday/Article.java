@@ -45,7 +45,12 @@ public class Article {
         if (text.contains(imagePath)) {
             text = getTextWithHiddenImage(imagePath);
         }
+        Log.e("NJW", "text=" + text);
 
+        // Handle one-off errors.
+        if (text.contains("Most of our area is bilingual")) {
+            text = text.replace("Most of our area is bilingual", "</p><p>\"Most of our area is bilingual\"");
+        }
         return Html.escapeHtml(text);
     }
 
