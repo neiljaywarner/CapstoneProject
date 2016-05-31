@@ -128,7 +128,7 @@ public class ArticleDetailFragment extends Fragment {
         WebView webview = (WebView) rootView.findViewById(R.id.article_detail);
         mLink = mLink.replace("images/", "http://disciplestoday.org/images/");
         mLink = Html.fromHtml(mLink).toString();
-        webview.loadData(mLink, "text/html", null);
+        webview.loadData(mLink, "text/html; charset=utf-8", "utf-8");
 
 
         return rootView;
