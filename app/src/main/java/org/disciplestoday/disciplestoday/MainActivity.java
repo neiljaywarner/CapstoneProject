@@ -71,12 +71,11 @@ public class MainActivity extends AppCompatActivity
 
         recyclerView = (RecyclerView) findViewById(R.id.article_list);
         assert recyclerView != null;
+        recyclerView.setNestedScrollingEnabled(false);
 
         imageViewFeatured = (ImageView) findViewById(R.id.featured_image);
         textViewFeaturedTitle = (TextView) findViewById(R.id.featured_article_title);
         mLayoutNews = findViewById(R.id.layout_news);
-
-
 
         if (findViewById(R.id.article_detail_container) != null) {
             // The detail container view will be present only in the

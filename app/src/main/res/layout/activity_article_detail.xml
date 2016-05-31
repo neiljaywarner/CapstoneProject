@@ -23,22 +23,12 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@+id/toolbar">
 
-            <!--
-            TODO: Cleanup so that parsed object gets validated and 'article' has reasonable
-            fulltext, image, etc, wherever it came from.
-            NONTE: rgvchurch one is the only one of ten that has main image in fulltext, so that's a data error....
-
-            -->
-
-
 
             <ImageView
                 android:fitsSystemWindows="true"
                 android:id="@+id/article_detail_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-
-
 
             <android.support.v7.widget.Toolbar
 
