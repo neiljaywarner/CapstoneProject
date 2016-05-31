@@ -23,6 +23,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.disciplestoday.disciplestoday.data.DTService;
+
 
 /**
  * A fragment representing a single Article detail screen.
@@ -90,6 +92,7 @@ public class ArticleDetailFragment extends Fragment {
 
                     Picasso.with(imageView.getContext()).load(mImageUrl)
                             .fit()
+                            .placeholder(android.R.drawable.progress_horizontal)
                             .into(imageView, new Callback() {
                                 @Override public void onSuccess() {
                                     Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
@@ -126,7 +129,7 @@ public class ArticleDetailFragment extends Fragment {
         */
 
         WebView webview = (WebView) rootView.findViewById(R.id.article_detail);
-        mLink = mLink.replace("images/", "http://disciplestoday.org/images/");
+        mLink = mLink.replace("images/", DTService.DISCIPLES_TODAY_BASE_URL + "/images/");
         mLink = Html.fromHtml(mLink).toString();
         webview.loadData(mLink, "text/html; charset=utf-8", "utf-8");
 

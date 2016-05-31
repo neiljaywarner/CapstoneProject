@@ -173,6 +173,7 @@ public class MainActivity extends AppCompatActivity
 
                 Picasso.with(holder.mImageView.getContext()).load(imageUrl)
                         .fit()
+                        .placeholder(android.R.drawable.progress_indeterminate_horizontal)
                         .into(holder.mImageView);
             }
 
