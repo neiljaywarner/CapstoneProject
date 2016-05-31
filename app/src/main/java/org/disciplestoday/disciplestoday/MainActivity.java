@@ -246,44 +246,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-/*
-        if (id == R.id.nav_locator) {
-            // Handle the camera action
-            gotoLocator();
-        } else if (id == R.id.nav_highlighted) {
-            showNews(id);
-        }
+
         //TODO: Other links... invites, etc.
-*/
+
         switch (id) {
 
             case R.id.nav_locator:
-                Log.i(TAG, "SINGLES FEED");
+                Log.i(TAG, "Navdrawer->Locator");
                 gotoLocator();
                 break;
             default:
@@ -292,7 +264,7 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
-        //TODO: Let this be loaded from local storage so the user doesn't see the ones s/he's not interested in.
+        //TODO: (Someday) Let this be loaded from local storage so the user doesn't see the ones s/he's not interested in.
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
