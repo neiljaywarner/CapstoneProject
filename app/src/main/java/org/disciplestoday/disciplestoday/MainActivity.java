@@ -1,5 +1,6 @@
 package org.disciplestoday.disciplestoday;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity
 
         showNews(R.id.nav_highlighted);
 
+
     }
 
 
@@ -102,6 +104,9 @@ public class MainActivity extends AppCompatActivity
 
         setupFeaturedArticle(featuredArticle);
         webviewLocator.setVisibility(View.GONE);
+        progressDialog.dismiss();
+        progressDialog = null;
+
     }
 
     private void setupFeaturedArticle(final Article article) {
@@ -270,9 +275,13 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    ProgressDialog progressDialog;
     private void showNews(int itemId) {
 
-
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle(R.string.fetching_articles);
+        progressDialog.show();
+        progressDialog.setMessage(getString(R.string.fetching_articles_message));
         asyncTask = new FeedLoaderAsyncTask(MainActivity.this, itemId);
         asyncTask.execute();
         webviewLocator.setVisibility(View.GONE);
