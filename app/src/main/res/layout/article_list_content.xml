@@ -11,9 +11,9 @@
 
         <ImageView
             android:id="@+id/imageViewThumbnail"
-            android:scaleType="centerCrop"
             android:layout_width="@dimen/thumbnail_width"
-            android:layout_height="@dimen/thumbnail_height"
+            android:layout_height="match_parent"
+            android:minHeight="@dimen/thumbnail_height"
             />
 
         <TextView

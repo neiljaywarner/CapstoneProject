@@ -91,7 +91,6 @@ public class ArticleDetailFragment extends Fragment {
                 if (URLUtil.isValidUrl(mImageUrl)) {
 
                     Picasso.with(imageView.getContext()).load(mImageUrl)
-                            .fit()
                             .placeholder(android.R.drawable.progress_horizontal)
                             .into(imageView, new Callback() {
                                 @Override public void onSuccess() {
@@ -99,6 +98,9 @@ public class ArticleDetailFragment extends Fragment {
                                     Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
                                         public void onGenerated(Palette palette) {
                                             updateBackground(fabShare, palette);
+                                            int lightVibrantColorList = palette.getLightVibrantColor(getResources().getColor(android.R.color.white));
+
+                                            imageView.setBackgroundColor(lightVibrantColorList);
                                         }
                                     });
                                 }

@@ -116,14 +116,15 @@ public class MainActivity extends AppCompatActivity
             if (URLUtil.isValidUrl(article.getImageLink())) {
 
                 Picasso.with(imageViewFeatured.getContext()).load(article.getImageLink())
-                        .fit()
                         .into(imageViewFeatured, new Callback() {
                             @Override public void onSuccess() {
                                 Bitmap bitmap = ((BitmapDrawable) imageViewFeatured.getDrawable()).getBitmap();
                                 Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
                                     public void onGenerated(Palette palette) {
                                         updateTextView(textViewFeaturedTitle, palette);
+                                        int lightVibrantColor = palette.getLightVibrantColor(getResources().getColor(android.R.color.white));
 
+                                        imageViewFeatured.setBackgroundColor(lightVibrantColor);
                                     }
                                 });
                             }
@@ -167,14 +168,28 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onBindViewHolder(final SimpleItemRecyclerViewAdapter.ViewHolder holder, int position) {
             final Article item = mArticles.get(position);
-            String imageUrl = item.getImageLink();
+            final String imageUrl = item.getImageLink();
             if (!imageUrl.isEmpty())
             {
 
                 Picasso.with(holder.mImageView.getContext()).load(imageUrl)
-                        .fit()
                         .placeholder(android.R.drawable.progress_indeterminate_horizontal)
-                        .into(holder.mImageView);
+                        .into(holder.mImageView, new Callback() {
+                            @Override public void onSuccess() {
+                                Bitmap bitmap = ((BitmapDrawable) holder.mImageView.getDrawable()).getBitmap();
+                                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                                    public void onGenerated(Palette listViewPallette) {
+                                        int lightVibrantColorList = listViewPallette.getLightVibrantColor(getResources().getColor(android.R.color.white));
+
+                                        holder.mImageView.setBackgroundColor(lightVibrantColorList);
+                                    }
+                                });
+                            }
+
+                            @Override public void onError() {
+                                Log.e(TAG, "Picasso:Error loading:" + imageUrl);
+                            }
+                        });
             }
 
 
