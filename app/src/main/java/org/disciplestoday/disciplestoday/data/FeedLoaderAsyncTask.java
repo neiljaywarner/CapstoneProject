@@ -88,6 +88,7 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
         String moduleId = "";
         switch (menuItemId) {
 
+
             case R.id.nav_singles:
                 Log.i(TAG, "SINGLES FEED");
                 moduleId = "273";
@@ -100,10 +101,13 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
                 Log.i(TAG, "CAMPUS FEED");
                 moduleId = "285";
                 break;
+            case R.id.nav_youth_and_family:
+                Log.i(TAG, "Y&F Feed");
+                moduleId = "271";
+                break;
             default:
                 Log.i(TAG, "DEFAULT FEED");
                 moduleId = "353";
-                return service.listHighlights();
         }
 
         return service.listFeed(moduleId);

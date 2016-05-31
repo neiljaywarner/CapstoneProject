@@ -8,6 +8,9 @@ import retrofit2.http.Query;
  * Created by neil on 5/25/16.
  */
 public interface DTService {
+
+    public static final String DISCIPLES_TODAY_BASE_URL = "http://disciplestoday.org/";
+
     @GET("component/k2/itemlist?format=json&moduleID=353")
     Call<Feed> listHighlights();
 

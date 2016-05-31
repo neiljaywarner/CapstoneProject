@@ -1,7 +1,9 @@
 package org.disciplestoday.disciplestoday;
 
+import android.text.Html;
 import android.util.Log;
 
+import org.disciplestoday.disciplestoday.data.DTService;
 import org.disciplestoday.disciplestoday.data.Feed;
 import org.disciplestoday.disciplestoday.data.Item;
 
@@ -13,7 +15,7 @@ import java.util.List;
  */
 
 public class Article {
-    public static final String IMAGE_BASE_URL = "http://disciplestoday.org/";
+    private static final String IMAGE_BASE_URL = DTService.DISCIPLES_TODAY_BASE_URL;
     private String title;
     private String imageLink;
     private String fullText;
@@ -32,8 +34,31 @@ public class Article {
         return title;
     }
 
-    public String getFullText() {
-        return fullText;
+
+    /**
+     *
+     * @return html-escaped text with duplicate images hidden. (for use in webview)
+     */
+    String getFullText() {
+        String text = fullText;
+        String imagePath = getImageLink().replace(IMAGE_BASE_URL, "");
+        if (text.contains(imagePath)) {
+            text = getTextWithHiddenImage(imagePath);
+        }
+
+        return Html.escapeHtml(text);
+    }
+
+    /**
+     *
+     * @param imagePath an image's path such as 'images/myimage.jpg'
+     * @return text with its image hidden with css display:none
+     */
+    private String getTextWithHiddenImage(String imagePath) {
+        String s1 = "src=\"" + imagePath + "\"";
+        String s2 = " style=\"display:none\" ";
+        String fixedFullText = fullText.replace(s1, s2);
+        return fixedFullText;
     }
 
     public String getAuthor() {
@@ -53,7 +78,7 @@ public class Article {
      */
     public static Article newArticle(Item item) {
         String author = item.getCreated_by_alias();
-        if (item.getExtraFields().size() == 0) {
+        if ((item.getExtraFields() == null) || item.getExtraFields().size() == 0) {
             return new Article(item.getTitle(), item.getImageUrl(), author, item.getIntroText(), item.getFulltext());
         }
 

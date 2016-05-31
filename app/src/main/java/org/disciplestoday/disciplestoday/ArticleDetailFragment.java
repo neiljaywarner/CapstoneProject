@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.graphics.Palette;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -126,7 +127,7 @@ public class ArticleDetailFragment extends Fragment {
 
         WebView webview = (WebView) rootView.findViewById(R.id.article_detail);
         mLink = mLink.replace("images/", "http://disciplestoday.org/images/");
-
+        mLink = Html.fromHtml(mLink).toString();
         webview.loadData(mLink, "text/html", null);
 
 

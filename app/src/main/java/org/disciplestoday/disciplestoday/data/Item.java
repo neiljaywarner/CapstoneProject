@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class Item {
 
+    public static final String DISCIPLES_TODAY_BASE_URL = DTService.DISCIPLES_TODAY_BASE_URL;
     String title;
     private String introtext;
     private String fulltext;
@@ -22,7 +23,7 @@ public class Item {
     //TODO: Clean up unneeded getters/setters.
 
     public String getLink() {
-        return "http://disciplestoday.org/" + link;
+        return DISCIPLES_TODAY_BASE_URL + link;
     }
 
     public String getFulltext() {
@@ -101,7 +102,6 @@ public class Item {
 
     }
 
-    //TODO: Cleanup code!!!
 
     private String getImageUrl(String fieldToSearch, String fileSuffix)
     {
@@ -116,7 +116,7 @@ public class Item {
         }
 
         String s = fieldToSearch.substring(start, end);
-        String image = "http://disciplestoday.org/" + s + "." + fileSuffix;
+        String image = DISCIPLES_TODAY_BASE_URL + s + "." + fileSuffix;
         return image;
     }
 

@@ -18,10 +18,14 @@
                 android:icon="@drawable/ic_menu_gallery"
                 android:id="@+id/nav_highlighted"
                 android:title="Highlighted" />
+            <!--
+            TODO: Do when have data loaded in db and can load by category or when they fix API
+
             <item
                 android:id="@+id/nav_hope"
                 android:icon="@drawable/ic_menu_gallery"
                 android:title="HOPEworldwide" />
+                -->
             <item
                 android:id="@+id/nav_campus"
                 android:icon="@drawable/ic_menu_gallery"
@@ -35,17 +39,19 @@
                 android:icon="@drawable/ic_menu_gallery"
                 android:title="Youth \u0026 Family" />
             <item
+                android:visible="false"
                 android:id="@+id/nav_man_up"
                 android:icon="@drawable/ic_menu_gallery"
                 android:title="Man Up!" />
 
-
             <item
+                android:visible="false"
                 android:id="@+id/nav_women"
                 android:icon="@drawable/ic_menu_gallery"
                 android:title="Women Today" />
 
             <item
+                android:visible="false"
                 android:id="@+id/nav_bible_study"
                 android:icon="@drawable/ic_menu_gallery"
                 android:title="Bible Study" />
