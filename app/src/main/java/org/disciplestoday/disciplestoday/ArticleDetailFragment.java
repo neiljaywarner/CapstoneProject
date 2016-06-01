@@ -18,12 +18,12 @@ import android.view.ViewGroup;
 import android.webkit.URLUtil;
 import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.disciplestoday.disciplestoday.data.DTService;
+
 
 
 /**
@@ -41,11 +41,11 @@ public class ArticleDetailFragment extends Fragment {
     public static final String ARG_ITEM_FULLTEXT = "item_fulltext";
     public static final String ARG_ITEM_IMAGE_URL = "item_image_url";
 
+    public static final String TAG = ArticleDetailFragment.class.getSimpleName();
 
-
-    //TOOD: Use parcelable and/or remove these items
+    //TOOD: Use parcelable and/or remove these items (remember to handle saveInstanceState)
     private String mTitle;
-    private String mLink;
+    private String mFullText;
     private String mImageUrl;
     // TODO: Use package for network with the classes to parse gson, and package model for data model to be passed as parcelable
     // and/or used with content provider.
@@ -66,10 +66,19 @@ public class ArticleDetailFragment extends Fragment {
 
         if (getArguments().containsKey(ARG_ITEM_TITLE)) {
             mTitle = getArguments().getString(ARG_ITEM_TITLE);
-            mLink = getArguments().getString(ARG_ITEM_FULLTEXT);
-            mImageUrl = getArguments().getString(ARG_ITEM_IMAGE_URL);
+            mFullText = getArguments().getString(ARG_ITEM_FULLTEXT);
 
-            Log.e("NJW", "mimageurl=" + mImageUrl);
+            mImageUrl = getArguments().getString(ARG_ITEM_IMAGE_URL);
+            if (mFullText.contains("Matt Brown")) {
+                Log.e("NJW", "fullText=" + mFullText);
+            }
+            Log.i(TAG, "mImageurl=" + mImageUrl);
+            Log.i("NJW", "mImageurl=" + mImageUrl);
+
+
+            if (mFullText.contains(Html.escapeHtml(mImageUrl))) {
+                mImageUrl = "invalid_url_don't_show_duplicate";
+            }
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
@@ -87,8 +96,9 @@ public class ArticleDetailFragment extends Fragment {
                 final ImageView imageView = (ImageView) activity.findViewById(R.id.article_detail_image);
                 final FloatingActionButton fabShare = (FloatingActionButton) activity.findViewById(R.id.fabShareArticle);
                 fabShare.setVisibility(View.GONE);
-
-                if (URLUtil.isValidUrl(mImageUrl)) {
+                if (!URLUtil.isValidUrl(mImageUrl)) {
+                    mImageUrl = Article.DEFAULT_IMAGE_URL;
+                }
 
                     Picasso.with(imageView.getContext()).load(mImageUrl)
                             .placeholder(android.R.drawable.progress_horizontal)
@@ -109,7 +119,7 @@ public class ArticleDetailFragment extends Fragment {
 
                                 }
                             });
-                }
+
 
 
                 //TODO: Try adding introtext as textview/metabar so it does't look like a wall of text, confirm from client
@@ -131,9 +141,8 @@ public class ArticleDetailFragment extends Fragment {
         */
 
         WebView webview = (WebView) rootView.findViewById(R.id.article_detail);
-        mLink = mLink.replace("images/", DTService.DISCIPLES_TODAY_BASE_URL + "/images/");
-        mLink = Html.fromHtml(mLink).toString();
-        webview.loadData(mLink, "text/html; charset=utf-8", "utf-8");
+        mFullText = Html.fromHtml(mFullText).toString();
+        webview.loadData(mFullText, "text/html; charset=utf-8", "utf-8");
 
 
         return rootView;

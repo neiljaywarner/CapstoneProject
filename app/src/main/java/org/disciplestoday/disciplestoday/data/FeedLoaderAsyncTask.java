@@ -43,7 +43,6 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
 
     public FeedLoaderAsyncTask(OnTaskCompleted listener, MenuItem menuItem){
         super();
-        Log.e("NJW", "in constructor");
         this.listener = listener;
         this.menuItem = menuItem;
     }
@@ -57,7 +56,7 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
             Feed feed = feedResponse.body();
             return feed;
         } catch (IOException e) {
-            Log.e("NJW", e.getMessage());
+            Log.e(TAG, e.getMessage());
             e.printStackTrace();
             return null;
 
@@ -69,7 +68,6 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
      * @return
      */
     public Call<Feed> getCall() {
-        Log.i(TAG, "in doonbackgrond");
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();

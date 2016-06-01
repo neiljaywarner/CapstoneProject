@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.disciplestoday.disciplestoday.Article;
+
 import java.util.List;
 
 /**
@@ -98,7 +100,7 @@ public class Item {
         //TODO: utilize json fields image,imageSmall, imageMedium fields as needed.
 
             //This is the twitter image, seems like a decent default.
-        return "https://pbs.twimg.com/profile_images/186752127/DToday_logo_Gradient_Orange_400x400.jpg";
+        return Article.DEFAULT_IMAGE_URL;
 
     }
 

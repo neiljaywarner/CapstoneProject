@@ -16,6 +16,7 @@ import java.util.List;
 
 public class Article {
     private static final String IMAGE_BASE_URL = DTService.DISCIPLES_TODAY_BASE_URL;
+    public static final String DEFAULT_IMAGE_URL = "https://pbs.twimg.com/profile_images/186752127/DToday_logo_Gradient_Orange_400x400.jpg";
     private String title;
     private String imageLink;
     private String fullText;
@@ -25,7 +26,7 @@ public class Article {
     private Article(String title, String imageLink, String author, String summary, String fullText) {
         this.title = title;
         this.imageLink = imageLink;
-        this.fullText = fullText;
+        this.fullText = fullText.replace("images/", IMAGE_BASE_URL + "/images/");;
         this.author = author;
         this.summary = summary;
     }
@@ -41,16 +42,11 @@ public class Article {
      */
     String getFullText() {
         String text = fullText;
-        String imagePath = getImageLink().replace(IMAGE_BASE_URL, "");
-        if (text.contains(imagePath)) {
-            text = getTextWithHiddenImage(imagePath);
-        }
-        Log.e("NJW", "text=" + text);
+        //String imagePath = getImageLink().replace(IMAGE_BASE_URL, "");
+      //  if (text.contains(imagePath)) {
+       //     text = getTextWithHiddenImage(imagePath);
+      //  }
 
-        // Handle one-off errors.
-        if (text.contains("Most of our area is bilingual")) {
-            text = text.replace("Most of our area is bilingual", "</p><p>\"Most of our area is bilingual\"");
-        }
         return Html.escapeHtml(text);
     }
 
@@ -96,6 +92,15 @@ public class Article {
 
     public String getImageLink() {
         return imageLink;
+    }
+
+    public String getDetailImageLink() {
+        String s1 = fullText.replace("/images", IMAGE_BASE_URL + "images");
+        if (s1.contains(imageLink)) {
+            return "duplicate_image:'" + imageLink + "'";
+        } else {
+            return imageLink;
+        }
     }
 
     public static List<Article> getArticles(Feed feed) {

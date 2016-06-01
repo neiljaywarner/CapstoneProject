@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity
             Bundle arguments = new Bundle();
             arguments.putString(ArticleDetailFragment.ARG_ITEM_TITLE, item.getTitle());
             arguments.putString(ArticleDetailFragment.ARG_ITEM_FULLTEXT, item.getFullText());
-            arguments.putString(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, item.getImageLink());
+            arguments.putString(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, item.getDetailImageLink());
 
 
             ArticleDetailFragment fragment = new ArticleDetailFragment();
@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, ArticleDetailActivity.class);
             intent.putExtra(ArticleDetailFragment.ARG_ITEM_TITLE, item.getTitle());
             intent.putExtra(ArticleDetailFragment.ARG_ITEM_FULLTEXT, item.getFullText());
-            intent.putExtra(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, item.getImageLink());
+            intent.putExtra(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, item.getDetailImageLink());
             startActivity(intent);
         }
     }
