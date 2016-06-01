@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity
             mTwoPane = true;
         }
 
-        showNews(R.id.nav_highlighted);
+        showNews();
 
 
     }
@@ -280,7 +280,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             default:
                 Log.i(TAG, "Navdrawer->Show appropriate news feed.");
-                showNews(id);
+                showNews(item);
                 break;
         }
 
@@ -292,13 +292,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     ProgressDialog progressDialog;
-    private void showNews(int itemId) {
+
+
+    /**
+     * Show the default news feed (highlighted/featured)
+     */
+    private void showNews() {
+        showNews(null);
+    }
+    private void showNews(MenuItem menuItem) {
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle(R.string.fetching_articles);
         progressDialog.show();
         progressDialog.setMessage(getString(R.string.fetching_articles_message));
-        asyncTask = new FeedLoaderAsyncTask(MainActivity.this, itemId);
+        asyncTask = new FeedLoaderAsyncTask(MainActivity.this, menuItem);
         asyncTask.execute();
         webviewLocator.setVisibility(View.GONE);
         mLayoutNews.setVisibility(View.VISIBLE);

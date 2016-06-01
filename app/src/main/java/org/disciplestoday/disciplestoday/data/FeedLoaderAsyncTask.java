@@ -3,6 +3,7 @@ package org.disciplestoday.disciplestoday.data;
 import android.os.AsyncTask;
 import android.support.annotation.IdRes;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -29,7 +30,8 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
 
     public static final String BASE_URL = "http://www.disciplestoday.org";
     private static final String TAG = FeedLoaderAsyncTask.class.getSimpleName() ;
-    private @IdRes int menuItemId;
+    private MenuItem menuItem;
+
 
     public interface OnTaskCompleted{
         void onTaskCompleted();
@@ -39,12 +41,11 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
 
     private List<Article> mArticles;
 
-
-    public FeedLoaderAsyncTask(OnTaskCompleted listener, @IdRes int menuItemId){
+    public FeedLoaderAsyncTask(OnTaskCompleted listener, MenuItem menuItem){
         super();
         Log.e("NJW", "in constructor");
         this.listener = listener;
-        this.menuItemId = menuItemId;
+        this.menuItem = menuItem;
     }
 
     @Override
@@ -86,39 +87,55 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
 
         DTService service = retrofit.create(DTService.class);
         String moduleId = "";
-        switch (menuItemId) {
-
-
+        @IdRes int itemId;
+        if (menuItem == null) {
+            itemId = R.id.nav_highlighted;
+            Log.i(TAG, "getCall() - HIGHLIGHTED");
+        } else {
+            itemId = menuItem.getItemId();
+            Log.i(TAG, "getCall() - MenuItem Title="+ menuItem.getTitle());
+        }
+        switch (itemId) {
             case R.id.nav_singles:
-                Log.i(TAG, "SINGLES FEED");
                 moduleId = "273";
                 break;
+            case R.id.nav_bible_study:
+                moduleId = "270";
+                break;
+            case R.id.nav_commentary:
+                moduleId = "347";
+                break;
             case R.id.nav_kingdom_kids:
-                Log.i(TAG, "KINGDOM KIDS FEED");
                 moduleId = "281";
                 break;
-            case R.id.nav_campus:
-                Log.i(TAG, "CAMPUS FEED");
-                moduleId = "285";
-                break;
             case R.id.nav_youth_and_family:
-                Log.i(TAG, "Y&F Feed");
                 moduleId = "271";
                 break;
+            case R.id.nav_missions:
+                moduleId = "334";
+                break;
             case R.id.nav_man_up:
-                Log.i(TAG, "Man up");
                 moduleId = "272";
                 break;
-
+            case R.id.nav_specialty_ministries:
+                moduleId = "359";
+                break;
+            case R.id.nav_regional_news:
+                moduleId = "358";
+                break;
             default:
-                Log.i(TAG, "DEFAULT FEED");
                 moduleId = "353";
         }
 
+        //TODO: Eventually this can go somewhere better...
+
+        //NOTE: This is actually just highlights of these feeds, we can get a lot more categories if we want to build the UI to support them... tabs?
+        // the simple way to do it is to have a tab taht says subcategories or 'other' searched by subcategories or something.
+        // Start simple,but downloading them is straightforward just by doing all numbers in the background...
         return service.listFeed(moduleId);
     }
 
-    protected void onPostExecute(Feed feed   ) {
+    protected void onPostExecute(Feed feed ) {
         mArticles = Article.getArticles(feed);
         listener.onTaskCompleted();
     }
