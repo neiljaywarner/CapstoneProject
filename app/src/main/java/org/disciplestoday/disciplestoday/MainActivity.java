@@ -84,42 +84,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-/*
-    private void setupFeaturedArticle(final Article article) {
-        if (imageViewFeatured != null) {
 
-            if (URLUtil.isValidUrl(article.getImageLink())) {
-
-                Picasso.with(imageViewFeatured.getContext()).load(article.getImageLink())
-                        .into(imageViewFeatured, new Callback() {
-                            @Override public void onSuccess() {
-                                Bitmap bitmap = ((BitmapDrawable) imageViewFeatured.getDrawable()).getBitmap();
-                                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-                                    public void onGenerated(Palette palette) {
-                                        updateTextView(textViewFeaturedTitle, palette);
-                                        int lightVibrantColor = palette.getLightVibrantColor(getResources().getColor(android.R.color.white));
-
-                                        imageViewFeatured.setBackgroundColor(lightVibrantColor);
-                                    }
-                                });
-                            }
-
-                            @Override public void onError() {
-                                Log.e(TAG, "Picasso:Error loading:" + article.getImageLink());
-                            }
-                        });
-            }
-        }
-
-        textViewFeaturedTitle.setText(article.getTitle());
-        textViewFeaturedTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showArticle(article);
-            }
-        });
-    }
-    */
 
 
 

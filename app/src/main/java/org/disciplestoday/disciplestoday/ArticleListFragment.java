@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,6 +33,8 @@ import java.util.List;
 
 public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask.OnTaskCompleted {
 
+
+    private static final String TAG = "arg_nav_item_id";
 
     private static final String ARG_NAV_ID = "arg_nav_item_id";
     private List<Article> mArticles;
@@ -97,11 +100,11 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
             recyclerView = (RecyclerView) root;
             recyclerView.setNestedScrollingEnabled(false);
 
-            /*
-            imageViewFeatured = (ImageView) root.findViewById(R.id.featured_image);
-            textViewFeaturedTitle = (TextView) root.findViewById(R.id.featured_article_title);
-            mLayoutNews = root.findViewById(R.id.layout_news);
-            */
+
+            imageViewFeatured = (ImageView) getActivity().findViewById(R.id.featured_image);
+            textViewFeaturedTitle = (TextView) getActivity().findViewById(R.id.featured_article_title);
+            mLayoutNews = getActivity().findViewById(R.id.layout_news);
+
 
 
             if (getArguments() == null) {
@@ -125,7 +128,7 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
         mArticles.remove(0);
         setupRecyclerView(recyclerView);
 
-        //setupFeaturedArticle(featuredArticle);
+        setupFeaturedArticle(featuredArticle);
        // webviewLocator.setVisibility(View.GONE);
         progressDialog.dismiss();
         progressDialog = null;
@@ -286,5 +289,42 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
             startActivity(intent);
         //}
     }
+
+
+    private void setupFeaturedArticle(final Article article) {
+        if (imageViewFeatured != null) {
+
+            if (URLUtil.isValidUrl(article.getImageLink())) {
+
+                Picasso.with(imageViewFeatured.getContext()).load(article.getImageLink())
+                        .into(imageViewFeatured, new Callback() {
+                            @Override public void onSuccess() {
+                                Bitmap bitmap = ((BitmapDrawable) imageViewFeatured.getDrawable()).getBitmap();
+                                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                                    public void onGenerated(Palette palette) {
+                                        updateTextView(textViewFeaturedTitle, palette);
+                                        int lightVibrantColor = palette.getLightVibrantColor(getResources().getColor(android.R.color.white));
+
+                                        imageViewFeatured.setBackgroundColor(lightVibrantColor);
+                                    }
+                                });
+                            }
+
+                            @Override public void onError() {
+                                Log.e(TAG, "Picasso:Error loading:" + article.getImageLink());
+                            }
+                        });
+            }
+        }
+
+        textViewFeaturedTitle.setText(article.getTitle());
+        textViewFeaturedTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showArticle(article);
+            }
+        });
+    }
+
 
 }
