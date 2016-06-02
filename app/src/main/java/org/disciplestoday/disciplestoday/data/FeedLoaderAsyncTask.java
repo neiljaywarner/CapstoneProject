@@ -30,7 +30,10 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
 
     public static final String BASE_URL = "http://www.disciplestoday.org";
     private static final String TAG = FeedLoaderAsyncTask.class.getSimpleName() ;
+
+
     private MenuItem menuItem;
+    private @IdRes int  menuItemId;
 
 
     public interface OnTaskCompleted{
@@ -43,8 +46,18 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
 
     public FeedLoaderAsyncTask(OnTaskCompleted listener, MenuItem menuItem){
         super();
+        Log.i("NJW", "instantiating async task");
+
         this.listener = listener;
         this.menuItem = menuItem;
+    }
+
+    public FeedLoaderAsyncTask(OnTaskCompleted listener, @IdRes int menuItemId){
+        super();
+        Log.i("NJW", "instantiating async task");
+
+        this.listener = listener;
+        this.menuItemId = menuItemId;
     }
 
     @Override
@@ -85,6 +98,7 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
 
         DTService service = retrofit.create(DTService.class);
         String moduleId = "";
+        /*
         @IdRes int itemId;
         if (menuItem == null) {
             itemId = R.id.nav_highlighted;
@@ -93,6 +107,8 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
             itemId = menuItem.getItemId();
             Log.i(TAG, "getCall() - MenuItem Title="+ menuItem.getTitle());
         }
+        */
+        @IdRes int itemId = menuItemId;
         switch (itemId) {
             case R.id.nav_singles:
                 moduleId = "273";

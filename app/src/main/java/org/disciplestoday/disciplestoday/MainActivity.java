@@ -1,7 +1,6 @@
 package org.disciplestoday.disciplestoday;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -20,38 +19,19 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.webkit.URLUtil;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import android.widget.Toast;
 
-import org.disciplestoday.disciplestoday.data.FeedLoaderAsyncTask;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FeedLoaderAsyncTask.OnTaskCompleted {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String LOCATOR_URL = "http://www.dtodayinfo.net/Dtoday";
     private boolean mTwoPane;
-    private List<Article> mArticles;
-    private FeedLoaderAsyncTask asyncTask;
-    private RecyclerView recyclerView;
-    private ImageView imageViewFeatured;
-    private TextView textViewFeaturedTitle;
-    private WebView webviewLocator;
-    private View mLayoutNews;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,47 +49,42 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        setupLocator();
 
-        recyclerView = (RecyclerView) findViewById(R.id.article_list);
-        assert recyclerView != null;
-        recyclerView.setNestedScrollingEnabled(false);
+        showFragment();
 
-        imageViewFeatured = (ImageView) findViewById(R.id.featured_image);
-        textViewFeaturedTitle = (TextView) findViewById(R.id.featured_article_title);
-        mLayoutNews = findViewById(R.id.layout_news);
 
-        if (findViewById(R.id.article_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
-        }
+        //TODO: .replace() and set up in nav drawer listener
 
-        showNews();
+        //setupLocator();
+
+
+
 
 
     }
 
+    private void showFragment() {
+        ArticleListFragment listFragment = ArticleListFragment.newInstance();
 
-    @Override
-    public void onTaskCompleted() {
-        Log.e("NJW", "in OnTaskCompleted");
-        mArticles = asyncTask.getItems();
-        Article featuredArticle = mArticles.get(0);
-            //NOTE: The first (0th) article as of May 30th has right and left padding when the others don't
-            // either a) they should fix or b) a color from pallette can be the background...
-        mArticles.remove(0);
-        setupRecyclerView(recyclerView);
 
-        setupFeaturedArticle(featuredArticle);
-        webviewLocator.setVisibility(View.GONE);
-        progressDialog.dismiss();
-        progressDialog = null;
-
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.article_list_container, listFragment)
+                .commit();
     }
 
+    private void showFragment(MenuItem menuItem) {
+        ArticleListFragment listFragment = ArticleListFragment.newInstance(menuItem);
+
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.article_list_container, listFragment)
+                .commit();
+    }
+
+
+
+
+/*
     private void setupFeaturedArticle(final Article article) {
         if (imageViewFeatured != null) {
 
@@ -144,116 +119,9 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
-
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mArticles));
-    }
-
-    public class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
-
-        private final List<Article> mValues;
-
-        public SimpleItemRecyclerViewAdapter(List<Article> items) {
-            mValues = items;
-        }
-
-        @Override
-        public SimpleItemRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.article_list_content, parent, false);
-            return new SimpleItemRecyclerViewAdapter.ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(final SimpleItemRecyclerViewAdapter.ViewHolder holder, int position) {
-            final Article item = mArticles.get(position);
-            final String imageUrl = item.getImageLink();
-            if (!imageUrl.isEmpty())
-            {
-
-                Picasso.with(holder.mImageView.getContext()).load(imageUrl)
-                        .placeholder(android.R.drawable.progress_indeterminate_horizontal)
-                        .into(holder.mImageView, new Callback() {
-                            @Override public void onSuccess() {
-                                Bitmap bitmap = ((BitmapDrawable) holder.mImageView.getDrawable()).getBitmap();
-                                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-                                    public void onGenerated(Palette listViewPallette) {
-                                        int lightVibrantColorList = listViewPallette.getLightVibrantColor(getResources().getColor(android.R.color.white));
-
-                                        holder.mImageView.setBackgroundColor(lightVibrantColorList);
-                                    }
-                                });
-                            }
-
-                            @Override public void onError() {
-                                Log.e(TAG, "Picasso:Error loading:" + imageUrl);
-                            }
-                        });
-            }
+    */
 
 
-            holder.mContentView.setText(Html.fromHtml(item.getTitle()));
-
-            holder.mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showArticle(item);
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return mValues.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public final View mView;
-            public final ImageView mImageView;
-            public final TextView mContentView;
-
-            public ViewHolder(View view) {
-                super(view);
-                mView = view;
-                mImageView = (ImageView) view.findViewById(R.id.imageViewThumbnail);
-                mContentView = (TextView) view.findViewById(R.id.content);
-            }
-
-            @Override
-            public String toString() {
-                return super.toString() + " '" + mContentView.getText() + "'";
-            }
-        }
-    }
-
-    private void showArticle(Article item) {
-        if (mTwoPane) {
-            Bundle arguments = new Bundle();
-            arguments.putString(ArticleDetailFragment.ARG_ITEM_TITLE, item.getTitle());
-            arguments.putString(ArticleDetailFragment.ARG_ITEM_FULLTEXT, item.getFullText());
-            arguments.putString(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, item.getDetailImageLink());
-
-
-            ArticleDetailFragment fragment = new ArticleDetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.article_detail_container, fragment)
-                    .commit();
-        } else {
-            Intent intent = new Intent(this, ArticleDetailActivity.class);
-            intent.putExtra(ArticleDetailFragment.ARG_ITEM_TITLE, item.getTitle());
-            intent.putExtra(ArticleDetailFragment.ARG_ITEM_FULLTEXT, item.getFullText());
-            intent.putExtra(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, item.getDetailImageLink());
-            startActivity(intent);
-        }
-    }
-
-    private void openInBrowser(String link) {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
-        startActivity(browserIntent);
-    }
-    // http://stackoverflow.com/questions/2201917/how-can-i-open-a-url-in-androids-web-browser-from-my-application
 
     @Override
     public void onBackPressed() {
@@ -276,11 +144,12 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.nav_locator:
                 Log.i(TAG, "Navdrawer->Locator");
-                gotoLocator();
+                //gotoLocator();
                 break;
             default:
                 Log.i(TAG, "Navdrawer->Show appropriate news feed.");
-                showNews(item);
+               // showNews(item);
+                showFragment(item);
                 break;
         }
 
@@ -291,31 +160,13 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    ProgressDialog progressDialog;
 
-
-    /**
-     * Show the default news feed (highlighted/featured)
-     */
-    private void showNews() {
-        showNews(null);
-    }
-    private void showNews(MenuItem menuItem) {
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle(R.string.fetching_articles);
-        progressDialog.show();
-        progressDialog.setMessage(getString(R.string.fetching_articles_message));
-        asyncTask = new FeedLoaderAsyncTask(MainActivity.this, menuItem);
-        asyncTask.execute();
-        webviewLocator.setVisibility(View.GONE);
-        mLayoutNews.setVisibility(View.VISIBLE);
-    }
 
 
     /**
      * This is loaded in a webview invisibly so it seems instant.
      */
+    /*
     private void setupLocator() {
         webviewLocator = (WebView) findViewById(R.id.webview_locator);
         webviewLocator.loadUrl(LOCATOR_URL);
@@ -325,11 +176,13 @@ public class MainActivity extends AppCompatActivity
         webSettings.setJavaScriptEnabled(true);
         webviewLocator.setVisibility(View.GONE);
     }
+    */
 
 
     /**
      * Temporary locator via webview
      */
+    /*
     private void gotoLocator() {
 
         webviewLocator.setVisibility(View.VISIBLE);
@@ -339,13 +192,7 @@ public class MainActivity extends AppCompatActivity
             webviewLocator.loadUrl(LOCATOR_URL);
         }
     }
+    */
 
-    //credit to https://github.com/antoniolg/MaterializeYourApp/blob/master/app/src/main/java/com/antonioleiva/materializeyourapp/DetailActivity.java
-    private void updateTextView(TextView view, Palette palette) {
-        int lightVibrantColor = palette.getLightVibrantColor(getResources().getColor(android.R.color.white));
-        int darkVibrantColor = palette.getDarkVibrantColor(getResources().getColor(android.R.color.black));
 
-        view.setBackgroundColor(lightVibrantColor);
-        view.setTextColor(darkVibrantColor);
-    }
 }
