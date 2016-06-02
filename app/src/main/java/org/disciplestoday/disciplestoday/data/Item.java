@@ -103,7 +103,6 @@ public class Item {
         return Article.DEFAULT_IMAGE_URL;
 
     }
-//FOCUS on fragmentizing it.
 
     private String getImageUrl(String fieldToSearch, String fileSuffix)
     {
