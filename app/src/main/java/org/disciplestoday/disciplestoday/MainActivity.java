@@ -23,6 +23,8 @@ import android.view.MenuItem;
 
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -32,10 +34,15 @@ public class MainActivity extends AppCompatActivity
     private static final String LOCATOR_URL = "http://www.dtodayinfo.net/Dtoday";
     private boolean mTwoPane;
 
+    public FirebaseAnalytics mFirebaseAnalytics;
+    private static final String TRACK_MENU_SELECTION="feed";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -114,6 +121,7 @@ public class MainActivity extends AppCompatActivity
             default:
                 Log.i(TAG, "Navdrawer->Show appropriate news feed.");
                // showNews(item);
+                trackFeedSelection(item.getTitle().toString());
                 showFragment(item);
                 break;
         }
@@ -158,6 +166,17 @@ public class MainActivity extends AppCompatActivity
         }
     }
     */
+    public static long mFeedLoadStart = 0;
+    private void trackFeedSelection(String feedName) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, feedName);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM_LIST, bundle);
+        mFeedLoadStart = System.nanoTime();
+    }
 
 
+
+
+
+    //TODO: Refactor into trackerhelper so we can use google analytics and/or flurry if we want and more easily do duration
 }

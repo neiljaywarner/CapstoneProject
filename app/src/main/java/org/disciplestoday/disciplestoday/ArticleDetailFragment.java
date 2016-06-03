@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.graphics.Palette;
@@ -19,11 +20,13 @@ import android.webkit.URLUtil;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.disciplestoday.disciplestoday.data.DTService;
 
+import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
 
 
 /**
@@ -37,13 +40,19 @@ public class ArticleDetailFragment extends Fragment {
      * The fragment argument representing the item ID that this fragment
      * represents.
      */
+    public static final String ARG_ITEM_ID = "item_id";
+
     public static final String ARG_ITEM_TITLE = "item_title";
     public static final String ARG_ITEM_FULLTEXT = "item_fulltext";
     public static final String ARG_ITEM_IMAGE_URL = "item_image_url";
 
     public static final String TAG = ArticleDetailFragment.class.getSimpleName();
 
+    public FirebaseAnalytics mFirebaseAnalytics;
+
+
     //TOOD: Use parcelable and/or remove these items (remember to handle saveInstanceState)
+    private String mArticleId;
     private String mTitle;
     private String mFullText;
     private String mImageUrl;
@@ -63,17 +72,15 @@ public class ArticleDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this.getActivity());
 
         if (getArguments().containsKey(ARG_ITEM_TITLE)) {
+            mArticleId = getArguments().getString(ARG_ITEM_ID);
             mTitle = getArguments().getString(ARG_ITEM_TITLE);
             mFullText = getArguments().getString(ARG_ITEM_FULLTEXT);
 
             mImageUrl = getArguments().getString(ARG_ITEM_IMAGE_URL);
-            if (mFullText.contains("Matt Brown")) {
-                Log.e("NJW", "fullText=" + mFullText);
-            }
             Log.i(TAG, "mImageurl=" + mImageUrl);
-            Log.i("NJW", "mImageurl=" + mImageUrl);
 
 
             if (mFullText.contains(Html.escapeHtml(mImageUrl))) {
@@ -95,6 +102,17 @@ public class ArticleDetailFragment extends Fragment {
 
                 final ImageView imageView = (ImageView) activity.findViewById(R.id.article_detail_image);
                 final FloatingActionButton fabShare = (FloatingActionButton) activity.findViewById(R.id.fabShareArticle);
+
+                fabShare.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Snackbar.make(v, "About to share this article:'" + mTitle + "'", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                        share();
+                    }
+                });
+
+
                 fabShare.setVisibility(View.GONE);
                 if (!URLUtil.isValidUrl(mImageUrl)) {
                     mImageUrl = Article.DEFAULT_IMAGE_URL;
@@ -127,6 +145,10 @@ public class ArticleDetailFragment extends Fragment {
         }
     }
 
+    private void share() {
+        trackContentShare(mArticleId, mTitle);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -157,5 +179,27 @@ public class ArticleDetailFragment extends Fragment {
         fab.setBackgroundTintList(ColorStateList.valueOf(vibrantColor));
         fab.setVisibility(View.VISIBLE);
     }
+    //TODO: Use advertising ID so we get interests and more geographic data.
+    //TODO: We could consider tracking how long it takes to load things as      params.putDouble(Param.VALUE, 10ms);
+
+
+    //TODO: Use this one after i have content provider and use share.
+    private void trackContentShare(Article article) {
+        trackContentShare(article.getId(), article.getTitle());
+    }
+
+    private void trackContentShare(String id, String title) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, title);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, TRACK_TYPE_ARTICLE);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SHARE, bundle);
+
+        bundle = new Bundle();
+        bundle.putString("article_id", id);
+        bundle.putString("article_title", title);
+        mFirebaseAnalytics.logEvent("share_article", bundle);
+        // Using custom share_event b/c default share event doesn't seem to let you put title
+        // but built-in share event may be useful for other tools/reports.
+    }
 }
-//             Credit to http://antonioleiva.com/collapsing-toolbar-layout/ and other materialize your app goodness he blogs about.

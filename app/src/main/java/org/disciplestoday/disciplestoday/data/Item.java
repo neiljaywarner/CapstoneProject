@@ -15,6 +15,9 @@ public class Item {
 
     public static final String DISCIPLES_TODAY_BASE_URL = DTService.DISCIPLES_TODAY_BASE_URL;
     String title;
+
+
+    String id;
     private String introtext;
     private String fulltext;
    // private String image;
@@ -26,6 +29,10 @@ public class Item {
 
     public String getLink() {
         return DISCIPLES_TODAY_BASE_URL + link;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getFulltext() {

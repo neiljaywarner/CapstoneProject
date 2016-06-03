@@ -28,57 +28,68 @@
                 -->
             <item
                 android:id="@+id/nav_campus"
+                android:titleCondensed="Campus"
                 android:icon="@drawable/ic_menu_gallery"
                 android:title="Campus" />
             <item
                 android:id="@+id/nav_singles"
+                android:titleCondensed="Singles"
                 android:icon="@drawable/ic_menu_gallery"
                 android:title="Singles" />
             <item
                 android:id="@+id/nav_youth_and_family"
                 android:icon="@drawable/ic_menu_gallery"
+                android:titleCondensed="Family"
                 android:title="Youth \u0026 Family" />
 
             <item
                 android:id="@+id/nav_missions"
+                android:titleCondensed="Missions"
                 android:icon="@drawable/ic_menu_gallery"
                 android:title="Missions" />
 
             <item
                 android:id="@+id/nav_man_up"
                 android:icon="@drawable/ic_menu_gallery"
+                android:titleCondensed="Men"
                 android:title="Man Up!" />
 
             <item
                 android:visible="false"
                 android:id="@+id/nav_women"
                 android:icon="@drawable/ic_menu_gallery"
+                android:titleCondensed="Women"
                 android:title="Women Today" />
             <!-- note: the ones false don't seem to have RSS feed as of May 30, 2016 -->
 
             <item
                 android:id="@+id/nav_commentary"
                 android:icon="@drawable/ic_menu_gallery"
+                android:titleCondensed="Commentary"
                 android:title="Commentary" />
 
             <item
                 android:id="@+id/nav_bible_study"
                 android:icon="@drawable/ic_menu_gallery"
+                android:titleCondensed="Bible"
                 android:title="Bible Study" />
 
             <item
                 android:id="@+id/nav_kingdom_kids"
                 android:icon="@drawable/ic_menu_gallery"
+                android:titleCondensed="Kids"
                 android:title="Kingdom Kids" />
 
             <item
                 android:id="@+id/nav_specialty_ministries"
                 android:icon="@drawable/ic_menu_gallery"
-                android:title="Kingdom Kids" />
+                android:titleCondensed="Specialty"
+                android:title="Specialty Ministries" />
 
             <item
                 android:id="@+id/nav_regional_news"
                 android:icon="@drawable/ic_menu_gallery"
+                android:titleCondensed="Regional"
                 android:title="Regional News" />
 
         </menu>

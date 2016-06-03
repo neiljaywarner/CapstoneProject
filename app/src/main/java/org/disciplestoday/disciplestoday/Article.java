@@ -17,13 +17,18 @@ import java.util.List;
 public class Article {
     private static final String IMAGE_BASE_URL = DTService.DISCIPLES_TODAY_BASE_URL;
     public static final String DEFAULT_IMAGE_URL = "https://pbs.twimg.com/profile_images/186752127/DToday_logo_Gradient_Orange_400x400.jpg";
+    public static final String TRACK_TYPE_ARTICLE="article";
+
+
+    private String id;
     private String title;
     private String imageLink;
     private String fullText;
     private String author;
     private String summary; //or description, byline, etc.
 
-    private Article(String title, String imageLink, String author, String summary, String fullText) {
+    private Article(String id, String title, String imageLink, String author, String summary, String fullText) {
+        this.id = id;
         this.title = title;
         this.imageLink = imageLink;
         this.fullText = fullText.replace("images/", IMAGE_BASE_URL + "/images/");;
@@ -31,9 +36,16 @@ public class Article {
         this.summary = summary;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }
+
+
+
 
 
     /**
@@ -42,24 +54,7 @@ public class Article {
      */
     String getFullText() {
         String text = fullText;
-        //String imagePath = getImageLink().replace(IMAGE_BASE_URL, "");
-      //  if (text.contains(imagePath)) {
-       //     text = getTextWithHiddenImage(imagePath);
-      //  }
-
         return Html.escapeHtml(text);
-    }
-
-    /**
-     *
-     * @param imagePath an image's path such as 'images/myimage.jpg'
-     * @return text with its image hidden with css display:none
-     */
-    private String getTextWithHiddenImage(String imagePath) {
-        String s1 = "src=\"" + imagePath + "\"";
-        String s2 = " style=\"display:none\" ";
-        String fixedFullText = fullText.replace(s1, s2);
-        return fixedFullText;
     }
 
     public String getAuthor() {
@@ -80,14 +75,14 @@ public class Article {
     public static Article newArticle(Item item) {
         String author = item.getCreated_by_alias();
         if ((item.getExtraFields() == null) || item.getExtraFields().size() == 0) {
-            return new Article(item.getTitle(), item.getImageUrl(), author, item.getIntroText(), item.getFulltext());
+            return new Article(item.getId(), item.getTitle(), item.getImageUrl(), author, item.getIntroText(), item.getFulltext());
         }
 
         String title = item.getExtraFields().get(0).getValue();
         String description = item.getExtraFields().get(1).getValue();
         String image = item.getImageUrl();
 
-        return new Article(title, image, author, description, item.getFulltext());
+        return new Article(item.getId(), title, image, author, description, item.getFulltext());
     }
 
     public String getImageLink() {

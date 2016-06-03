@@ -23,12 +23,15 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.disciplestoday.disciplestoday.data.FeedLoaderAsyncTask;
 
 import java.util.List;
+
+import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
 
 
 public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask.OnTaskCompleted {
@@ -94,6 +97,9 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.article_list, container, false);
+
+
+        // TODO: instance state
         Log.i("NJW", "in oncreateview, just inflated xml");
         // Set the adapter
         if (root instanceof RecyclerView) {
@@ -266,7 +272,8 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
     }
 
     //TODO: FIX FOR TABLET
-    private void showArticle(Article item) {
+    private void showArticle(Article article) {
+        trackContentSelection(article);
         /*
         if (mTwoPane) {
             Bundle arguments = new Bundle();
@@ -283,9 +290,12 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
         } else {
         */
             Intent intent = new Intent(this.getActivity(), ArticleDetailActivity.class);
-            intent.putExtra(ArticleDetailFragment.ARG_ITEM_TITLE, item.getTitle());
-            intent.putExtra(ArticleDetailFragment.ARG_ITEM_FULLTEXT, item.getFullText());
-            intent.putExtra(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, item.getDetailImageLink());
+        //TODO: Just pass via parcelable due to speed eventually, for now use articleId due to deep links
+
+            intent.putExtra(ArticleDetailFragment.ARG_ITEM_ID, article.getId());
+            intent.putExtra(ArticleDetailFragment.ARG_ITEM_TITLE, article.getTitle());
+            intent.putExtra(ArticleDetailFragment.ARG_ITEM_FULLTEXT, article.getFullText());
+            intent.putExtra(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, article.getDetailImageLink());
             startActivity(intent);
         //}
     }
@@ -299,15 +309,17 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
                 Picasso.with(imageViewFeatured.getContext()).load(article.getImageLink())
                         .into(imageViewFeatured, new Callback() {
                             @Override public void onSuccess() {
-                                Bitmap bitmap = ((BitmapDrawable) imageViewFeatured.getDrawable()).getBitmap();
-                                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-                                    public void onGenerated(Palette palette) {
-                                        updateTextView(textViewFeaturedTitle, palette);
-                                        int lightVibrantColor = palette.getLightVibrantColor(getResources().getColor(android.R.color.white));
+                                if (ArticleListFragment.this.getActivity() != null) {
+                                    Bitmap bitmap = ((BitmapDrawable) imageViewFeatured.getDrawable()).getBitmap();
+                                    Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                                        public void onGenerated(Palette palette) {
+                                            updateTextView(textViewFeaturedTitle, palette);
+                                            int lightVibrantColor = palette.getLightVibrantColor(getResources().getColor(android.R.color.white));
 
-                                        imageViewFeatured.setBackgroundColor(lightVibrantColor);
-                                    }
-                                });
+                                            imageViewFeatured.setBackgroundColor(lightVibrantColor);
+                                        }
+                                    });
+                                }
                             }
 
                             @Override public void onError() {
@@ -325,6 +337,17 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
             }
         });
     }
+
+    private void trackContentSelection(Article article) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, article.getId());
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, article.getTitle());
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, TRACK_TYPE_ARTICLE);
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+    }
+    //TODO: track view list and duration from selection to view.
+    // https://developers.google.com/android/reference/com/google/firebase/analytics/FirebaseAnalytics.Event.html#constants
 
 
 }
