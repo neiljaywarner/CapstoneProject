@@ -110,7 +110,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //TODO: Other links... invites, etc.
-        item.setChecked(true);
         switch (id) {
 
             case R.id.nav_locator:
