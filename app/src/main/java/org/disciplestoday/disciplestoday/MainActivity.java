@@ -32,10 +32,13 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String LOCATOR_URL = "http://www.dtodayinfo.net/Dtoday";
+    private static final int HIGHLIGHTED_INDEX = 3; //the default and 3rd item in the nav drawer.
     private boolean mTwoPane;
 
     public FirebaseAnalytics mFirebaseAnalytics;
     private static final String TRACK_MENU_SELECTION="feed";
+
+    NavigationView mNavigationView;
 
 
     @Override
@@ -53,20 +56,11 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-
-        showFragment();
-
-
-        //TODO: .replace() and set up in nav drawer listener
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        navigateTo(mNavigationView.getMenu().getItem(2).getSubMenu().getItem(0));
 
         //setupLocator();
-
-
-
-
 
     }
 
@@ -89,12 +83,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
-
-
-
-
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -107,11 +95,22 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        navigateTo(item);
+
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    private void navigateTo(MenuItem item) {
         // Handle navigation view item clicks here.
+        Log.e("NJW", "LOADING:" + item.getTitleCondensed());
         int id = item.getItemId();
 
         //TODO: Other links... invites, etc.
-
+        item.setChecked(true);
         switch (id) {
 
             case R.id.nav_locator:
@@ -120,20 +119,24 @@ public class MainActivity extends AppCompatActivity
                 break;
             default:
                 Log.i(TAG, "Navdrawer->Show appropriate news feed.");
-               // showNews(item);
-                trackFeedSelection(item.getTitle().toString());
+               // Track via titleCondensed b/c title will be localized.
+                setPageTitle(item);
+                trackFeedSelection(item.getTitleCondensed().toString());
                 showFragment(item);
+                //TODO: (Someday) Let this be loaded from local storage so the user doesn't see the ones s/he's not interested in.
+
                 break;
         }
-
-        //TODO: (Someday) Let this be loaded from local storage so the user doesn't see the ones s/he's not interested in.
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
+    private void setPageTitle(MenuItem item) {
+        String title = item.getTitle().toString();
+        if (item.getItemId() == R.id.nav_highlighted) {
+            title = getString(R.string.app_name);
+        }
+        setTitle(title);
 
+    }
 
 
     /**
