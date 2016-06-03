@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-<group android:checkableBehavior="single">
 
     <item
         android:id="@+id/nav_locator"
@@ -14,7 +13,10 @@
         android:title="Share" />
 
     <item android:title="News">
-        <menu android:checkableBehavior="single">
+
+        <menu>
+            <group android:checkableBehavior="single">
+
             <item
                 android:icon="@drawable/ic_menu_gallery"
                 android:titleCondensed="Highlighted"
@@ -93,9 +95,10 @@
                 android:icon="@drawable/ic_menu_gallery"
                 android:titleCondensed="Regional"
                 android:title="Regional News" />
+        </group>
 
-        </menu>
+
+</menu>
     </item>
-    </group>
 <!-- TODO: Section for feedback/account/etc?  if so, put invite down here -->
 </menu>
