@@ -21,7 +21,15 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <include android:id="@+id/content_main"
+        layout="@layout/content_main" />
+
+
+    <WebView
+        android:id="@+id/webview_locator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <!-- TODO: Replace with native interface when API is ready. This is in content main so it loads immediately etc -->
 
 
 

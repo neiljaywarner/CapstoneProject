@@ -21,6 +21,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -39,6 +42,8 @@ public class MainActivity extends AppCompatActivity
     private static final String TRACK_MENU_SELECTION="feed";
 
     NavigationView mNavigationView;
+    private WebView webviewLocator;
+    private View mLayoutNews;
 
 
     @Override
@@ -48,32 +53,29 @@ public class MainActivity extends AppCompatActivity
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        webviewLocator = (WebView) findViewById(R.id.webview_locator);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mLayoutNews = findViewById(R.id.content_main);
         mNavigationView.setNavigationItemSelectedListener(this);
         navigateTo(mNavigationView.getMenu().getItem(2).getSubMenu().getItem(0));
 
-        //setupLocator();
+        setupLocator();
 
     }
-
-    private void showFragment() {
-        ArticleListFragment listFragment = ArticleListFragment.newInstance();
-
-
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.article_list_container, listFragment)
-                .commit();
-    }
-
+    //TODO: Move to onResume to prevent backgroundingcarsh
     private void showFragment(MenuItem menuItem) {
+        mLayoutNews.setVisibility(View.VISIBLE);
+        webviewLocator.setVisibility(View.GONE);
         ArticleListFragment listFragment = ArticleListFragment.newInstance(menuItem);
 
 
@@ -114,13 +116,14 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.nav_locator:
                 Log.i(TAG, "Navdrawer->Locator");
-                //gotoLocator();
+                gotoLocator();
                 break;
             default:
                 Log.i(TAG, "Navdrawer->Show appropriate news feed.");
                // Track via titleCondensed b/c title will be localized.
                 setPageTitle(item);
                 trackFeedSelection(item.getTitleCondensed().toString());
+                mLayoutNews.setVisibility(View.INVISIBLE);
                 showFragment(item);
                 //TODO: (Someday) Let this be loaded from local storage so the user doesn't see the ones s/he's not interested in.
 
@@ -141,23 +144,36 @@ public class MainActivity extends AppCompatActivity
     /**
      * This is loaded in a webview invisibly so it seems instant.
      */
-    /*
+
     private void setupLocator() {
-        webviewLocator = (WebView) findViewById(R.id.webview_locator);
         webviewLocator.loadUrl(LOCATOR_URL);
         WebSettings webSettings = webviewLocator.getSettings();
         webviewLocator.setWebViewClient(new WebViewClient());
 
         webSettings.setJavaScriptEnabled(true);
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setDisplayZoomControls(true);
+      //  webSettings.setMinimumFontSize(33);
+        webSettings.setSupportZoom(true);
+       // webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setPluginState(WebSettings.PluginState.ON_DEMAND);
+
+        // TODO: See how many of these we should use on the other webviews!
+        // e.g. plugin state...
+
+        // see https://developer.android.com/reference/android/webkit/WebSettings.LayoutAlgorithm.html
+        //webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+        //TODO: Enable for api 19 and above. 75% and above (kitkat and above) and climbing i'm sure.
         webviewLocator.setVisibility(View.GONE);
     }
-    */
+
 
 
     /**
      * Temporary locator via webview
      */
-    /*
+
     private void gotoLocator() {
 
         webviewLocator.setVisibility(View.VISIBLE);
@@ -167,7 +183,9 @@ public class MainActivity extends AppCompatActivity
             webviewLocator.loadUrl(LOCATOR_URL);
         }
     }
-    */
+
+
+
     public static long mFeedLoadStart = 0;
     private void trackFeedSelection(String feedName) {
         Bundle bundle = new Bundle();
@@ -181,4 +199,5 @@ public class MainActivity extends AppCompatActivity
 
 
     //TODO: Refactor into trackerhelper so we can use google analytics and/or flurry if we want and more easily do duration
+    // at least get gogole analytics
 }

@@ -135,9 +135,11 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
         setupRecyclerView(recyclerView);
 
         setupFeaturedArticle(featuredArticle);
-       // webviewLocator.setVisibility(View.GONE);
         progressDialog.dismiss();
         progressDialog = null;
+        if (getActivity() != null) {
+            getActivity().findViewById(R.id.content_main).setVisibility(View.VISIBLE);
+        }
 
     }
 
