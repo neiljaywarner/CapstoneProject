@@ -116,12 +116,22 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
             if (getArguments() == null) {
                 showNews();
             } else {
-                showNews(mNavItemId);
+                mNavItemId = getArguments().getInt(ARG_NAV_ID);
+                if (getActivity() != null) {
+                    showNews(mNavItemId);
+                }
+
             }
         }
 
 
         return root;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(ARG_NAV_ID, mNavItemId);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -135,8 +145,10 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
         setupRecyclerView(recyclerView);
 
         setupFeaturedArticle(featuredArticle);
-        progressDialog.dismiss();
-        progressDialog = null;
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
         if (getActivity() != null) {
             getActivity().findViewById(R.id.content_main).setVisibility(View.VISIBLE);
         }

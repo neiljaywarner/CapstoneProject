@@ -67,9 +67,13 @@ public class MainActivity extends AppCompatActivity
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mLayoutNews = findViewById(R.id.content_main);
         mNavigationView.setNavigationItemSelectedListener(this);
-        navigateTo(mNavigationView.getMenu().getItem(2).getSubMenu().getItem(0));
 
         setupLocator();
+
+        if (savedInstanceState == null) {
+            navigateTo(mNavigationView.getMenu().getItem(2).getSubMenu().getItem(0));
+
+        }
 
     }
     //TODO: Move to onResume to prevent backgroundingcarsh
