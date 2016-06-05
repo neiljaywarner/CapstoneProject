@@ -37,7 +37,7 @@ import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
 public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask.OnTaskCompleted {
 
 
-    private static final String TAG = "arg_nav_item_id";
+    private static final String TAG = ArticleListFragment.class.getSimpleName();
 
     private static final String ARG_NAV_ID = "arg_nav_item_id";
     private List<Article> mArticles;
@@ -85,12 +85,8 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-          //  mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-            Log.i("NJW", "MNavItemID=" + mNavItemId);
-            Log.i("NJW", "singlesid=" + R.id.nav_singles);
             mNavItemId = getArguments().getInt(ARG_NAV_ID);
         }
-
     }
 
     @Override
@@ -98,9 +94,8 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.article_list, container, false);
 
-
         // TODO: instance state
-        Log.i("NJW", "in oncreateview, just inflated xml");
+        Log.i(TAG, "in oncreateview, just inflated xml");
         // Set the adapter
         if (root instanceof RecyclerView) {
             recyclerView = (RecyclerView) root;
@@ -136,7 +131,7 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
 
     @Override
     public void onTaskCompleted() {
-        Log.e("NJW", "in OnTaskCompleted");
+        Log.e(TAG, "in OnTaskCompleted");
         mArticles = asyncTask.getItems();
         Article featuredArticle = mArticles.get(0);
         //NOTE: The first (0th) article as of May 30th has right and left padding when the others don't
@@ -158,11 +153,6 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mArticles));
     }
-
-
-
-
-
 
     ProgressDialog progressDialog;
 
@@ -190,8 +180,6 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
         progressDialog.setMessage(getString(R.string.fetching_articles_message));
         asyncTask = new FeedLoaderAsyncTask(this, menuItem);
         asyncTask.execute();
-       // webviewLocator.setVisibility(View.GONE);
-       // mLayoutNews.setVisibility(View.VISIBLE);
     }
 
     private void showNews(int menuItemId) {
@@ -202,10 +190,7 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
         progressDialog.setMessage(getString(R.string.fetching_articles_message));
         asyncTask = new FeedLoaderAsyncTask(this, menuItemId);
         asyncTask.execute();
-        // webviewLocator.setVisibility(View.GONE);
-        // mLayoutNews.setVisibility(View.VISIBLE);
     }
-
 
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {

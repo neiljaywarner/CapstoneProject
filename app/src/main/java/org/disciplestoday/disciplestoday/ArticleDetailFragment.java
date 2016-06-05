@@ -24,8 +24,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import org.disciplestoday.disciplestoday.data.DTService;
-
 import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
 
 
@@ -58,9 +56,6 @@ public class ArticleDetailFragment extends Fragment {
     private String mImageUrl;
     // TODO: Use package for network with the classes to parse gson, and package model for data model to be passed as parcelable
     // and/or used with content provider.
-
-    /**
-
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -181,7 +176,6 @@ public class ArticleDetailFragment extends Fragment {
     }
     //TODO: Use advertising ID so we get interests and more geographic data.
     //TODO: We could consider tracking how long it takes to load things as      params.putDouble(Param.VALUE, 10ms);
-
 
     //TODO: Use this one after i have content provider and use share.
     private void trackContentShare(Article article) {
