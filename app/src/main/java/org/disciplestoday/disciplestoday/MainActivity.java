@@ -28,9 +28,14 @@ import android.widget.Toast;
 
 import com.google.android.gms.appinvite.AppInvite;
 import com.google.android.gms.appinvite.AppInviteInvitation;
+import com.google.android.gms.appinvite.AppInviteInvitationResult;
+import com.google.android.gms.appinvite.AppInviteReferral;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
+
+import java.net.URL;
 
 
 public class MainActivity extends AppCompatActivity
@@ -51,6 +56,7 @@ public class MainActivity extends AppCompatActivity
     NavigationView mNavigationView;
     private WebView webviewLocator;
     private View mLayoutNews;
+    private MenuItem mNavMenuItem;
 
 
     @Override
@@ -63,6 +69,9 @@ public class MainActivity extends AppCompatActivity
                 .addApi(AppInvite.API)
                 .enableAutoManage(this, this)
                 .build();
+
+            //Handle invitations if any. (Firebase invites)
+        receiveInvitations();
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -84,10 +93,10 @@ public class MainActivity extends AppCompatActivity
 
         if (savedInstanceState == null) {
             navigateTo(mNavigationView.getMenu().getItem(2).getSubMenu().getItem(0));
-
         }
 
     }
+
     //TODO: Move to onResume to prevent backgroundingcarsh
     private void showFragment(MenuItem menuItem) {
         mLayoutNews.setVisibility(View.VISIBLE);
@@ -121,8 +130,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void navigateTo(MenuItem item) {
+
         // Handle navigation view item clicks here.
         Log.e("NJW", "CLICKED:" + item.getTitleCondensed());
+        if (item.getItemId() != R.id.nav_share) {
+            mNavMenuItem = item;
+            Log.e("NJW", "setting navmenuitem to :" + item.getTitleCondensed());
+
+        }
         int id = item.getItemId();
 
         //TODO: Other links...
@@ -216,10 +231,25 @@ public class MainActivity extends AppCompatActivity
     // at least get gogole analytics (For city)
 
 
-    private void onInviteClicked() {
+    //TODO: Walk the nav tree in subroutine to build the path and unwalk the tree to use the path so it 'just works'
+    private void onInviteClicked() { //12:04am
+
+        Uri deepLink = new Uri.Builder().scheme("dt").path("/2/3").build();
+        // TODO use getDeepLink()
+        if (mNavMenuItem!= null && mNavMenuItem.getItemId() == R.id.nav_campus) {
+            deepLink = new Uri.Builder().scheme("dt").path("campus/2/3").build();
+        }
+
+        if (mNavMenuItem!= null && mNavMenuItem.getItemId() == R.id.nav_man_up) {
+            deepLink = new Uri.Builder().scheme("dt").path("manup/2/3").build();
+        }
+
+
+        //------
         Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
                 .setMessage(getString(R.string.invitation_message))
                 .setCallToActionText(getString(R.string.invitation_call_to_action_button_text))
+                .setDeepLink(deepLink)
                 .build();
         startActivityForResult(intent, REQUEST_INVITE);
         //TODO: Consider using customImage and deep link for a given feed here.
@@ -246,6 +276,45 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(this, "Sending invite(s) failed, sorry about that.", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    private void receiveInvitations() {
+        // Check for App Invite invitations and launch deep-link activity if possible.
+        // Requires that an Activity is registered in AndroidManifest.xml to handle
+        // deep-link URLs.
+        // taken from https://firebase.google.com/docs/invites/android#receive-invitations
+        boolean autoLaunchDeepLink = true;
+        AppInvite.AppInviteApi.getInvitation(mGoogleApiClient, this, autoLaunchDeepLink)
+                .setResultCallback(
+                        new ResultCallback<AppInviteInvitationResult>() {
+                            @Override
+                            public void onResult(AppInviteInvitationResult result) {
+                                Log.d(TAG, "getInvitation:onResult:" + result.getStatus());
+                                if (result.getStatus().isSuccess()) {
+                                    // Extract information from the intent
+                                    Intent intent = result.getInvitationIntent();
+                                    String deepLinkString = AppInviteReferral.getDeepLink(intent);
+                                    String invitationId = AppInviteReferral.getInvitationId(intent);
+                                    Log.e("NJW", "String invitationId=" + invitationId);
+                                    Log.e("NJW", "Deep Link=" + deepLinkString);
+
+                                    MenuItem newsFeedMenuItem = mNavigationView.getMenu().getItem(2).getSubMenu().getItem(3);
+                                    if (deepLinkString.contains("manup")) {
+                                        newsFeedMenuItem = mNavigationView.getMenu().getItem(2).getSubMenu().getItem(6);
+                                        mNavigationView.setCheckedItem(R.id.nav_man_up);
+                                    }
+                                    if (deepLinkString.contains("campus")) {
+                                        newsFeedMenuItem = mNavigationView.getMenu().getItem(2).getSubMenu().getItem(2);
+                                        mNavigationView.setCheckedItem(R.id.nav_campus);
+                                    }
+                                    showFragment(newsFeedMenuItem);
+                                    // Because autoLaunchDeepLink = true we don't have to do anything
+                                    // here, but we could set that to false and manually choose
+                                    // an Activity to launch to handle the deep link here.
+                                    // ...
+                                }
+                            }
+                        });
     }
 
     @Override
