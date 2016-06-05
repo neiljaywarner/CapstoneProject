@@ -7,4 +7,14 @@
     <string name="fetching_articles">Fetching articles</string>
     <string name="fetching_articles_message">Please wait while we load your articles.</string>
 
+
+    <string name="invitation_title">Please invite your friends</string>
+    <string name="invitation_message">I think you would like this encouraging app with news for our churches.</string>
+
+    <string name="invitation_call_to_action_button_text">Try DT App</string>
+    <!-- NOTE The call to action text must be 2-20 characters -->
+    <!-- TODO: for version 1.1 and beyond->Confirm this text for all 3, and/or just use custom email per best practices -->
+    <!-- see: https://firebase.google.com/docs/invites/best-practices -->
+
+
 </resources>

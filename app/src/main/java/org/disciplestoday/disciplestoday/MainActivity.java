@@ -26,19 +26,26 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.google.android.gms.appinvite.AppInvite;
+import com.google.android.gms.appinvite.AppInviteInvitation;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String LOCATOR_URL = "http://www.dtodayinfo.net/Dtoday";
     private static final int HIGHLIGHTED_INDEX = 3; //the default and 3rd item in the nav drawer.
+    private static final int REQUEST_INVITE = 1 ;
     private boolean mTwoPane;
 
     public FirebaseAnalytics mFirebaseAnalytics;
+    private GoogleApiClient mGoogleApiClient;
+
     private static final String TRACK_MENU_SELECTION="feed";
 
     NavigationView mNavigationView;
@@ -51,6 +58,11 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(AppInvite.API)
+                .enableAutoManage(this, this)
+                .build();
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         webviewLocator = (WebView) findViewById(R.id.webview_locator);
@@ -112,15 +124,20 @@ public class MainActivity extends AppCompatActivity
 
     private void navigateTo(MenuItem item) {
         // Handle navigation view item clicks here.
-        Log.e("NJW", "LOADING:" + item.getTitleCondensed());
+        Log.e("NJW", "CLICKED:" + item.getTitleCondensed());
         int id = item.getItemId();
 
-        //TODO: Other links... invites, etc.
+        //TODO: Other links...
         switch (id) {
 
             case R.id.nav_locator:
                 Log.i(TAG, "Navdrawer->Locator");
                 gotoLocator();
+                break;
+            case R.id.nav_share:
+                Log.i(TAG, "Clicked invite");
+                onInviteClicked();
+                //TODO: use as a parameter the currently displayed newsfeed if there is one.
                 break;
             default:
                 Log.i(TAG, "Navdrawer->Show appropriate news feed.");
@@ -203,5 +220,43 @@ public class MainActivity extends AppCompatActivity
 
 
     //TODO: Refactor into trackerhelper so we can use google analytics and/or flurry if we want and more easily do duration
-    // at least get gogole analytics
+    // at least get gogole analytics (For city)
+
+
+    private void onInviteClicked() {
+        Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
+                .setMessage(getString(R.string.invitation_message))
+                .setCallToActionText(getString(R.string.invitation_call_to_action_button_text))
+                .build();
+        startActivityForResult(intent, REQUEST_INVITE);
+        //TODO: Consider using customImage and deep link for a given feed here.
+        //TODO-v1.1: Use custom share sheet so "Email & SMS" comes up on top and to follow best practice.
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("NJW", "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
+
+        if (requestCode == REQUEST_INVITE) {
+            if (resultCode == RESULT_OK) {
+                // Get the invitation IDs of all sent messages
+                String[] ids = AppInviteInvitation.getInvitationIds(resultCode, data);
+                for (String id : ids) {
+                    Log.d(TAG, "onActivityResult: sent invitation " + id);
+                    //TODO: Log that they invited X number of people...
+                }
+            } else {
+                // Sending failed or it was canceled, show failure message to the user
+                // ...
+                Log.e("NJW", "Sending failed or was canceled");
+                Toast.makeText(this, "Sending invite(s) failed, sorry about that.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+    }
 }
