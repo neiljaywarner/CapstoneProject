@@ -12,6 +12,8 @@
     <string name="invitation_message">I think you would like this encouraging app with news for our churches.</string>
 
     <string name="invitation_call_to_action_button_text">Try DT App</string>
+
+
     <!-- NOTE The call to action text must be 2-20 characters -->
     <!-- TODO: for version 1.1 and beyond->Confirm this text for all 3, and/or just use custom email per best practices -->
     <!-- see: https://firebase.google.com/docs/invites/best-practices -->
@@ -23,5 +25,22 @@
        <item>http://www.disciplestoday.org/dt-travel</item>
 
    </string-array>
+
+
+    <string-array name="deep_links">
+        <item>/highlighted/2/1</item>
+        <item>/highlighted/2/2</item>
+        <item>//2/3</item>
+
+    </string-array>
+
+    <string name="invitation_html_email_content">
+        <![CDATA[
+        Please try the Disciples Today App.<br/><br/>I wanted to share some great %%FEED%% articles from Disciples Today.<br/><br/><a href=\'%%APPINVITE_LINK_PLACEHOLDER%%\'>Open in app</a>
+
+
+    ]]>
+    </string>
+
 
 </resources>

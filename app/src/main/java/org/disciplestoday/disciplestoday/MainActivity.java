@@ -1,19 +1,10 @@
 package org.disciplestoday.disciplestoday;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.graphics.Palette;
-import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.SubMenu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -37,10 +28,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
@@ -48,15 +35,14 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String LOCATOR_URL = "http://www.dtodayinfo.net/Dtoday";
-    private static final int HIGHLIGHTED_INDEX = 3; //the default and 3rd item in the nav drawer.
+    private static final int HIGHLIGHTED_SUBITEM_INDEX = 0;
     private static final int REQUEST_INVITE = 1 ;
     public static final int SUBMENU_LINKS_INDEX = 3;
+    public static final int NEWS_MENU_INDEX = 2;
     private boolean mTwoPane;
 
     public FirebaseAnalytics mFirebaseAnalytics;
     private GoogleApiClient mGoogleApiClient;
-
-    private static final String TRACK_MENU_SELECTION="feed";
 
     NavigationView mNavigationView;
     private WebView webviewLocator;
@@ -97,12 +83,11 @@ public class MainActivity extends AppCompatActivity
         setupLocator();
 
         if (savedInstanceState == null) {
-            navigateTo(mNavigationView.getMenu().getItem(2).getSubMenu().getItem(0));
+            navigateTo(mNavigationView.getMenu().getItem(NEWS_MENU_INDEX).getSubMenu().getItem(HIGHLIGHTED_SUBITEM_INDEX));
         }
 
     }
 
-    //TODO: Move to onResume to prevent backgroundingcarsh
     private void showFragment(MenuItem menuItem) {
         mLayoutNews.setVisibility(View.VISIBLE);
         webviewLocator.setVisibility(View.GONE);
@@ -145,7 +130,6 @@ public class MainActivity extends AppCompatActivity
         }
         int id = item.getItemId();
 
-        //TODO: Other links...
         switch (id) {
 
             case R.id.nav_locator:
@@ -169,7 +153,7 @@ public class MainActivity extends AppCompatActivity
                     showFragment(item);
                 }
 
-                //TODO: (Someday) Let this be loaded from local storage so the user doesn't see the ones s/he's not interested in.
+                //TODO: (Someday) Let this list be loaded from local storage so the user doesn't see the ones s/he's not interested in.
 
                 break;
         }
@@ -200,7 +184,6 @@ public class MainActivity extends AppCompatActivity
         Menu linksSubMenu = mNavigationView.getMenu().getItem(SUBMENU_LINKS_INDEX).getSubMenu();
         String[] links = getResources().getStringArray(R.array.links);
         MenuItem linkMenuItem;
-       // for (int i = 0; i < mNavigationView.getMenu().getItem(SUBMENU_LINKS_INDEX).getSubMenu().size(); i++) {
         for (int i = 0; i < linksSubMenu.size(); i++) {
             linkMenuItem = linksSubMenu.getItem(i);
             if (linkMenuItem.getItemId() == menuItem.getItemId()) {
@@ -217,9 +200,7 @@ public class MainActivity extends AppCompatActivity
             title = getString(R.string.app_name);
         }
         setTitle(title);
-
     }
-
 
     /**
      * This is loaded in a webview invisibly so it seems instant.
@@ -278,28 +259,51 @@ public class MainActivity extends AppCompatActivity
 
 
     //TODO: Walk the nav tree in subroutine to build the path and unwalk the tree to use the path so it 'just works'
-    private void onInviteClicked() { //12:04am
+    private void onInviteClicked() {
 
-        Uri deepLink = new Uri.Builder().scheme("dt").path("/2/3").build();
-        // TODO use getDeepLink()
-        if (mNavMenuItem!= null && mNavMenuItem.getItemId() == R.id.nav_campus) {
-            deepLink = new Uri.Builder().scheme("dt").path("campus/2/3").build();
-        }
-
-        if (mNavMenuItem!= null && mNavMenuItem.getItemId() == R.id.nav_man_up) {
-            deepLink = new Uri.Builder().scheme("dt").path("manup/2/3").build();
-        }
+        Uri deepLink = getDeepLinkUri(mNavMenuItem);
 
 
         //------
-        Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
+        String htmlEmailContent = getString(R.string.invitation_html_email_content);
+        htmlEmailContent = htmlEmailContent.replace("%%FEED%%", mNavMenuItem.getTitle());
+       // htmlEmailContent = Html.escapeHtml(htmlEmailContent);
+        String invitationScreenTitle = "Share " + mNavMenuItem.getTitle() + " articles.";
+        //TODO: Internationalize with string parameter
+
+        Intent intent = new AppInviteInvitation.IntentBuilder(invitationScreenTitle)
                 .setMessage(getString(R.string.invitation_message))
-                .setCallToActionText(getString(R.string.invitation_call_to_action_button_text))
+                .setEmailSubject(getString(R.string.app_name) + "-" + mNavMenuItem.getTitle().toString())
+                .setEmailHtmlContent(htmlEmailContent)
                 .setDeepLink(deepLink)
                 .build();
         startActivityForResult(intent, REQUEST_INVITE);
-        //TODO: Consider using customImage and deep link for a given feed here.
         //TODO-v1.1: Use custom share sheet so "Email & SMS" comes up on top and to follow best practice.
+    }
+
+    /**
+     * Turns news menu item into deep link.
+     * @param menuItem - Currently selected news feed menu item you want to share
+     * @return
+     */
+    private Uri getDeepLinkUri(MenuItem menuItem) {
+        Uri deepLink;
+        // Walk Menu tree to get order in links
+        Menu subMenu = mNavigationView.getMenu().getItem(NEWS_MENU_INDEX).getSubMenu();
+        MenuItem subMenuItem;
+        int subMenuIndex = 0;
+        String subMenuItemCondensedTitle = "highlighted";
+        for (int i = 0; i < subMenu.size(); i++) {
+            subMenuItem = subMenu.getItem(i);
+            if (subMenuItem.getItemId() == menuItem.getItemId()) {
+                subMenuIndex = i;
+                subMenuItemCondensedTitle = subMenu.getItem(i).getTitleCondensed().toString();
+            }
+        }
+        deepLink = new Uri.Builder().scheme("dt")
+                .path("/" + subMenuItemCondensedTitle + "/" + NEWS_MENU_INDEX +"/" + subMenuIndex)
+                .build();
+        return deepLink;
     }
 
     @Override
@@ -319,7 +323,7 @@ public class MainActivity extends AppCompatActivity
                 // Sending failed or it was canceled, show failure message to the user
                 // ...
                 Log.e("NJW", "Sending failed or was canceled");
-                Toast.makeText(this, "Sending invite(s) failed, sorry about that.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Sending invite(s) canceled or failed, sorry about that.", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -340,19 +344,13 @@ public class MainActivity extends AppCompatActivity
                                     // Extract information from the intent
                                     Intent intent = result.getInvitationIntent();
                                     String deepLinkString = AppInviteReferral.getDeepLink(intent);
-                                    String invitationId = AppInviteReferral.getInvitationId(intent);
-                                    Log.e("NJW", "String invitationId=" + invitationId);
-                                    Log.e("NJW", "Deep Link=" + deepLinkString);
+                                    Log.i("NJW", "Deep Link=" + deepLinkString);
+                                    int deepLinkSubMenuIndex = Integer.parseInt(deepLinkString.split("/")[3]);
+                                    Log.e("NJW", "subMenuIndex=" + deepLinkSubMenuIndex);
+                                    MenuItem newsFeedMenuItem = mNavigationView.getMenu()
+                                            .getItem(NEWS_MENU_INDEX).getSubMenu()
+                                            .getItem(deepLinkSubMenuIndex);
 
-                                    MenuItem newsFeedMenuItem = mNavigationView.getMenu().getItem(2).getSubMenu().getItem(3);
-                                    if (deepLinkString.contains("manup")) {
-                                        newsFeedMenuItem = mNavigationView.getMenu().getItem(2).getSubMenu().getItem(6);
-                                        mNavigationView.setCheckedItem(R.id.nav_man_up);
-                                    }
-                                    if (deepLinkString.contains("campus")) {
-                                        newsFeedMenuItem = mNavigationView.getMenu().getItem(2).getSubMenu().getItem(2);
-                                        mNavigationView.setCheckedItem(R.id.nav_campus);
-                                    }
                                     showFragment(newsFeedMenuItem);
                                     // Because autoLaunchDeepLink = true we don't have to do anything
                                     // here, but we could set that to false and manually choose
