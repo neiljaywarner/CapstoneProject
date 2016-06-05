@@ -16,6 +16,12 @@
     <!-- TODO: for version 1.1 and beyond->Confirm this text for all 3, and/or just use custom email per best practices -->
     <!-- see: https://firebase.google.com/docs/invites/best-practices -->
 
+   <string-array name="links">
+       <item>https://www.biblegateway.com/</item>
+       <item>http://www.icochotnews.com</item>
+       <item>http://www.dtmediastore.com/</item>
+       <item>http://www.disciplestoday.org/dt-travel</item>
 
+   </string-array>
 
 </resources>

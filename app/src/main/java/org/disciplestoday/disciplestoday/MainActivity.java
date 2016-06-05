@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.SubMenu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity
     private static final String LOCATOR_URL = "http://www.dtodayinfo.net/Dtoday";
     private static final int HIGHLIGHTED_INDEX = 3; //the default and 3rd item in the nav drawer.
     private static final int REQUEST_INVITE = 1 ;
+    public static final int SUBMENU_LINKS_INDEX = 3;
     private boolean mTwoPane;
 
     public FirebaseAnalytics mFirebaseAnalytics;
@@ -155,16 +158,17 @@ public class MainActivity extends AppCompatActivity
                 //TODO: use as a parameter the currently displayed newsfeed if there is one.
                 break;
             default:
-                if (id == R.id.nav_hot_news) {
-                    String link = "http://www.icochotnews.com";
-                    openInBrowser(link);
+                if (isExternalLink(item)) {
+                    openInBrowser(getExternalLink(item));
+                } else {
+                    Log.i(TAG, "Navdrawer->Show appropriate news feed.");
+                    // Track via titleCondensed b/c title will be localized.
+                    setPageTitle(item);
+                    trackFeedSelection(item.getTitleCondensed().toString());
+                    mLayoutNews.setVisibility(View.INVISIBLE);
+                    showFragment(item);
                 }
-                Log.i(TAG, "Navdrawer->Show appropriate news feed.");
-               // Track via titleCondensed b/c title will be localized.
-                setPageTitle(item);
-                trackFeedSelection(item.getTitleCondensed().toString());
-                mLayoutNews.setVisibility(View.INVISIBLE);
-                showFragment(item);
+
                 //TODO: (Someday) Let this be loaded from local storage so the user doesn't see the ones s/he's not interested in.
 
                 break;
@@ -172,13 +176,39 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
+     * Determine if item is an external link
+     * TODO: Make this less brittle/more robust, to not depend on magic string in condensed title
+     * @param item
+     * @return
+     */
+    private boolean isExternalLink(MenuItem item) {
+        return item.getTitleCondensed().toString().startsWith("Link");
+    }
+    /**
      * From: http://stackoverflow.com/questions/2201917/how-can-i-open-a-url-in-androids-web-browser-from-my-application
      * NOTE: Don't put these in a webview for now, plugins, videos, etc...
      * @param link
      */
     private void openInBrowser(String link)  {
+        Log.e("NJW", "Opening link=" + link);
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
         startActivity(browserIntent);
+    }
+
+    private String getExternalLink(MenuItem menuItem) {
+        // Walk Menu tree to get order in links
+        Menu linksSubMenu = mNavigationView.getMenu().getItem(SUBMENU_LINKS_INDEX).getSubMenu();
+        String[] links = getResources().getStringArray(R.array.links);
+        MenuItem linkMenuItem;
+       // for (int i = 0; i < mNavigationView.getMenu().getItem(SUBMENU_LINKS_INDEX).getSubMenu().size(); i++) {
+        for (int i = 0; i < linksSubMenu.size(); i++) {
+            linkMenuItem = linksSubMenu.getItem(i);
+            if (linkMenuItem.getItemId() == menuItem.getItemId()) {
+                return links[i];
+            }
+        }
+        return "";
+        //TODO: Make this less brittle via JSON asset files or something.
     }
 
     private void setPageTitle(MenuItem item) {

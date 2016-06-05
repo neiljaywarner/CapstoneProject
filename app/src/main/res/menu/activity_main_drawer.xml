@@ -96,8 +96,6 @@
                 android:titleCondensed="Regional"
                 android:title="Regional News" />
         </group>
-
-
     </menu>
     </item>
     <item android:title="Links">
@@ -107,15 +105,28 @@
 
                 <item
                     android:icon="@android:drawable/ic_menu_set_as"
-                    android:titleCondensed="Highlighted"
+                    android:titleCondensed="Link:Bible"
+                    android:id="@+id/nav_bible_gateway"
+                    android:title="Bible Gateway" />
+
+                <item
+                    android:icon="@android:drawable/ic_menu_set_as"
+                    android:titleCondensed="Link:HotNews"
                     android:id="@+id/nav_hot_news"
                     android:title="ICOC Hot News" />
 
+                <item
+                    android:icon="@android:drawable/ic_menu_set_as"
+                    android:titleCondensed="Link:Media"
+                    android:id="@+id/nav_dt_media_store"
+                    android:title="DT Media Store" />
 
+                <item
+                    android:icon="@android:drawable/ic_menu_set_as"
+                    android:titleCondensed="Link:Travel"
+                    android:id="@+id/nav_dt_travel"
+                    android:title="DT Travel" />
             </group>
-
-
         </menu>
     </item>
-    <!-- TODO: Section for feedback/account/etc?  if so, put invite down here -->
 </menu>
