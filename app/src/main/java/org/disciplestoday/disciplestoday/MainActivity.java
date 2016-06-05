@@ -63,11 +63,11 @@ public class MainActivity extends AppCompatActivity
                 .addApi(AppInvite.API)
                 .enableAutoManage(this, this)
                 .build();
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         webviewLocator = (WebView) findViewById(R.id.webview_locator);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
 
         setSupportActionBar(toolbar);
 
@@ -114,8 +114,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         navigateTo(item);
-
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -205,8 +203,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
-
     public static long mFeedLoadStart = 0;
     private void trackFeedSelection(String feedName) {
         Bundle bundle = new Bundle();
@@ -214,9 +210,6 @@ public class MainActivity extends AppCompatActivity
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM_LIST, bundle);
         mFeedLoadStart = System.nanoTime();
     }
-
-
-
 
 
     //TODO: Refactor into trackerhelper so we can use google analytics and/or flurry if we want and more easily do duration
