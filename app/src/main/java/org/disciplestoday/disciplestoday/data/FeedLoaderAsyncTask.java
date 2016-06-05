@@ -123,7 +123,7 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
                 moduleId = "347";
                 break;
             case R.id.nav_kingdom_kids:
-                moduleId = "281";
+                moduleId = "289";
                 break;
             case R.id.nav_youth_and_family:
                 moduleId = "271";

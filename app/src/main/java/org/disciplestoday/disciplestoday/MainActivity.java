@@ -35,6 +35,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 
@@ -153,6 +155,10 @@ public class MainActivity extends AppCompatActivity
                 //TODO: use as a parameter the currently displayed newsfeed if there is one.
                 break;
             default:
+                if (id == R.id.nav_hot_news) {
+                    String link = "http://www.icochotnews.com";
+                    openInBrowser(link);
+                }
                 Log.i(TAG, "Navdrawer->Show appropriate news feed.");
                // Track via titleCondensed b/c title will be localized.
                 setPageTitle(item);
@@ -163,6 +169,16 @@ public class MainActivity extends AppCompatActivity
 
                 break;
         }
+    }
+
+    /**
+     * From: http://stackoverflow.com/questions/2201917/how-can-i-open-a-url-in-androids-web-browser-from-my-application
+     * NOTE: Don't put these in a webview for now, plugins, videos, etc...
+     * @param link
+     */
+    private void openInBrowser(String link)  {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+        startActivity(browserIntent);
     }
 
     private void setPageTitle(MenuItem item) {

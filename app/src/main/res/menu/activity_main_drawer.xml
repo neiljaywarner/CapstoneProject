@@ -14,8 +14,8 @@
 
     <item android:title="News">
 
-        <menu>
-            <group android:checkableBehavior="single">
+    <menu>
+        <group android:checkableBehavior="single">
 
             <item
                 android:icon="@drawable/ic_menu_gallery"
@@ -98,7 +98,24 @@
         </group>
 
 
-</menu>
+    </menu>
     </item>
-<!-- TODO: Section for feedback/account/etc?  if so, put invite down here -->
+    <item android:title="Links">
+
+        <menu>
+            <group android:checkableBehavior="none">
+
+                <item
+                    android:icon="@android:drawable/ic_menu_set_as"
+                    android:titleCondensed="Highlighted"
+                    android:id="@+id/nav_hot_news"
+                    android:title="ICOC Hot News" />
+
+
+            </group>
+
+
+        </menu>
+    </item>
+    <!-- TODO: Section for feedback/account/etc?  if so, put invite down here -->
 </menu>
