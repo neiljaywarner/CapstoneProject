@@ -110,6 +110,9 @@ public class FeedLoaderAsyncTask extends AsyncTask<Void,Void, Feed> {
         */
         @IdRes int itemId = menuItemId;
         switch (itemId) {
+            case R.id.nav_campus:
+                moduleId = "288";
+                break;
             case R.id.nav_singles:
                 moduleId = "273";
                 break;
