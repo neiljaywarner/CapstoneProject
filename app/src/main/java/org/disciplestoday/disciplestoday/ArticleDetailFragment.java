@@ -234,6 +234,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
         String htmlEmailContent = getString(R.string.share_article_html_email_content);
         htmlEmailContent = htmlEmailContent.replace("%%ARTICLE_TITLE%%", articleTitle);
         htmlEmailContent = htmlEmailContent.replace("%%ARTICLE_TEXT%%", fullText);
+        htmlEmailContent = htmlEmailContent.replace("%%ARTICLE_LINK%%", articleLink);
             //TODO: Could ask client if this should be introText
 
         //TODO: DELETE ALL THE TODOS and put in github issues :)
