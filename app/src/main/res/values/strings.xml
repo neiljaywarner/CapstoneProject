@@ -43,4 +43,23 @@
     </string>
 
 
+    <string name="share_article_html_email_content">
+        <![CDATA[
+        Check out the article %%ARTICLE_TITLE%% articles from Disciples Today!
+        <br/><br/><a href=\'%%APPINVITE_LINK_PLACEHOLDER%%\'>Install app</a>
+        <hr/>
+
+        %%ARTICLE_TEXT%%
+        <hr/>
+        <a href=\'%%ARTICLE_LINK%%\'>Use web link</a>
+
+
+    ]]>
+        <!-- TODO: When load this info from db via content provider and single argument for itemId
+        then we can support open in app with deep link -->
+        <!-- Can open in web for iOS until they support it and for web, then can call it 'Open in App -->
+    </string>
+
+
+
 </resources>

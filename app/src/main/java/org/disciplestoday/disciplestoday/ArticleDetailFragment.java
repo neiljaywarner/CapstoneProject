@@ -1,12 +1,15 @@
 package org.disciplestoday.disciplestoday;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -19,7 +22,12 @@ import android.view.ViewGroup;
 import android.webkit.URLUtil;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.appinvite.AppInvite;
+import com.google.android.gms.appinvite.AppInviteInvitation;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -33,7 +41,7 @@ import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
  * in two-pane mode (on tablets) or a {@link ArticleDetailActivity}
  * on handsets.
  */
-public class ArticleDetailFragment extends Fragment {
+public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.OnConnectionFailedListener {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -41,17 +49,23 @@ public class ArticleDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "item_id";
 
     public static final String ARG_ITEM_TITLE = "item_title";
+    public static final String ARG_ITEM_LINK = "item_link";
+
     public static final String ARG_ITEM_FULLTEXT = "item_fulltext";
     public static final String ARG_ITEM_IMAGE_URL = "item_image_url";
 
     public static final String TAG = ArticleDetailFragment.class.getSimpleName();
+    private static final int REQUEST_INVITE = 100 ;
 
     public FirebaseAnalytics mFirebaseAnalytics;
+    private GoogleApiClient mGoogleApiClient;
+
 
 
     //TOOD: Use parcelable and/or remove these items (remember to handle saveInstanceState)
     private String mArticleId;
     private String mTitle;
+    private String mLink;
     private String mFullText;
     private String mImageUrl;
     // TODO: Use package for network with the classes to parse gson, and package model for data model to be passed as parcelable
@@ -69,10 +83,16 @@ public class ArticleDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this.getActivity());
 
+        mGoogleApiClient = new GoogleApiClient.Builder(this.getContext())
+                .addApi(AppInvite.API)
+                .enableAutoManage(this.getActivity(), this)
+                .build();
+
         if (getArguments().containsKey(ARG_ITEM_TITLE)) {
             mArticleId = getArguments().getString(ARG_ITEM_ID);
             mTitle = getArguments().getString(ARG_ITEM_TITLE);
             mFullText = getArguments().getString(ARG_ITEM_FULLTEXT);
+            mLink = getArguments().getString(ARG_ITEM_LINK);
 
             mImageUrl = getArguments().getString(ARG_ITEM_IMAGE_URL);
             Log.i(TAG, "mImageurl=" + mImageUrl);
@@ -101,8 +121,6 @@ public class ArticleDetailFragment extends Fragment {
                 fabShare.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Snackbar.make(v, "About to share this article:'" + mTitle + "'", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
                         share();
                     }
                 });
@@ -136,11 +154,19 @@ public class ArticleDetailFragment extends Fragment {
 
 
                 //TODO: Try adding introtext as textview/metabar so it does't look like a wall of text, confirm from client
+
+                fabShare.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        share();
+                    }
+                });
             }
         }
     }
 
     private void share() {
+        shareArticle(mArticleId, mTitle, mLink, mFullText);
         trackContentShare(mArticleId, mTitle);
     }
 
@@ -196,4 +222,52 @@ public class ArticleDetailFragment extends Fragment {
         // Using custom share_event b/c default share event doesn't seem to let you put title
         // but built-in share event may be useful for other tools/reports.
     }
+
+
+    //TODO: Should we consider sharing just introText?
+    private void shareArticle(String articleid, String articleTitle, String articleLink, String fullText ) {
+
+        Uri deepLink = getDeepLinkUri(articleid);
+
+
+        //------
+        String htmlEmailContent = getString(R.string.share_article_html_email_content);
+        htmlEmailContent = htmlEmailContent.replace("%%ARTICLE_TITLE%%", articleTitle);
+        htmlEmailContent = htmlEmailContent.replace("%%ARTICLE_TEXT%%", fullText);
+            //TODO: Could ask client if this should be introText
+
+        //TODO: DELETE ALL THE TODOS and put in github issues :)
+
+
+            //Note: fromHtml handles stuff like &quot to quotation marks, which was in the data.
+        String invitationScreenTitle = "Share '" + Html.fromHtml(articleTitle) + "'";
+        //TODO: use strings.xml
+        String message = "Check out:'" + Html.fromHtml(articleTitle) + "'";
+        //NOTE: Message can be only 100 characters... TODO: maybe goo.gl links somehow?
+        // but if it's iPhone + Android that will be enough...
+        Intent intent = new AppInviteInvitation.IntentBuilder(invitationScreenTitle)
+                .setMessage(message)
+                .setEmailSubject(getString(R.string.app_name))
+                .setEmailHtmlContent(htmlEmailContent)
+                .setDeepLink(deepLink)
+                .build();
+        startActivityForResult(intent, REQUEST_INVITE);
+
+        //TODO-v1.1: Use custom share sheet so "Email & SMS" comes up on top and to follow best practice.
+    }
+
+    private Uri getDeepLinkUri(String articleId) {
+        Uri deepLink = new Uri.Builder().scheme("dt")
+                .path("/article/" + articleId)
+                .build();
+        return deepLink;
+    }
+
+    //TODO: track share_success with onActivityResult... might be a little tricky because in fragment?
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+    }
+
 }

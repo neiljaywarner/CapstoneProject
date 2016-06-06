@@ -293,6 +293,8 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
 
             intent.putExtra(ArticleDetailFragment.ARG_ITEM_ID, article.getId());
             intent.putExtra(ArticleDetailFragment.ARG_ITEM_TITLE, article.getTitle());
+            intent.putExtra(ArticleDetailFragment.ARG_ITEM_LINK, article.getLink());
+
             intent.putExtra(ArticleDetailFragment.ARG_ITEM_FULLTEXT, article.getFullText());
             intent.putExtra(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, article.getDetailImageLink());
             startActivity(intent);

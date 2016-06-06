@@ -139,7 +139,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_share:
                 Log.i(TAG, "Clicked invite");
                 onInviteClicked();
-                //TODO: use as a parameter the currently displayed newsfeed if there is one.
                 break;
             default:
                 if (isExternalLink(item)) {
@@ -317,7 +316,7 @@ public class MainActivity extends AppCompatActivity
                 String[] ids = AppInviteInvitation.getInvitationIds(resultCode, data);
                 for (String id : ids) {
                     Log.d(TAG, "onActivityResult: sent invitation " + id);
-                    //TODO: Log that they invited X number of people...
+                    //TODO: Track to analytics that they invited X number of people?
                 }
             } else {
                 // Sending failed or it was canceled, show failure message to the user

@@ -27,12 +27,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabShareArticle);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
@@ -57,6 +52,8 @@ public class ArticleDetailActivity extends AppCompatActivity {
                     getIntent().getStringExtra(ArticleDetailFragment.ARG_ITEM_ID));
             arguments.putString(ArticleDetailFragment.ARG_ITEM_TITLE,
                     getIntent().getStringExtra(ArticleDetailFragment.ARG_ITEM_TITLE));
+            arguments.putString(ArticleDetailFragment.ARG_ITEM_LINK,
+                    getIntent().getStringExtra(ArticleDetailFragment.ARG_ITEM_LINK));
             arguments.putString(ArticleDetailFragment.ARG_ITEM_FULLTEXT,
                     getIntent().getStringExtra(ArticleDetailFragment.ARG_ITEM_FULLTEXT));
             arguments.putString(ArticleDetailFragment.ARG_ITEM_IMAGE_URL,

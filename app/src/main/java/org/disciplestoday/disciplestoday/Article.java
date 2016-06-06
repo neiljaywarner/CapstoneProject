@@ -23,17 +23,25 @@ public class Article {
     private String id;
     private String title;
     private String imageLink;
+
+    public String getLink() {
+        return link;
+    }
+
+    private String link;
+
     private String fullText;
     private String author;
     private String summary; //or description, byline, etc.
 
-    private Article(String id, String title, String imageLink, String author, String summary, String fullText) {
+    private Article(String id, String title, String imageLink, String author, String summary, String fullText, String link) {
         this.id = id;
         this.title = title;
         this.imageLink = imageLink;
         this.fullText = fullText.replace("images/", IMAGE_BASE_URL + "/images/");;
         this.author = author;
         this.summary = summary;
+        this.link = link;
     }
 
     public String getId() {
@@ -75,14 +83,15 @@ public class Article {
     public static Article newArticle(Item item) {
         String author = item.getCreated_by_alias();
         if ((item.getExtraFields() == null) || item.getExtraFields().size() == 0) {
-            return new Article(item.getId(), item.getTitle(), item.getImageUrl(), author, item.getIntroText(), item.getFulltext());
+            return new Article(item.getId(), item.getTitle(), item.getImageUrl(), author,
+                    item.getIntroText(), item.getFulltext(), item.getLink());
         }
 
         String title = item.getExtraFields().get(0).getValue();
         String description = item.getExtraFields().get(1).getValue();
         String image = item.getImageUrl();
 
-        return new Article(item.getId(), title, image, author, description, item.getFulltext());
+        return new Article(item.getId(), title, image, author, description, item.getFulltext(), item.getLink());
     }
 
     public String getImageLink() {
