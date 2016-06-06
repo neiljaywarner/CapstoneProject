@@ -343,6 +343,10 @@ public class MainActivity extends AppCompatActivity
                                     // Extract information from the intent
                                     Intent intent = result.getInvitationIntent();
                                     String deepLinkString = AppInviteReferral.getDeepLink(intent);
+                                    if (deepLinkString.contains("article")) {
+                                        // TODO: Open in new ArticleDetailActivity
+                                        return;
+                                    }
                                     Log.i("NJW", "Deep Link=" + deepLinkString);
                                     int deepLinkSubMenuIndex = Integer.parseInt(deepLinkString.split("/")[3]);
                                     Log.e("NJW", "subMenuIndex=" + deepLinkSubMenuIndex);
