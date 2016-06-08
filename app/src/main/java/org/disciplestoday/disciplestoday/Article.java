@@ -38,6 +38,11 @@ public class Article {
     private String author;
     private String summary; //or description, byline, etc.
 
+    // zero arg constructor for sqllite/cupboard?
+    public Article() {
+
+    }
+
     private Article(String id, String title, String imageLink, String author, String summary, String fullText, String link) {
         this.id = id;
         this.title = title;

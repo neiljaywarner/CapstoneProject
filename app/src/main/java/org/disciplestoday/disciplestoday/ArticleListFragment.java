@@ -86,11 +86,15 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
 
         return fragment;
     }
+    private CupboardSQLiteOpenHelper mCupboardSQLiteOpenHelper;
+    private SQLiteDatabase mDb;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mCupboardSQLiteOpenHelper = new CupboardSQLiteOpenHelper(this.getActivity().getApplicationContext());
+        mDb = mCupboardSQLiteOpenHelper.getWritableDatabase();
         if (getArguments() != null) {
             mNavItemId = getArguments().getInt(ARG_NAV_ID);
         }
@@ -102,7 +106,7 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
         View root = inflater.inflate(R.layout.article_list, container, false);
 
         // TODO: instance state
-        Log.i(TAG, "in oncreateview, just inflated xml");
+        Log.i("NJW", "in oncreateview, just inflated xml");
         // Set the adapter
         if (root instanceof RecyclerView) {
             recyclerView = (RecyclerView) root;
@@ -116,8 +120,12 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
 
 
             if (getArguments() == null) {
+                Log.e("NJW", "onCreateView args=null");
+
                 showNews();
             } else {
+                Log.e("NJW", "onCreateView args!=null");
+
                 mNavItemId = getArguments().getInt(ARG_NAV_ID);
                 if (getActivity() != null) {
                     showNews(mNavItemId);
@@ -141,13 +149,14 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
         Log.e(TAG, "in OnTaskCompleted");
 
         mArticles = asyncTask.getItems();
+        storeArticles(mArticles);
+
         updateUI();
 
     }
 
     private void updateUI() {
-        storeArticles(mArticles);
-
+        Log.i("NJW", "in updateUI");
         Article featuredArticle = mArticles.get(0);
         //NOTE: The first (0th) article as of May 30th has right and left padding when the others don't
         // either a) they should fix or b) a color from pallette can be the background...
@@ -155,7 +164,8 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
         setupRecyclerView(recyclerView);
 
         setupFeaturedArticle(featuredArticle);
-        if (progressDialog.isShowing()) {
+        if (progressDialog!= null && progressDialog.isShowing()) {
+            Log.i("NJW", "****** Dismissing spinner.");
             progressDialog.dismiss();
             progressDialog = null;
         }
@@ -185,31 +195,54 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
      */
     private void showNews() {
         // TODO: Update so that db can save feed type and do more than just highlighted.
+        Log.i("NJW", "in showNews()");
+
         mArticles = loadArticles();
         if (mArticles.isEmpty()) {
+            Log.e("NJW", "articles=empty");
             showNews(null);
         } else {
             updateUI();
         }
     }
     private void showNews(MenuItem menuItem) {
+        Log.i("NJW", "in showNews:" + menuItem.getTitle());
+        mArticles = loadArticles();
+        if (mArticles.isEmpty()) {
+            Log.i("NJW", "Show Spinner;Loading via network");
 
-        progressDialog = new ProgressDialog(this.getActivity());
-        progressDialog.setTitle(R.string.fetching_articles);
-        progressDialog.show();
-        progressDialog.setMessage(getString(R.string.fetching_articles_message));
-        asyncTask = new FeedLoaderAsyncTask(this, menuItem);
-        asyncTask.execute();
+            progressDialog = new ProgressDialog(this.getActivity());
+            progressDialog.setTitle(R.string.fetching_articles);
+            progressDialog.show();
+            progressDialog.setMessage(getString(R.string.fetching_articles_message));
+            asyncTask = new FeedLoaderAsyncTask(this, menuItem);
+            asyncTask.execute();
+        } else {
+            Log.i("NJW", "No spinner, just show from db.");
+
+            updateUI();
+        }
+
     }
 
     private void showNews(int menuItemId) {
+        Log.e("NJW", "aha, showNes with menuItemId");
+        mArticles = loadArticles();
+        if (mArticles.isEmpty()) {
+            Log.e("NJW", "empty after checking db.");
 
-        progressDialog = new ProgressDialog(this.getActivity());
-        progressDialog.setTitle(R.string.fetching_articles);
-        progressDialog.show();
-        progressDialog.setMessage(getString(R.string.fetching_articles_message));
-        asyncTask = new FeedLoaderAsyncTask(this, menuItemId);
-        asyncTask.execute();
+            progressDialog = new ProgressDialog(this.getActivity());
+            progressDialog.setTitle(R.string.fetching_articles);
+            progressDialog.show();
+            progressDialog.setMessage(getString(R.string.fetching_articles_message));
+            asyncTask = new FeedLoaderAsyncTask(this, menuItemId);
+            asyncTask.execute();
+        } else {
+            Log.e("NJW", "Found:" + mArticles.size() + " in db.");
+
+            updateUI();
+        }
+
     }
 
     public class SimpleItemRecyclerViewAdapter
@@ -370,21 +403,20 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
     //TODO: track view list and duration from selection to view.
     // https://developers.google.com/android/reference/com/google/firebase/analytics/FirebaseAnalytics.Event.html#constants
 
-    private CupboardSQLiteOpenHelper cupboardSQLiteOpenHelper = new CupboardSQLiteOpenHelper(this.getContext());
-    private SQLiteDatabase mDb = cupboardSQLiteOpenHelper.getWritableDatabase();
     public void storeArticles(List<Article> articles) {
+        Log.i("NJW", "***in storeArticles");
         for (Article article : articles) {
             storeArticle(mDb, article);
         }
     }
     public static long storeArticle(SQLiteDatabase database, Article article) {
+        Log.e("NJW", "Storing to db article:" + article.getTitle());
         return cupboard().withDatabase(database).put(article);
     }
 
     public List<Article> loadArticles() {
 
         // Get the cursor for this query
-        Cursor books = cupboard().withDatabase(mDb).query(Article.class).getCursor();
         QueryResultIterable<Article> itr = null;
         ArrayList<Article> articles = new ArrayList<>();
         try {
@@ -398,6 +430,7 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
             // close the cursor
             itr.close();
         }
+        Log.e("NJW", "size of articles loaded from db;" + articles.size());
         return articles;
 
     }
