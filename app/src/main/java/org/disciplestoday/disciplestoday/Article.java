@@ -1,5 +1,6 @@
 package org.disciplestoday.disciplestoday;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.text.Html;
 import android.util.Log;
 
@@ -9,6 +10,8 @@ import org.disciplestoday.disciplestoday.data.Item;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 /**
  * Created by neil on 5/28/16.
@@ -20,6 +23,7 @@ public class Article {
     public static final String TRACK_TYPE_ARTICLE="article";
 
 
+    private Long _id; // for db/cupboard.
     private String id;
     private String title;
     private String imageLink;
@@ -118,4 +122,7 @@ public class Article {
         }
         return  articles;
     }
+
+
+
 }

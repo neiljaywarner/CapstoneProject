@@ -3,6 +3,8 @@ package org.disciplestoday.disciplestoday;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -27,10 +29,15 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
 import org.disciplestoday.disciplestoday.data.FeedLoaderAsyncTask;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import nl.qbusict.cupboard.QueryResultIterable;
+
+import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
 
 
@@ -132,7 +139,15 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
     @Override
     public void onTaskCompleted() {
         Log.e(TAG, "in OnTaskCompleted");
+
         mArticles = asyncTask.getItems();
+        updateUI();
+
+    }
+
+    private void updateUI() {
+        storeArticles(mArticles);
+
         Article featuredArticle = mArticles.get(0);
         //NOTE: The first (0th) article as of May 30th has right and left padding when the others don't
         // either a) they should fix or b) a color from pallette can be the background...
@@ -147,7 +162,6 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
         if (getActivity() != null) {
             getActivity().findViewById(R.id.content_main).setVisibility(View.VISIBLE);
         }
-
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -170,7 +184,13 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
      * Show the default news feed (highlighted/featured)
      */
     private void showNews() {
-        showNews(null);
+        // TODO: Update so that db can save feed type and do more than just highlighted.
+        mArticles = loadArticles();
+        if (mArticles.isEmpty()) {
+            showNews(null);
+        } else {
+            updateUI();
+        }
     }
     private void showNews(MenuItem menuItem) {
 
@@ -350,5 +370,35 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
     //TODO: track view list and duration from selection to view.
     // https://developers.google.com/android/reference/com/google/firebase/analytics/FirebaseAnalytics.Event.html#constants
 
+    private CupboardSQLiteOpenHelper cupboardSQLiteOpenHelper = new CupboardSQLiteOpenHelper(this.getContext());
+    private SQLiteDatabase mDb = cupboardSQLiteOpenHelper.getWritableDatabase();
+    public void storeArticles(List<Article> articles) {
+        for (Article article : articles) {
+            storeArticle(mDb, article);
+        }
+    }
+    public static long storeArticle(SQLiteDatabase database, Article article) {
+        return cupboard().withDatabase(database).put(article);
+    }
 
+    public List<Article> loadArticles() {
+
+        // Get the cursor for this query
+        Cursor books = cupboard().withDatabase(mDb).query(Article.class).getCursor();
+        QueryResultIterable<Article> itr = null;
+        ArrayList<Article> articles = new ArrayList<>();
+        try {
+            // Iterate books
+             itr = cupboard().withDatabase(mDb).query(Article.class).query();
+            for (Article article : itr) {
+                // do something with book
+                articles.add(article);
+            }
+        } finally {
+            // close the cursor
+            itr.close();
+        }
+        return articles;
+
+    }
 }

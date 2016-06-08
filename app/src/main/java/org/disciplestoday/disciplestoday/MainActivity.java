@@ -1,6 +1,7 @@
 package org.disciplestoday.disciplestoday;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
+
+import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 
 public class MainActivity extends AppCompatActivity
@@ -368,4 +371,6 @@ public class MainActivity extends AppCompatActivity
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
+
+
 }
