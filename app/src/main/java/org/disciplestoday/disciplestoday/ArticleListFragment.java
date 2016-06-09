@@ -31,6 +31,7 @@ import com.squareup.picasso.Picasso;
 
 import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
 import org.disciplestoday.disciplestoday.data.FeedLoaderAsyncTask;
+import org.disciplestoday.disciplestoday.utils.ArticleUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -161,9 +162,10 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
         //NOTE: The first (0th) article as of May 30th has right and left padding when the others don't
         // either a) they should fix or b) a color from pallette can be the background...
         mArticles.remove(0);
+        setupFeaturedArticle(featuredArticle);
+
         setupRecyclerView(recyclerView);
 
-        setupFeaturedArticle(featuredArticle);
         if (progressDialog!= null && progressDialog.isShowing()) {
             Log.i("NJW", "****** Dismissing spinner.");
             progressDialog.dismiss();
@@ -416,15 +418,14 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
 
     public List<Article> loadArticles() {
 
-        // Get the cursor for this query
         QueryResultIterable<Article> itr = null;
         ArrayList<Article> articles = new ArrayList<>();
         try {
-            // Iterate books
              itr = cupboard().withDatabase(mDb).query(Article.class).query();
             for (Article article : itr) {
-                // do something with book
-                articles.add(article);
+                if (article.isInList(articles)) {
+                    articles.add(article);
+                }
             }
         } finally {
             // close the cursor

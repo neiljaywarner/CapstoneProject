@@ -7,6 +7,7 @@ import android.util.Log;
 import org.disciplestoday.disciplestoday.data.DTService;
 import org.disciplestoday.disciplestoday.data.Feed;
 import org.disciplestoday.disciplestoday.data.Item;
+import org.disciplestoday.disciplestoday.utils.ArticleUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,6 +127,10 @@ public class Article {
             articles.add(newArticle(item));
         }
         return  articles;
+    }
+
+    public boolean isInList(List<Article> articles) {
+        return ArticleUtils.hasArticle(articles, this);
     }
 
 
