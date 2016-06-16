@@ -19,6 +19,14 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
  */
 
 public class Article {
+
+    public static final String FIELD_ID = "_id";
+    public static final String FIELD_TITLE = "title";
+    public static final String FIELD_LINK = "link";
+
+    public static final String FIELD_NUMBEROFCOMMENTS = "numberOfComments";
+        //save on teh reflection
+
     private static final String IMAGE_BASE_URL = DTService.DISCIPLES_TODAY_BASE_URL;
     public static final String DEFAULT_IMAGE_URL = "https://pbs.twimg.com/profile_images/186752127/DToday_logo_Gradient_Orange_400x400.jpg";
     public static final String TRACK_TYPE_ARTICLE="article";

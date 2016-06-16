@@ -10,6 +10,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +33,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
+import org.disciplestoday.disciplestoday.data.DTContentProvider;
 import org.disciplestoday.disciplestoday.data.FeedLoaderAsyncTask;
 import org.disciplestoday.disciplestoday.utils.ArticleUtils;
 
@@ -39,15 +43,17 @@ import java.util.List;
 import nl.qbusict.cupboard.QueryResultIterable;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
+import static nl.qbusict.cupboard.CupboardFactory.getInstance;
 import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
 
 
-public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask.OnTaskCompleted {
+public class ArticleListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>  {
 
 
     private static final String TAG = ArticleListFragment.class.getSimpleName();
 
     private static final String ARG_NAV_ID = "arg_nav_item_id";
+    private static final int LOADER_ID = 100;
     private List<Article> mArticles;
     private FeedLoaderAsyncTask asyncTask;
     private RecyclerView recyclerView;
@@ -119,7 +125,7 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
             mLayoutNews = getActivity().findViewById(R.id.layout_news);
 
 
-
+/*
             if (getArguments() == null) {
                 Log.e("NJW", "onCreateView args=null");
 
@@ -133,6 +139,9 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
                 }
 
             }
+            */
+            getLoaderManager().initLoader(LOADER_ID, null, this);
+
         }
 
 
@@ -144,17 +153,20 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
         outState.putInt(ARG_NAV_ID, mNavItemId);
         super.onSaveInstanceState(outState);
     }
-
+        //using https://github.com/aegis123/Bettyskitchen-app/blob/master/BettysKitchen-app/src/main/java/com/bettys/kitchen/recipes/app/activities/MainActivity.java
+    /*
     @Override
     public void onTaskCompleted() {
         Log.e(TAG, "in OnTaskCompleted");
 
         mArticles = asyncTask.getItems();
+
         storeArticles(mArticles);
 
         updateUI();
 
     }
+    */
 
     private void updateUI() {
         Log.i("NJW", "in updateUI");
@@ -195,6 +207,7 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
     /**
      * Show the default news feed (highlighted/featured)
      */
+    /*
     private void showNews() {
         // TODO: Update so that db can save feed type and do more than just highlighted.
         Log.i("NJW", "in showNews()");
@@ -207,6 +220,7 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
             updateUI();
         }
     }
+
     private void showNews(MenuItem menuItem) {
         Log.i("NJW", "in showNews:" + menuItem.getTitle());
         mArticles = loadArticles();
@@ -227,6 +241,7 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
 
     }
 
+
     private void showNews(int menuItemId) {
         Log.e("NJW", "aha, showNes with menuItemId");
         mArticles = loadArticles();
@@ -245,6 +260,29 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
             updateUI();
         }
 
+    }
+       */
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.i("NJW", "in onCreateLoader"); //todo: use bundle
+        String[] projection = { Article.FIELD_ID, Article.FIELD_TITLE };
+        projection = null;
+        //TODO: remove projection if it is not neede.
+        CursorLoader cursorLoader = new CursorLoader(this.getContext(),
+                DTContentProvider.CONTENT_URI, projection, null, null, null);
+        return cursorLoader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mArticles = cupboard().withCursor(data).list(Article.class);
+        updateUI();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // anything to do here?
     }
 
     public class SimpleItemRecyclerViewAdapter
@@ -325,7 +363,7 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
         }
     }
 
-    //TODO: FIX FOR TABLET
+    //TODO: FIX FOR TABLET MUCH LATER, just cleanup code
     private void showArticle(Article article) {
         trackContentSelection(article);
         /*
@@ -404,7 +442,7 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
     }
     //TODO: track view list and duration from selection to view.
     // https://developers.google.com/android/reference/com/google/firebase/analytics/FirebaseAnalytics.Event.html#constants
-
+/*
     public void storeArticles(List<Article> articles) {
         Log.i("NJW", "***in storeArticles");
         for (Article article : articles) {
@@ -415,6 +453,7 @@ public class ArticleListFragment extends Fragment implements FeedLoaderAsyncTask
         Log.e("NJW", "Storing to db article:" + article.getTitle());
         return cupboard().withDatabase(database).put(article);
     }
+    */
 
     public List<Article> loadArticles() {
 
