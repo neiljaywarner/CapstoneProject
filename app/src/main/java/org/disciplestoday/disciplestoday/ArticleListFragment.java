@@ -173,11 +173,6 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         if (mArticles.isEmpty()) {
             return;
         }
-       // Article featuredArticle = mArticles.get(0);
-        //NOTE: The first (0th) article as of May 30th has right and left padding when the others don't
-        // either a) they should fix or b) a color from pallette can be the background...
-      //  mArticles.remove(0);
-       // setupFeaturedArticle(featuredArticle);
 
         setupRecyclerView(recyclerView);
 
@@ -312,7 +307,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         }
 
         @Override
-        public void onBindViewHolder(final SimpleItemRecyclerViewAdapter.ViewHolder holder, final int position) {
+        public void onBindViewHolder(final SimpleItemRecyclerViewAdapter.ViewHolder holder, int position) {
             final Article item = mArticles.get(position);
             final String imageUrl = item.getImageLink();
             if (!imageUrl.isEmpty())
@@ -328,9 +323,8 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
                                         int lightVibrantColorList = listViewPallette.getLightVibrantColor(getResources().getColor(android.R.color.white));
 
                                         holder.mImageView.setBackgroundColor(lightVibrantColorList);
-                                        if (position == 0) {
+                                        if (holder.getAdapterPosition() == 0) {
                                             updateTextView(holder.mContentView, listViewPallette);
-
                                         }
                                     }
                                 });
@@ -388,70 +382,17 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
     //TODO: FIX FOR TABLET MUCH LATER, just cleanup code
     private void showArticle(Article article) {
         trackContentSelection(article);
-        /*
-        if (mTwoPane) {
-            Bundle arguments = new Bundle();
-            arguments.putString(ArticleDetailFragment.ARG_ITEM_TITLE, item.getTitle());
-            arguments.putString(ArticleDetailFragment.ARG_ITEM_FULLTEXT, item.getFullText());
-            arguments.putString(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, item.getDetailImageLink());
 
-
-            ArticleDetailFragment fragment = new ArticleDetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.article_detail_container, fragment)
-                    .commit();
-        } else {
-        */
-            Intent intent = new Intent(this.getActivity(), ArticleDetailActivity.class);
+        Intent intent = new Intent(this.getActivity(), ArticleDetailActivity.class);
         //TODO: Just pass via parcelable due to speed eventually, for now use articleId due to deep links
 
-            intent.putExtra(ArticleDetailFragment.ARG_ITEM_ID, article.getId());
-            intent.putExtra(ArticleDetailFragment.ARG_ITEM_TITLE, article.getTitle());
-            intent.putExtra(ArticleDetailFragment.ARG_ITEM_LINK, article.getLink());
+        intent.putExtra(ArticleDetailFragment.ARG_ITEM_ID, article.getId());
+        intent.putExtra(ArticleDetailFragment.ARG_ITEM_TITLE, article.getTitle());
+        intent.putExtra(ArticleDetailFragment.ARG_ITEM_LINK, article.getLink());
 
-            intent.putExtra(ArticleDetailFragment.ARG_ITEM_FULLTEXT, article.getFullText());
-            intent.putExtra(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, article.getDetailImageLink());
-            startActivity(intent);
-        //}
-    }
-
-
-    private void setupFeaturedArticle(final Article article) {
-        if (imageViewFeatured != null) {
-
-            if (URLUtil.isValidUrl(article.getImageLink())) {
-
-                Picasso.with(imageViewFeatured.getContext()).load(article.getImageLink())
-                        .into(imageViewFeatured, new Callback() {
-                            @Override public void onSuccess() {
-                                if (ArticleListFragment.this.getActivity() != null) {
-                                    Bitmap bitmap = ((BitmapDrawable) imageViewFeatured.getDrawable()).getBitmap();
-                                    Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-                                        public void onGenerated(Palette palette) {
-                                            updateTextView(textViewFeaturedTitle, palette);
-                                            int lightVibrantColor = palette.getLightVibrantColor(getResources().getColor(android.R.color.white));
-
-                                            imageViewFeatured.setBackgroundColor(lightVibrantColor);
-                                        }
-                                    });
-                                }
-                            }
-
-                            @Override public void onError() {
-                                Log.e(TAG, "Picasso:Error loading:" + article.getImageLink());
-                            }
-                        });
-            }
-        }
-
-        textViewFeaturedTitle.setText(article.getTitle());
-        textViewFeaturedTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showArticle(article);
-            }
-        });
+        intent.putExtra(ArticleDetailFragment.ARG_ITEM_FULLTEXT, article.getFullText());
+        intent.putExtra(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, article.getDetailImageLink());
+        startActivity(intent);
     }
 
     private void trackContentSelection(Article article) {
@@ -477,23 +418,4 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
     }
     */
 
-    public List<Article> loadArticles() {
-
-        QueryResultIterable<Article> itr = null;
-        ArrayList<Article> articles = new ArrayList<>();
-        try {
-             itr = cupboard().withDatabase(mDb).query(Article.class).query();
-            for (Article article : itr) {
-                if (article.isInList(articles)) {
-                    articles.add(article);
-                }
-            }
-        } finally {
-            // close the cursor
-            itr.close();
-        }
-        Log.e("NJW", "size of articles loaded from db;" + articles.size());
-        return articles;
-
-    }
 }
