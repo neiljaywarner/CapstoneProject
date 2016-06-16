@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/featured_layout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:showIn="@layout/content_main">
+
+    <ImageView
+        tools:src="@mipmap/ic_launcher"
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="350dp" />
+
+    <View
+        android:background="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <TextView
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        tools:text="Volunteer Opportunities at Reach 2016"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/content"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin" />
+
+    <View
+        android:background="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+</LinearLayout>
+
+            

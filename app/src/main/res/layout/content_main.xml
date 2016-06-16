@@ -11,8 +11,6 @@
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="81dp">
 
-
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -20,65 +18,16 @@
             android:id="@+id/layout_news"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/featured_layout"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    tools:src="@mipmap/ic_launcher"
-                    android:id="@+id/featured_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="350dp" />
-
-                <View
-                    android:background="@android:color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"/>
-
-                <TextView
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                    tools:text="Volunteer Opportunities at Reach 2016"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/featured_article_title"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"/>
-
-                <View
-                    android:background="@android:color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"/>
-            </LinearLayout>
+            <include layout="@layout/featured_article" />
 
             <FrameLayout
                 android:layout_weight="1"
-
-                android:layout_width="match_parent" android:id="@+id/article_list_container"
-                android:layout_height="0dp" />
-<!--
-            <android.support.v7.widget.RecyclerView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/article_list"
-                android:name="org.disciplestoday.retrofittest22.ArticleListFragment"
                 android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="0dp"
-                app:layoutManager="LinearLayoutManager"
-                tools:listitem="@layout/article_list_content" />
-                -->
+                android:id="@+id/article_list_container"
+                android:layout_height="0dp" />
 
         </LinearLayout>
     </ScrollView>
-
-
-
-
 </android.support.constraint.ConstraintLayout>

@@ -120,8 +120,8 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
             recyclerView.setNestedScrollingEnabled(false);
 
 
-            imageViewFeatured = (ImageView) getActivity().findViewById(R.id.featured_image);
-            textViewFeaturedTitle = (TextView) getActivity().findViewById(R.id.featured_article_title);
+            imageViewFeatured = (ImageView) getActivity().findViewById(R.id.imageView);
+            textViewFeaturedTitle = (TextView) getActivity().findViewById(R.id.content);
             mLayoutNews = getActivity().findViewById(R.id.layout_news);
 
 
@@ -173,11 +173,11 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         if (mArticles.isEmpty()) {
             return;
         }
-        Article featuredArticle = mArticles.get(0);
+       // Article featuredArticle = mArticles.get(0);
         //NOTE: The first (0th) article as of May 30th has right and left padding when the others don't
         // either a) they should fix or b) a color from pallette can be the background...
-        mArticles.remove(0);
-        setupFeaturedArticle(featuredArticle);
+      //  mArticles.remove(0);
+       // setupFeaturedArticle(featuredArticle);
 
         setupRecyclerView(recyclerView);
 
@@ -299,13 +299,20 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
 
         @Override
         public SimpleItemRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.article_list_content, parent, false);
+            View view;
+            if (viewType == 0) {
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.featured_article, parent, false);
+            } else {
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.article_list_content, parent, false);
+            }
+
             return new SimpleItemRecyclerViewAdapter.ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(final SimpleItemRecyclerViewAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(final SimpleItemRecyclerViewAdapter.ViewHolder holder, final int position) {
             final Article item = mArticles.get(position);
             final String imageUrl = item.getImageLink();
             if (!imageUrl.isEmpty())
@@ -321,6 +328,10 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
                                         int lightVibrantColorList = listViewPallette.getLightVibrantColor(getResources().getColor(android.R.color.white));
 
                                         holder.mImageView.setBackgroundColor(lightVibrantColorList);
+                                        if (position == 0) {
+                                            updateTextView(holder.mContentView, listViewPallette);
+
+                                        }
                                     }
                                 });
                             }
@@ -347,6 +358,14 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
             return mValues.size();
         }
 
+        @Override
+        public int getItemViewType(int position) {
+            int viewType = 1; //Default is 1
+            if (position == 0) viewType = 0; //if zero, it will be a header view
+            return viewType;
+        }
+
+        //http://stackoverflow.com/questions/26245139/how-to-create-recyclerview-with-multiple-view-type
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
             public final ImageView mImageView;
@@ -355,7 +374,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
-                mImageView = (ImageView) view.findViewById(R.id.imageViewThumbnail);
+                mImageView = (ImageView) view.findViewById(R.id.imageView);
                 mContentView = (TextView) view.findViewById(R.id.content);
             }
 
