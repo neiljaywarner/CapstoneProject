@@ -1,7 +1,6 @@
 package org.disciplestoday.disciplestoday;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,8 +13,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.graphics.Palette;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
@@ -23,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.URLUtil;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,20 +31,14 @@ import com.squareup.picasso.Picasso;
 import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
 import org.disciplestoday.disciplestoday.data.DTContentProvider;
 import org.disciplestoday.disciplestoday.data.FeedLoaderAsyncTask;
-import org.disciplestoday.disciplestoday.utils.ArticleUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import nl.qbusict.cupboard.QueryResultIterable;
-
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
-import static nl.qbusict.cupboard.CupboardFactory.getInstance;
 import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
 
 
-public class ArticleListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>  {
-
+public class ArticleListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = ArticleListFragment.class.getSimpleName();
 
@@ -57,10 +47,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
     private List<Article> mArticles;
     private FeedLoaderAsyncTask asyncTask;
     private RecyclerView recyclerView;
-    private ImageView imageViewFeatured;
-    private TextView textViewFeaturedTitle;
     private WebView webviewLocator;
-    private View mLayoutNews;
 
     private int mNavItemId;
 
@@ -104,6 +91,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         mDb = mCupboardSQLiteOpenHelper.getWritableDatabase();
         if (getArguments() != null) {
             mNavItemId = getArguments().getInt(ARG_NAV_ID);
+            Log.i("NJW", "Setting mNavItemId" + mNavItemId);
         }
     }
 
@@ -117,15 +105,11 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         // Set the adapter
         if (root instanceof RecyclerView) {
             recyclerView = (RecyclerView) root;
-            recyclerView.setNestedScrollingEnabled(false);
+           // recyclerView.setNestedScrollingEnabled(false);
+            recyclerView.setNestedScrollingEnabled(true);
 
 
-            imageViewFeatured = (ImageView) getActivity().findViewById(R.id.imageView);
-            textViewFeaturedTitle = (TextView) getActivity().findViewById(R.id.content);
-            mLayoutNews = getActivity().findViewById(R.id.layout_news);
-
-
-/*
+            /*
             if (getArguments() == null) {
                 Log.e("NJW", "onCreateView args=null");
 
@@ -140,7 +124,8 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
 
             }
             */
-            getLoaderManager().initLoader(LOADER_ID, null, this);
+
+            getLoaderManager().initLoader(LOADER_ID, getArguments(), this);
 
         }
 
@@ -149,24 +134,46 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
     }
 
     @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String moduleId = "";
+        /*
+        if (args == null) {
+            //moduleId = "353"; //HIGHLIGHTED
+            mNavItemId = R.id.nav_highlighted;
+        } else {
+            mNavItemId = getArguments().getInt(ARG_NAV_ID);
+        }
+        */
+
+        Log.i("NJW", "in onCreateLoader");
+        String[] projection = { Article.FIELD_ID, Article.FIELD_TITLE };
+        projection = null;
+        //TODO: remove projection if it is not neede.
+        CursorLoader cursorLoader = new CursorLoader(this.getContext(),
+                DTContentProvider.CONTENT_URI, projection, null, null, null);
+        return cursorLoader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mArticles = cupboard().withCursor(data).list(Article.class);
+        updateUI();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // anything to do here?
+    }
+
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt(ARG_NAV_ID, mNavItemId);
         super.onSaveInstanceState(outState);
     }
         //using https://github.com/aegis123/Bettyskitchen-app/blob/master/BettysKitchen-app/src/main/java/com/bettys/kitchen/recipes/app/activities/MainActivity.java
-    /*
-    @Override
-    public void onTaskCompleted() {
-        Log.e(TAG, "in OnTaskCompleted");
 
-        mArticles = asyncTask.getItems();
 
-        storeArticles(mArticles);
-
-        updateUI();
-
-    }
-    */
 
     private void updateUI() {
         Log.i("NJW", "in updateUI");
@@ -203,14 +210,13 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
 
 
     /**
-     * Show the default news feed (highlighted/featured)
+     * Show the default news feed (highlighted/featured) via syncadapter/content provider.
      */
-    /*
+/*
     private void showNews() {
         // TODO: Update so that db can save feed type and do more than just highlighted.
         Log.i("NJW", "in showNews()");
 
-        mArticles = loadArticles();
         if (mArticles.isEmpty()) {
             Log.e("NJW", "articles=empty");
             showNews(null);
@@ -218,10 +224,10 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
             updateUI();
         }
     }
-
+    */
+/*
     private void showNews(MenuItem menuItem) {
         Log.i("NJW", "in showNews:" + menuItem.getTitle());
-        mArticles = loadArticles();
         if (mArticles.isEmpty()) {
             Log.i("NJW", "Show Spinner;Loading via network");
 
@@ -238,12 +244,11 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         }
 
     }
+    */
 
-
+/*
     private void showNews(int menuItemId) {
         Log.e("NJW", "aha, showNes with menuItemId");
-        mArticles = loadArticles();
-        if (mArticles.isEmpty()) {
             Log.e("NJW", "empty after checking db.");
 
             progressDialog = new ProgressDialog(this.getActivity());
@@ -261,27 +266,6 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
     }
        */
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.i("NJW", "in onCreateLoader"); //todo: use bundle for moduleId as selectionArg
-        String[] projection = { Article.FIELD_ID, Article.FIELD_TITLE };
-        projection = null;
-        //TODO: remove projection if it is not neede.
-        CursorLoader cursorLoader = new CursorLoader(this.getContext(),
-                DTContentProvider.CONTENT_URI, projection, null, null, null);
-        return cursorLoader;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mArticles = cupboard().withCursor(data).list(Article.class);
-        updateUI();
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        // anything to do here?
-    }
 
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
