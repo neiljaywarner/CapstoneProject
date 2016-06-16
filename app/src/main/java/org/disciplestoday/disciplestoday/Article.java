@@ -28,6 +28,32 @@ public class Article {
     private String id;
     private String title;
     private String imageLink;
+    private String moduleId; //353 for highlighted, etc.
+
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public Article setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+        return this;
+    }
+
+    private String categoryId; //Use this info to display hope info that has no rss feed...
+
+
+
+
+    public String getModuleId() {
+        return moduleId;
+    }
+
+    public Article setModuleId(String moduleId) {
+        this.moduleId = moduleId;
+        return this;
+    }
+
 
     public String getLink() {
         return link;
