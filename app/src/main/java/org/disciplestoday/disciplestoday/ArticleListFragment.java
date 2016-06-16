@@ -170,6 +170,9 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
 
     private void updateUI() {
         Log.i("NJW", "in updateUI");
+        if (mArticles.isEmpty()) {
+            return;
+        }
         Article featuredArticle = mArticles.get(0);
         //NOTE: The first (0th) article as of May 30th has right and left padding when the others don't
         // either a) they should fix or b) a color from pallette can be the background...
@@ -265,7 +268,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.i("NJW", "in onCreateLoader"); //todo: use bundle
+        Log.i("NJW", "in onCreateLoader"); //todo: use bundle for moduleId as selectionArg
         String[] projection = { Article.FIELD_ID, Article.FIELD_TITLE };
         projection = null;
         //TODO: remove projection if it is not neede.

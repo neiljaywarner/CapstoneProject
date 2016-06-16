@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showFragment(MenuItem menuItem) {
-        mLayoutNews.setVisibility(View.VISIBLE);
+       // mLayoutNews.setVisibility(View.VISIBLE);
         webviewLocator.setVisibility(View.GONE);
         ArticleListFragment listFragment = ArticleListFragment.newInstance(menuItem);
 
@@ -346,11 +346,12 @@ public class MainActivity extends AppCompatActivity
                                     // Extract information from the intent
                                     Intent intent = result.getInvitationIntent();
                                     String deepLinkString = AppInviteReferral.getDeepLink(intent);
+                                    Log.i("NJW", "Deep Link=" + deepLinkString);
                                     if (deepLinkString.contains("article")) {
                                         // TODO: Open in new ArticleDetailActivity
                                         return;
                                     }
-                                    Log.i("NJW", "Deep Link=" + deepLinkString);
+
                                     int deepLinkSubMenuIndex = Integer.parseInt(deepLinkString.split("/")[3]);
                                     Log.e("NJW", "subMenuIndex=" + deepLinkSubMenuIndex);
                                     MenuItem newsFeedMenuItem = mNavigationView.getMenu()
