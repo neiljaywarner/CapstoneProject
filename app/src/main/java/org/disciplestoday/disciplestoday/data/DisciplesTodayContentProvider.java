@@ -16,7 +16,7 @@ import nl.qbusict.cupboard.CupboardBuilder;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
-public class DTContentProvider extends ContentProvider {
+public class DisciplesTodayContentProvider extends ContentProvider {
     //using http://www.vogella.com/tutorials/AndroidSQLite/article.html in addition to file-> new contentprovider, etc
 
     private CupboardSQLiteOpenHelper mDatabaseHelper;
@@ -27,7 +27,7 @@ public class DTContentProvider extends ContentProvider {
     private static final int ARTICLES = 10; //List screen/fragment/recyclerview
     private static final int ARTICLE = 20; //detail screen
 
-    public DTContentProvider() {
+    public DisciplesTodayContentProvider() {
     }
     private static final String AUTHORITY = "org.disciplestoday.disciplestoday";
 

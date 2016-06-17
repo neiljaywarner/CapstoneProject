@@ -29,7 +29,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
-import org.disciplestoday.disciplestoday.data.DTContentProvider;
+import org.disciplestoday.disciplestoday.data.DisciplesTodayContentProvider;
 import org.disciplestoday.disciplestoday.data.FeedLoaderAsyncTask;
 
 import java.util.List;
@@ -150,7 +150,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         projection = null;
         //TODO: remove projection if it is not neede.
         CursorLoader cursorLoader = new CursorLoader(this.getContext(),
-                DTContentProvider.CONTENT_URI, projection, null, null, null);
+                DisciplesTodayContentProvider.CONTENT_URI, projection, null, null, null);
         return cursorLoader;
     }
 

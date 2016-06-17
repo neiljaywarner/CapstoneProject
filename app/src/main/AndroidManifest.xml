@@ -30,7 +30,7 @@
         </activity>
 
         <provider
-            android:name=".data.DTContentProvider"
+            android:name=".data.DisciplesTodayContentProvider"
             android:authorities="org.disciplestoday.disciplestoday"
             android:enabled="true"
             android:exported="true"></provider>
