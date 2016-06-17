@@ -92,6 +92,4 @@ public class SyncUtils {
                 b);                                      // Extras
     }
 
-    //TODO: Remvoe all instances of com.example, 'basicsyncadapter', etc
-    // NJW
 }

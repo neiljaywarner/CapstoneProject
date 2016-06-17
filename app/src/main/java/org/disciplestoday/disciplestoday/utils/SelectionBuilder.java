@@ -42,7 +42,7 @@ import java.util.Map;
  * thread safe.
  */
 public class SelectionBuilder {
-    private static final String TAG = "basicsyncadapter";
+    private static final String TAG = SelectionBuilder.class.getSimpleName();
 
     private String mTable = null;
     private Map<String, String> mProjectionMap = Maps.newHashMap();
