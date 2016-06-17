@@ -43,8 +43,8 @@ import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
 
 public class ArticleListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = ArticleListFragment.class.getSimpleName();
-
+    //private static final String TAG = ArticleListFragment.class.getSimpleName();
+    public static final String TAG = "NJW";
     private static final String ARG_NAV_ID = "arg_nav_item_id";
     private static final int LOADER_ID = 100;
     private List<Article> mArticles;
@@ -89,9 +89,8 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("NJW", "in onCreate of articleListfragment");
 
-        mCupboardSQLiteOpenHelper = new CupboardSQLiteOpenHelper(this.getActivity().getApplicationContext());
-        mDb = mCupboardSQLiteOpenHelper.getWritableDatabase();
         if (getArguments() != null) {
             mNavItemId = getArguments().getInt(ARG_NAV_ID);
             Log.i("NJW", "Setting mNavItemId" + mNavItemId);
@@ -191,8 +190,12 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
     public void onAttach(Context context) {
         super.onAttach(context);
 
+        // This sets up cupboard and the db to be used everywhere and creates the db the first time and registers the entities.
+        mCupboardSQLiteOpenHelper = new CupboardSQLiteOpenHelper(this.getActivity().getApplicationContext());
+        mDb = mCupboardSQLiteOpenHelper.getWritableDatabase();
+
         // Create account, if needed
-        Log.i("NJW", "in onAttach, which is deprecated.");
+        Log.i("NJW", "in onAttach, about to create account if needed.");
         SyncUtils.CreateSyncAccount(context);
     }
 

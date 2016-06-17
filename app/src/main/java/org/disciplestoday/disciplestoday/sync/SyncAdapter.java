@@ -60,7 +60,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     // Global variables
     // Define a variable to contain a content resolver instance
-    ContentResolver mContentResolver;
+   // ContentResolver mContentResolver;
 
     /**
      * Set up the sync adapter
@@ -71,7 +71,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
          * If your app uses a content resolver, get an instance of it
          * from the incoming Context
          */
-        mContentResolver = context.getContentResolver();
+      //  mContentResolver = context.getContentResolver();
         Log.i("NJW", "inSyncAdadpter constructor");
 
     }
@@ -90,7 +90,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
          * If your app uses a content resolver, get an instance of it
          * from the incoming Context
          */
-        mContentResolver = context.getContentResolver();
+       // mContentResolver = context.getContentResolver();
         Log.i("NJW", "inSyncAdadpter constructor");
     }
 

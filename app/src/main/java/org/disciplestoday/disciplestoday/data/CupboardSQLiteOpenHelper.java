@@ -9,16 +9,17 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import org.disciplestoday.disciplestoday.Article;
 
 public class CupboardSQLiteOpenHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "disciplestoday.db";
-    public static final String TABLE_NAME = "Articles";
     private static final int DATABASE_VERSION = 2;
 
     static {
         // register our model
+        Log.e("NJW", "registering article model the first time CupboardSqlliteOpenHelper is instantinated at all ");
         cupboard().register(Article.class);
     }
 
