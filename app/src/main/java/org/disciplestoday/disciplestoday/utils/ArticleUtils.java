@@ -16,6 +16,7 @@ public class ArticleUtils {
             }
         }
         //TODO: Consider if it should be updated, and if this will need to do it or if this will be deprecated.
+        // NJW TODO: Delete if not needed.
         return false;
     }
 }
