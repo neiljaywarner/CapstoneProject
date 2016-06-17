@@ -61,5 +61,8 @@
     </string>
 
 
+    <!-- SyncAdapter related,got from sunshine b/c was hhaving auth errors.. -->
+    <string name="sync_account_type">disciplestoday.org</string>
+    <string name="content_authority">com.example.android.sunshine.app</string>
 
 </resources>

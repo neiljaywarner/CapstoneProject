@@ -1,7 +1,6 @@
 package org.disciplestoday.disciplestoday;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,10 +27,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
-
-import org.disciplestoday.disciplestoday.utils.SyncUtils;
-
-import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 
 public class MainActivity extends AppCompatActivity
@@ -64,7 +59,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SyncUtils.CreateSyncAccount(this);
+        Log.e("NJW", "onCreate of MainActivity");
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
@@ -105,7 +100,7 @@ public class MainActivity extends AppCompatActivity
         webviewLocator.setVisibility(View.GONE);
         ArticleListFragment listFragment = ArticleListFragment.newInstance(menuItem);
 
-
+        Log.e("NJW", "About t show fragment");
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.article_list_container, listFragment)
                 .commit();

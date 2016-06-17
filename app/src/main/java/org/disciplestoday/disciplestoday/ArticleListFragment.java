@@ -1,5 +1,6 @@
 package org.disciplestoday.disciplestoday;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -31,6 +32,7 @@ import com.squareup.picasso.Picasso;
 import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
 import org.disciplestoday.disciplestoday.data.DTContentProvider;
 import org.disciplestoday.disciplestoday.data.FeedLoaderAsyncTask;
+import org.disciplestoday.disciplestoday.utils.SyncUtils;
 
 import java.util.List;
 
@@ -156,8 +158,13 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mArticles = cupboard().withCursor(data).list(Article.class);
-        updateUI();
+        if (data == null) {
+            Log.e("NJW", "DATA NULL");
+        } else {
+            mArticles = cupboard().withCursor(data).list(Article.class);
+            updateUI();
+        }
+
     }
 
     @Override
@@ -172,7 +179,20 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         super.onSaveInstanceState(outState);
     }
         //using https://github.com/aegis123/Bettyskitchen-app/blob/master/BettysKitchen-app/src/main/java/com/bettys/kitchen/recipes/app/activities/MainActivity.java
+    /**
+     * Create SyncAccount at launch, if needed.
+     *
+     * <p>This will create a new account with the system for our application, register our
+     * {@link org.disciplestoday.disciplestoday.sync.SyncService
+     * } with it, and establish a sync schedule.
+     */
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
 
+        // Create account, if needed
+        SyncUtils.CreateSyncAccount(activity);
+    }
 
 
     private void updateUI() {

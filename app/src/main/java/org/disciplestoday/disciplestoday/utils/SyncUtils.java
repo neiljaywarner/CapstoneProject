@@ -12,8 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * Modified Neil Warner June 2016
  */
 
 package org.disciplestoday.disciplestoday.utils;
@@ -25,14 +23,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
-
+import org.disciplestoday.disciplestoday.accounts.GenericAccountService;
 import org.disciplestoday.disciplestoday.data.DTContentProvider;
+
 
 /**
  * Static helper methods for working with the sync framework.
  */
 public class SyncUtils {
     private static final long SYNC_FREQUENCY = 60 * 60;  // 1 hour (in seconds)
+ //   private static final String CONTENT_AUTHORITY = FeedContract.CONTENT_AUTHORITY;
     private static final String CONTENT_AUTHORITY = DTContentProvider.AUTHORITY;
     private static final String PREF_SETUP_COMPLETE = "setup_complete";
 
@@ -84,13 +84,12 @@ public class SyncUtils {
      */
     public static void TriggerRefresh() {
         Bundle b = new Bundle();
-        //NJW TODO: consider Adding via parameter and bundle so we can trigger, but do we trigger for all feeds when not present. maybe
         // Disable sync backoff and ignore sync preferences. In other words...perform sync NOW!
         b.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         b.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         ContentResolver.requestSync(
                 GenericAccountService.GetAccount(),      // Sync account
-                DTContentProvider.AUTHORITY, // Content authority
+                CONTENT_AUTHORITY, // Content authority
                 b);                                      // Extras
     }
 }

@@ -102,15 +102,20 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     /*
      * Put the data transfer code here.
      */
-
+        Log.d("NJW", "in onPerformSync");
         Call<Feed> call = getCall();
         try {
+            Log.d("NJW", "have call, about to execute.");
             Response<Feed> feedResponse = call.execute();
+            Log.d("NJW", "hjust executed.");
+
             Feed feed = feedResponse.body();
             List<Article> articles = Article.getArticles(feed);
             Uri uri = DTContentProvider.CONTENT_URI;
             uri.buildUpon().appendPath(DTContentProvider.CONTENT_TYPE);
             if (articles != null) {
+                Log.e("NJW", "have articecount:" + articles.size());
+                Log.e("NJW", "about to do uri:" + uri.toString());
                 cupboard().withContext(getContext()).put(uri, Article.class, articles);
             }
         } catch (IOException e) {
@@ -128,6 +133,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      */
     public Call<Feed> getCall()
     {
+        Log.d("NJW", "in getcall");
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();

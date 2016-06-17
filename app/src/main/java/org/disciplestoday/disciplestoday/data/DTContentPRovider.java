@@ -29,7 +29,7 @@ public class DTContentProvider extends ContentProvider {
 
     public DTContentProvider() {
     }
-    public static final String AUTHORITY = "org.disciplestoday.disciplestoday";
+    public static final String AUTHORITY = "org.disciplestoday";
 
     private static final String BASE_PATH = "articles";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
