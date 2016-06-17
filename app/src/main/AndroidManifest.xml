@@ -62,7 +62,7 @@
         package. -->
         <provider
             android:name=".provider.FeedProvider"
-            android:authorities="com.example.android.network.sync.basicsyncadapter"
+            android:authorities="org.disciplestoday.disciplestoday"
             android:exported="false" />
 
 

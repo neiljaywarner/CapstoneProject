@@ -44,7 +44,7 @@ import org.disciplestoday.disciplestoday.provider.FeedContract;
  * List fragment containing a list of Atom entry objects (articles) stored in the local database.
  *
  * <p>Database access is mediated by a content provider, specified in
- * {@link com.example.android.network.sync.basicsyncadapter.provider.FeedProvider}. This content
+ * {@link org.disciplestoday.disciplestoday.provider.FeedProvider}. This content
  * provider is
  * automatically populated by  {@link SyncService}.
  *
