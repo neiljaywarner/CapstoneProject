@@ -16,8 +16,8 @@ limitations under the License.
 -->
 
 <sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
-              android:contentAuthority="com.example.android.network.sync.basicsyncadapter"
-              android:accountType="com.example.android.network.sync.basicsyncadapter"
+              android:contentAuthority="disciplestoday.org"
+              android:accountType="disciplestoday.org"
               android:userVisible="false"
               android:supportsUploading="false"
               android:allowParallelSyncs="false"

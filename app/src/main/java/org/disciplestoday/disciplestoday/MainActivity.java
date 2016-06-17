@@ -28,6 +28,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import org.disciplestoday.disciplestoday.utils.SyncUtils;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity
        // mLayoutNews.setVisibility(View.VISIBLE);
         webviewLocator.setVisibility(View.GONE);
         ArticleListFragment listFragment = ArticleListFragment.newInstance(menuItem);
-
+        SyncUtils.TriggerRefresh();
         Log.e("NJW", "About t show fragment");
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.article_list_container, listFragment)

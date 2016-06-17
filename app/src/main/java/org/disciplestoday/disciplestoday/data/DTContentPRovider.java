@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.util.Log;
 
 import org.disciplestoday.disciplestoday.Article;
 
@@ -29,7 +30,7 @@ public class DTContentProvider extends ContentProvider {
 
     public DTContentProvider() {
     }
-    public static final String AUTHORITY = "org.disciplestoday";
+    public static final String AUTHORITY = "disciplestoday.org";
 
     private static final String BASE_PATH = "articles";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
@@ -72,6 +73,7 @@ public class DTContentProvider extends ContentProvider {
             SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
             Class clz;
             long id = Long.getLong(uri.getLastPathSegment(), 0);
+            Log.i("NJW", "in contprovvider, tryihng to insert with:" + uri.toString());
             switch (sURIMatcher.match(uri)) {
                 case ARTICLE:
                 case ARTICLES:

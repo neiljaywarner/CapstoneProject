@@ -39,7 +39,7 @@
 
         <provider
             android:name=".data.DTContentProvider"
-            android:authorities="org.disciplestoday.disciplestoday"
+            android:authorities="disciplestoday.org"
             android:enabled="true"
             android:exported="true"/>
 
@@ -57,6 +57,17 @@
             <!-- This points to an XMLf ile which describes our account service. -->
             <meta-data android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
+        </service>
+
+        <service
+            android:name="org.disciplestoday.disciplestoday.sync.SyncService"
+            android:exported="true"
+            android:process=":sync">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+            <meta-data android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
         </service>
     </application>
 

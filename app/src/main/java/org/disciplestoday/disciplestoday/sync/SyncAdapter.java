@@ -72,6 +72,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
          * from the incoming Context
          */
         mContentResolver = context.getContentResolver();
+        Log.i("NJW", "inSyncAdadpter constructor");
+
     }
 
     /**
@@ -89,7 +91,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
          * from the incoming Context
          */
         mContentResolver = context.getContentResolver();
-
+        Log.i("NJW", "inSyncAdadpter constructor");
     }
 
     @Override
@@ -102,7 +104,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     /*
      * Put the data transfer code here.
      */
-        Log.d("NJW", "in onPerformSync");
+        Log.d("NJW", "******in onPerformSync");
         Call<Feed> call = getCall();
         try {
             Log.d("NJW", "have call, about to execute.");

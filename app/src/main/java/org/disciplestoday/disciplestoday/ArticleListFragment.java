@@ -2,6 +2,7 @@ package org.disciplestoday.disciplestoday;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -187,11 +188,12 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
      * } with it, and establish a sync schedule.
      */
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
         // Create account, if needed
-        SyncUtils.CreateSyncAccount(activity);
+        Log.i("NJW", "in onAttach, which is deprecated.");
+        SyncUtils.CreateSyncAccount(context);
     }
 
 
