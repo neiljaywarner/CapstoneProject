@@ -226,6 +226,7 @@ public class FeedProvider extends ContentProvider {
                         FeedContract.Entry._ID + " INTEGER PRIMARY KEY," +
                         FeedContract.Entry.COLUMN_NAME_ENTRY_ID + TYPE_TEXT + COMMA_SEP +
                         FeedContract.Entry.COLUMN_NAME_TITLE    + TYPE_TEXT + COMMA_SEP +
+                        FeedContract.Entry.COLUMN_NAME_IMAGE_LINK    + TYPE_TEXT + COMMA_SEP +
                         FeedContract.Entry.COLUMN_NAME_LINK + TYPE_TEXT +
                         ")";
 

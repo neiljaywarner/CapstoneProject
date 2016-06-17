@@ -202,6 +202,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                     .withValue(FeedContract.Entry.COLUMN_NAME_ENTRY_ID, e.getId())
                     .withValue(FeedContract.Entry.COLUMN_NAME_TITLE, e.getTitle())
                     .withValue(FeedContract.Entry.COLUMN_NAME_LINK, e.getLink())
+                    .withValue(FeedContract.Entry.COLUMN_NAME_IMAGE_LINK, e.getImageUrl())
                     .build());
             syncResult.stats.numInserts++;
         }

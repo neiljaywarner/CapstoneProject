@@ -75,11 +75,11 @@ public class FeedContract {
          * Article title
          */
         public static final String COLUMN_NAME_TITLE = "title";
-        /**
-         * Article hyperlink. Corresponds to the rel="alternate" link in the
-         * Atom spec.
-         */
+
         public static final String COLUMN_NAME_LINK = "link";
+
+        public static final String COLUMN_NAME_IMAGE_LINK = "imageLink";
+
         /**
          * Date article was published.
          */
