@@ -29,6 +29,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import org.disciplestoday.disciplestoday.utils.SyncUtils;
+
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 
@@ -52,10 +54,17 @@ public class MainActivity extends AppCompatActivity
     private View mLayoutNews;
     private MenuItem mNavMenuItem;
 
+    // using https://developer.android.com/training/sync-adapters/creating-sync-adapter.html
+    // for now, which says The best place to call the method (addAccountExplicitly)
+    // is in the onCreate() method of your app's opening activity.
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SyncUtils.CreateSyncAccount(this);
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
