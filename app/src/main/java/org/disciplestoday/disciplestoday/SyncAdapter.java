@@ -65,7 +65,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * SyncService.
  */
 class SyncAdapter extends AbstractThreadedSyncAdapter {
-    public static final String TAG = "SyncAdapter";
+    //public static final String TAG = "SyncAdapter";
+    public static final String TAG = "NJW";
 
     /**
      * URL to fetch content from during a sync.
@@ -143,7 +144,9 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         Call<Feed> call = getCall();
         try {
             Response<Feed> feedResponse = call.execute();
+            Log.e("NJW", "Just executed call. Returned code:" + feedResponse.code());
             Feed feed = feedResponse.body();
+            Log.d(TAG, "site=" + feed.getSite().getName());
             updateLocalFeedData(feed, syncResult);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
@@ -180,15 +183,18 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
             throws IOException, XmlPullParserException, RemoteException,
             OperationApplicationException, ParseException {
 
-        List<Item> entries = feed.getItems();
 
-        Log.i(TAG, "Parsing complete. Found " + entries.size() + " entries");
+        Log.i(TAG, "About to convert feed of items to articles.");
+
+        List<Article> articles = Article.getArticles(feed);
+
+        Log.i(TAG, "Parsing complete. " + articles.size() + " articles");
 
         ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
 
-        // Build hash table of incoming entries
-        HashMap<String, Item> entryMap = new HashMap<String, Item>();
-        for (Item e : entries) {
+        // Build hash table of incoming articles
+        HashMap<String, Article> entryMap = new HashMap<String, Article>();
+        for (Article e : articles) {
             entryMap.put(e.getId(), e);
         }
 
@@ -196,13 +202,13 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
 
         // Add new items
-        for (Item e : entryMap.values()) {
+        for (Article e : entryMap.values()) {
             Log.i(TAG, "Scheduling insert: entry_id=" + e.getId());
             batch.add(ContentProviderOperation.newInsert(FeedContract.Entry.CONTENT_URI)
                     .withValue(FeedContract.Entry.COLUMN_NAME_ENTRY_ID, e.getId())
                     .withValue(FeedContract.Entry.COLUMN_NAME_TITLE, e.getTitle())
                     .withValue(FeedContract.Entry.COLUMN_NAME_LINK, e.getLink())
-                    .withValue(FeedContract.Entry.COLUMN_NAME_IMAGE_LINK, e.getImageUrl())
+                    .withValue(FeedContract.Entry.COLUMN_NAME_IMAGE_LINK, e.getImageLink())
                     .build());
             syncResult.stats.numInserts++;
         }

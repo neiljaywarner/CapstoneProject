@@ -97,15 +97,6 @@ public class SelectionBuilder {
         }
     }
 
-    public SelectionBuilder mapToTable(String column, String table) {
-        mProjectionMap.put(column, table + "." + column);
-        return this;
-    }
-
-    public SelectionBuilder map(String fromColumn, String toClause) {
-        mProjectionMap.put(fromColumn, toClause + " AS " + fromColumn);
-        return this;
-    }
 
     /**
      * Return selection string for current internal state.

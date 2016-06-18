@@ -35,8 +35,13 @@ public class Article {
     private Long _id; // for db/cupboard.
     private String id;
     private String title;
+    private String link;
     private String imageLink;
     private String moduleId; //353 for highlighted, etc.
+
+    private String fullText;
+    private String author;
+    private String summary; //or description, byline, etc.
 
 
     public String getCategoryId() {
@@ -67,11 +72,7 @@ public class Article {
         return link;
     }
 
-    private String link;
 
-    private String fullText;
-    private String author;
-    private String summary; //or description, byline, etc.
 
     // zero arg constructor for sqllite/cupboard?
     public Article() {

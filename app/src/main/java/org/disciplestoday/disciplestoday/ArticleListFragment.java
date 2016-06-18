@@ -1,5 +1,6 @@
 package org.disciplestoday.disciplestoday;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -31,8 +32,14 @@ import com.squareup.picasso.Picasso;
 import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
 import org.disciplestoday.disciplestoday.data.DisciplesTodayContentProvider;
 import org.disciplestoday.disciplestoday.data.FeedLoaderAsyncTask;
+import org.disciplestoday.disciplestoday.data.Item;
+import org.disciplestoday.disciplestoday.provider.FeedContract;
+import org.disciplestoday.disciplestoday.provider.FeedProvider;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import nl.qbusict.cupboard.QueryResultIterable;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
@@ -40,8 +47,8 @@ import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
 
 public class ArticleListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = ArticleListFragment.class.getSimpleName();
-
+   // private static final String TAG = ArticleListFragment.class.getSimpleName();
+    public static final String TAG = "NJW";
     private static final String ARG_NAV_ID = "arg_nav_item_id";
     private static final int LOADER_ID = 100;
     private List<Article> mArticles;
@@ -65,7 +72,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
      * @return Instance of fragment to display list of articles
      */
     public static ArticleListFragment newInstance(MenuItem menuItem) {
-        Log.i("NJW", "Navigation Menu Item:" + menuItem.getTitle());
+        Log.i("NJW", "newInstance ArticlelistFragment with Navigation Menu Item:" + menuItem.getTitle());
         ArticleListFragment fragment = new ArticleListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_NAV_ID, menuItem.getItemId());
@@ -133,30 +140,65 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         return root;
     }
 
+    /**
+     * Create SyncAccount at launch, if needed.
+     *
+     * <p>This will create a new account with the system for our application, register our
+     * {@link SyncService} with it, and establish a sync schedule.
+     */
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Log.d(TAG, "onAttach() called with: activity = [" + activity + "]");
+        // Create account, if needed
+        SyncUtils.CreateSyncAccount(activity);
+    }
+
+
+
+    /*
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String moduleId = "";
-        /*
+        *//*
         if (args == null) {
             //moduleId = "353"; //HIGHLIGHTED
             mNavItemId = R.id.nav_highlighted;
         } else {
             mNavItemId = getArguments().getInt(ARG_NAV_ID);
         }
-        */
+        *//*
 
         Log.i("NJW", "in onCreateLoader");
         String[] projection = { Article.FIELD_ID, Article.FIELD_TITLE };
         projection = null;
         //TODO: remove projection if it is not neede.
         CursorLoader cursorLoader = new CursorLoader(this.getContext(),
-                DisciplesTodayContentProvider.CONTENT_URI, projection, null, null, null);
+                FeedProvider.CONTENT_URI, projection, null, null, null);
         return cursorLoader;
+    }
+*/
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        // We only have one loader, so we can ignore the value of i.
+        // (It'll be '0', as set in onCreate().)
+        return new CursorLoader(getActivity(),  // Context
+                FeedContract.Entry.CONTENT_URI, // URI
+                null,                // Projection
+                null,                           // Selection
+                null,                           // Selection args
+                null); // Sort string is optional
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mArticles = cupboard().withCursor(data).list(Article.class);
+        if (mArticles == null) {
+            Log.e("NJW", "marticles=null, no articles in db?");
+        } else {
+            Log.e("NJW", "just finished loading articles, count=" + mArticles.size());
+        }
         updateUI();
     }
 

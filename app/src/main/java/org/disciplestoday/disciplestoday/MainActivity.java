@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity
         webviewLocator.setVisibility(View.GONE);
         ArticleListFragment listFragment = ArticleListFragment.newInstance(menuItem);
 
-
+        Log.i("NJW", "Showing list fragment");
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.article_list_container, listFragment)
                 .commit();

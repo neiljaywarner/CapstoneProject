@@ -40,40 +40,36 @@ public class FeedContract {
     /**
      * Path component for "entry"-type resources..
      */
-    private static final String PATH_ENTRIES = "entries";
+    private static final String PATH_articles = "articles";
 
     /**
-     * Columns supported by "entries" records.
+     * Columns supported by "articles" records.
      */
     public static class Entry implements BaseColumns {
         /**
-         * MIME type for lists of entries.
+         * MIME type for lists of articles.
          */
         public static final String CONTENT_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.disciplestoday.entries";
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.disciplestoday.articles";
         /**
-         * MIME type for individual entries.
+         * MIME type for individual articles.
          */
         public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.disciplestoday.entry";
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.disciplestoday.article";
 
         /**
          * Fully qualified URI for "entry" resources.
          */
         public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_ENTRIES).build();
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_articles).build();
 
+
+        public static final String TABLE_NAME = "Article";
         /**
-         * Table name where records are stored for "entry" resources.
+         * Article ID. (Note: Not to be confused with the database primary key, which is _ID.
          */
-        public static final String TABLE_NAME = "entry";
-        /**
-         * Atom ID. (Note: Not to be confused with the database primary key, which is _ID.
-         */
-        public static final String COLUMN_NAME_ENTRY_ID = "entry_id";
-        /**
-         * Article title
-         */
+        public static final String COLUMN_NAME_ENTRY_ID = "id";
+
         public static final String COLUMN_NAME_TITLE = "title";
 
         public static final String COLUMN_NAME_LINK = "link";

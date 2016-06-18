@@ -24,17 +24,20 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.util.Log;
 
+import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
 import org.disciplestoday.disciplestoday.utils.SelectionBuilder;
 
 
 public class FeedProvider extends ContentProvider {
-    FeedDatabase mDatabaseHelper;
+    CupboardSQLiteOpenHelper mDatabaseHelper;
 
     /**
      * Content authority for this provider.
      */
     private static final String AUTHORITY = FeedContract.CONTENT_AUTHORITY;
+    public static final String TAG = "NJW";
 
     // The constants below represent individual URI routes, as IDs. Every URI pattern recognized by
     // this ContentProvider is defined using sUriMatcher.addURI(), and associated with one of these
@@ -43,40 +46,40 @@ public class FeedProvider extends ContentProvider {
     // When a incoming URI is run through sUriMatcher, it will be tested against the defined
     // URI patterns, and the corresponding route ID will be returned.
     /**
-     * URI ID for route: /entries
+     * URI ID for route: /articles
      */
-    public static final int ROUTE_ENTRIES = 1;
+    public static final int ROUTE_articles = 1;
 
     /**
-     * URI ID for route: /entries/{ID}
+     * URI ID for route: /articles/{ID}
      */
-    public static final int ROUTE_ENTRIES_ID = 2;
+    public static final int ROUTE_articles_ID = 2;
 
     /**
      * UriMatcher, used to decode incoming URIs.
      */
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
-        sUriMatcher.addURI(AUTHORITY, "entries", ROUTE_ENTRIES);
-        sUriMatcher.addURI(AUTHORITY, "entries/*", ROUTE_ENTRIES_ID);
+        sUriMatcher.addURI(AUTHORITY, "articles", ROUTE_articles);
+        sUriMatcher.addURI(AUTHORITY, "articles/*", ROUTE_articles_ID);
     }
 
     @Override
     public boolean onCreate() {
-        mDatabaseHelper = new FeedDatabase(getContext());
+        mDatabaseHelper = new CupboardSQLiteOpenHelper(getContext());
         return true;
     }
 
     /**
-     * Determine the mime type for entries returned by a given URI.
+     * Determine the mime type for articles returned by a given URI.
      */
     @Override
     public String getType(Uri uri) {
         final int match = sUriMatcher.match(uri);
         switch (match) {
-            case ROUTE_ENTRIES:
+            case ROUTE_articles:
                 return FeedContract.Entry.CONTENT_TYPE;
-            case ROUTE_ENTRIES_ID:
+            case ROUTE_articles_ID:
                 return FeedContract.Entry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -86,22 +89,24 @@ public class FeedProvider extends ContentProvider {
     /**
      * Perform a database query by URI.
      *
-     * <p>Currently supports returning all entries (/entries) and individual entries by ID
-     * (/entries/{ID}).
+     * <p>Currently supports returning all articles (/articles) and individual articles by ID
+     * (/articles/{ID}).
      */
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
+        Log.d(TAG, "query() called with: uri = [" + uri + "], projection = [" + projection + "], selection = [" + selection + "], selectionArgs = [" + selectionArgs + "], sortOrder = [" + sortOrder + "]");
+
         SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
         SelectionBuilder builder = new SelectionBuilder();
         int uriMatch = sUriMatcher.match(uri);
         switch (uriMatch) {
-            case ROUTE_ENTRIES_ID:
+            case ROUTE_articles_ID:
                 // Return a single entry, by ID.
                 String id = uri.getLastPathSegment();
                 builder.where(FeedContract.Entry._ID + "=?", id);
-            case ROUTE_ENTRIES:
-                // Return all known entries.
+            case ROUTE_articles:
+                // Return all known articles.
                 builder.table(FeedContract.Entry.TABLE_NAME)
                        .where(selection, selectionArgs);
                 Cursor c = builder.query(db, projection, sortOrder);
@@ -121,16 +126,18 @@ public class FeedProvider extends ContentProvider {
      */
     @Override
     public Uri insert(Uri uri, ContentValues values) {
+        Log.d(TAG, "insert() called with: uri = [" + uri + "], values = [" + values + "]");
         final SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
         assert db != null;
         final int match = sUriMatcher.match(uri);
         Uri result;
         switch (match) {
-            case ROUTE_ENTRIES:
+            case ROUTE_articles:
                 long id = db.insertOrThrow(FeedContract.Entry.TABLE_NAME, null, values);
+                Log.i("TAG", "probaby inserted sucesfully; id=" + id);
                 result = Uri.parse(FeedContract.Entry.CONTENT_URI + "/" + id);
                 break;
-            case ROUTE_ENTRIES_ID:
+            case ROUTE_articles_ID:
                 throw new UnsupportedOperationException("Insert not supported on URI: " + uri);
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -152,12 +159,12 @@ public class FeedProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         int count;
         switch (match) {
-            case ROUTE_ENTRIES:
+            case ROUTE_articles:
                 count = builder.table(FeedContract.Entry.TABLE_NAME)
                         .where(selection, selectionArgs)
                         .delete(db);
                 break;
-            case ROUTE_ENTRIES_ID:
+            case ROUTE_articles_ID:
                 String id = uri.getLastPathSegment();
                 count = builder.table(FeedContract.Entry.TABLE_NAME)
                        .where(FeedContract.Entry._ID + "=?", id)
@@ -184,12 +191,12 @@ public class FeedProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         int count;
         switch (match) {
-            case ROUTE_ENTRIES:
+            case ROUTE_articles:
                 count = builder.table(FeedContract.Entry.TABLE_NAME)
                         .where(selection, selectionArgs)
                         .update(db, values);
                 break;
-            case ROUTE_ENTRIES_ID:
+            case ROUTE_articles_ID:
                 String id = uri.getLastPathSegment();
                 count = builder.table(FeedContract.Entry.TABLE_NAME)
                         .where(FeedContract.Entry._ID + "=?", id)
@@ -211,17 +218,18 @@ public class FeedProvider extends ContentProvider {
      * Provides access to an disk-backed, SQLite datastore which is utilized by FeedProvider. This
      * database should never be accessed by other parts of the application directly.
      */
-    static class FeedDatabase extends SQLiteOpenHelper {
-        /** Schema version. */
+
+   /* static class FeedDatabase extends SQLiteOpenHelper {
+        *//** Schema version. *//*
         public static final int DATABASE_VERSION = 1;
-        /** Filename for SQLite file. */
-        public static final String DATABASE_NAME = "feed.db";
+        *//** Filename for SQLite file. *//*
+        public static final String DATABASE_NAME = "articles.db";
 
         private static final String TYPE_TEXT = " TEXT";
         private static final String TYPE_INTEGER = " INTEGER";
         private static final String COMMA_SEP = ",";
-        /** SQL statement to create "entry" table. */
-        private static final String SQL_CREATE_ENTRIES =
+        *//** SQL statement to create "entry" table. *//*
+        private static final String SQL_CREATE_articles =
                 "CREATE TABLE " + FeedContract.Entry.TABLE_NAME + " (" +
                         FeedContract.Entry._ID + " INTEGER PRIMARY KEY," +
                         FeedContract.Entry.COLUMN_NAME_ENTRY_ID + TYPE_TEXT + COMMA_SEP +
@@ -230,8 +238,8 @@ public class FeedProvider extends ContentProvider {
                         FeedContract.Entry.COLUMN_NAME_LINK + TYPE_TEXT +
                         ")";
 
-        /** SQL statement to drop "entry" table. */
-        private static final String SQL_DELETE_ENTRIES =
+        *//** SQL statement to drop "entry" table. *//*
+        private static final String SQL_DELETE_articles =
                 "DROP TABLE IF EXISTS " + FeedContract.Entry.TABLE_NAME;
 
         public FeedDatabase(Context context) {
@@ -240,15 +248,16 @@ public class FeedProvider extends ContentProvider {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            db.execSQL(SQL_CREATE_ENTRIES);
+            db.execSQL(SQL_CREATE_articles);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             // This database is only a cache for online data, so its upgrade policy is
             // to simply to discard the data and start over
-            db.execSQL(SQL_DELETE_ENTRIES);
+            db.execSQL(SQL_DELETE_articles);
             onCreate(db);
         }
-    }
+    }*/
+
 }
