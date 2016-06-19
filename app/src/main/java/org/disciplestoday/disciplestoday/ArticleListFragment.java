@@ -46,7 +46,6 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
     private List<Article> mArticles;
     private RecyclerView recyclerView;
 
-    private int mNavItemId;
     private String mModuleId = "288"; //"353" highlighted, "288" campus
 
     /**
@@ -59,14 +58,14 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
 
     /**
      *
-     * @param menuItem - NavigationDrawer Menu Item
+     * @param moduleId - ModuleId for newsFeed for query string param
      * @return Instance of fragment to display list of articles
      */
-    public static ArticleListFragment newInstance(MenuItem menuItem) {
-        Log.i("NJW", "newInstance ArticlelistFragment with Navigation Menu Item:" + menuItem.getTitle());
+    public static ArticleListFragment newInstance(String moduleId) {
+        Log.i("NJW", "newInstance ArticlelistFragment with Navigation Menu Item:" + moduleId);
         ArticleListFragment fragment = new ArticleListFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_NAV_ID, menuItem.getItemId());
+        args.putString(ARG_NAV_ID, moduleId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -88,8 +87,10 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         mCupboardSQLiteOpenHelper = new CupboardSQLiteOpenHelper(this.getActivity().getApplicationContext());
         mDb = mCupboardSQLiteOpenHelper.getWritableDatabase();
         if (getArguments() != null) {
-            mNavItemId = getArguments().getInt(ARG_NAV_ID);
-            Log.i("NJW", "Setting mNavItemId" + mNavItemId);
+            mModuleId = getArguments().getString(ARG_NAV_ID);
+            Log.i("NJW", "Setting Module Id " + mModuleId);
+        } else {
+            mModuleId = "353"; // Highlighted feed
         }
     }
 
@@ -179,7 +180,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(ARG_NAV_ID, mNavItemId);
+        outState.putString(ARG_NAV_ID, mModuleId);
         super.onSaveInstanceState(outState);
     }
         //using https://github.com/aegis123/Bettyskitchen-app/blob/master/BettysKitchen-app/src/main/java/com/bettys/kitchen/recipes/app/activities/MainActivity.java

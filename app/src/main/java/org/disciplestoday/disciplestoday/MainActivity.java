@@ -1,7 +1,6 @@
 package org.disciplestoday.disciplestoday;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,8 +27,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
-
-import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 
 public class MainActivity extends AppCompatActivity
@@ -91,12 +88,13 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void showFragment(MenuItem menuItem) {
+    private void showNewsFeedFragment(MenuItem menuItem) {
        // mLayoutNews.setVisibility(View.VISIBLE);
         webviewLocator.setVisibility(View.GONE);
-        ArticleListFragment listFragment = ArticleListFragment.newInstance(menuItem);
+        String moduleId = getModuleId(menuItem);
+        ArticleListFragment listFragment = ArticleListFragment.newInstance(moduleId);
 
-        Log.i("NJW", "Showing list fragment");
+        Log.i("NJW", "Showing list fragment:" + menuItem.getTitle());
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.article_list_container, listFragment)
                 .commit();
@@ -152,7 +150,7 @@ public class MainActivity extends AppCompatActivity
                     setPageTitle(item);
                     trackFeedSelection(item.getTitleCondensed().toString());
                     mLayoutNews.setVisibility(View.INVISIBLE);
-                    showFragment(item);
+                    showNewsFeedFragment(item);
                 }
 
                 //TODO: (Someday) Let this list be loaded from local storage so the user doesn't see the ones s/he's not interested in.
@@ -358,7 +356,7 @@ public class MainActivity extends AppCompatActivity
                                             .getItem(NEWS_MENU_INDEX).getSubMenu()
                                             .getItem(deepLinkSubMenuIndex);
 
-                                    showFragment(newsFeedMenuItem);
+                                    showNewsFeedFragment(newsFeedMenuItem);
                                     // Because autoLaunchDeepLink = true we don't have to do anything
                                     // here, but we could set that to false and manually choose
                                     // an Activity to launch to handle the deep link here.
@@ -373,5 +371,33 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
 
+    private String getModuleId(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.nav_campus:
+                return "288";
+            case R.id.nav_singles:
+                return "273";
+            case R.id.nav_bible_study:
+                return "270";
+            case R.id.nav_commentary:
+                return "347";
+            case R.id.nav_kingdom_kids:
+                return "289";
+            case R.id.nav_youth_and_family:
+                return "271";
+            case R.id.nav_missions:
+                return "334";
+            case R.id.nav_man_up:
+                return "272";
+            case R.id.nav_specialty_ministries:
+                return "359";
+            case R.id.nav_regional_news:
+                return "358";
+            default:
+                return "353";
 
+        }
+
+
+    }
 }

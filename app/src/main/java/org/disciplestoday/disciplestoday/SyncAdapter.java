@@ -143,9 +143,19 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
 
 
-        // 353 = Highlighted, 288 campus
-        syncDownloadFeed(syncResult, "353");
+        // TODO: Fix magic #s, but they correspond to values in MainActivity.getModuleId() and the query parameters of the feeds
+        // Download all feeds
+        syncDownloadFeed(syncResult, "353"); // should we?
         syncDownloadFeed(syncResult, "288");
+        syncDownloadFeed(syncResult, "273");
+        syncDownloadFeed(syncResult, "270");
+        syncDownloadFeed(syncResult, "347");
+        syncDownloadFeed(syncResult, "289");
+        syncDownloadFeed(syncResult, "271");
+        syncDownloadFeed(syncResult, "334");
+        syncDownloadFeed(syncResult, "272");
+        syncDownloadFeed(syncResult, "359");
+        syncDownloadFeed(syncResult, "358");
 
         Log.i(TAG, "Network synchronization complete");
     }
