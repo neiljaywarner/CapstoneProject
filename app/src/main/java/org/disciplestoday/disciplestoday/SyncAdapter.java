@@ -192,12 +192,12 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
             Log.i(TAG, "Scheduling insert: entry_id=" + e.getId());
             batch.add(ContentProviderOperation.newInsert(FeedContract.Entry.CONTENT_URI)
                     .withValue(FeedContract.Entry.COLUMN_NAME_ARTICLE_ID, e.getId())
-                    .withValue(FeedContract.Entry.COLUMN_NAME_MODULE_ID, e.getId())
+                    .withValue(FeedContract.Entry.COLUMN_NAME_MODULE_ID, e.getModuleId())
                     .withValue(FeedContract.Entry.COLUMN_NAME_TITLE, e.getTitle())
                     .withValue(FeedContract.Entry.COLUMN_NAME_IMAGE_LINK, e.getImageLink())
-                    .withValue(FeedContract.Entry.COLUMN_NAME_FULL_TEXT, e.getTitle())
-                    .withValue(FeedContract.Entry.COLUMN_NAME_AUTHOR, e.getTitle())
-                    .withValue(FeedContract.Entry.COLUMN_NAME_SUMMARY, e.getTitle())
+                    .withValue(FeedContract.Entry.COLUMN_NAME_FULL_TEXT, e.getFullText())
+                    .withValue(FeedContract.Entry.COLUMN_NAME_AUTHOR, e.getAuthor())
+                    .withValue(FeedContract.Entry.COLUMN_NAME_SUMMARY, e.getSummary())
                     .withValue(FeedContract.Entry.COLUMN_NAME_LINK, e.getLink())
                     .build());
             syncResult.stats.numInserts++;

@@ -47,6 +47,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
     private RecyclerView recyclerView;
 
     private int mNavItemId;
+    private String mModuleId = "288"; //"353" highlighted, "288" campus
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -147,14 +148,17 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public Loader<Cursor> onCreateLoader(int loader_id, Bundle bundle) {
-
+        String[] selectionArgs = new String[] {mModuleId};
+        final String selection = "moduleId = ?";
         return new CursorLoader(getActivity(),  // Context
                 FeedContract.Entry.CONTENT_URI, // URI
                 null,                // Projection
-                null,                           // Selection
-                null,                           // Selection args
+                selection,                           // Selection
+                selectionArgs,                           // Selection args
                 null); // Sort string is optional
     }
+
+    //TODO: Best practice use sselectionarrgs
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
