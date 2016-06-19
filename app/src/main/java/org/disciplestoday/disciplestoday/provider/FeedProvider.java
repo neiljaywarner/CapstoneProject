@@ -22,7 +22,6 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.util.Log;
 
@@ -31,7 +30,7 @@ import org.disciplestoday.disciplestoday.utils.SelectionBuilder;
 
 
 public class FeedProvider extends ContentProvider {
-    CupboardSQLiteOpenHelper mDatabaseHelper;
+    private CupboardSQLiteOpenHelper mDatabaseHelper;
 
     /**
      * Content authority for this provider.
@@ -48,19 +47,19 @@ public class FeedProvider extends ContentProvider {
     /**
      * URI ID for route: /articles
      */
-    public static final int ROUTE_articles = 1;
+    private static final int ROUTE_ARTICLES = 1;
 
     /**
      * URI ID for route: /articles/{ID}
      */
-    public static final int ROUTE_articles_ID = 2;
+    private static final int ROUTE_articles_ID = 2;
 
     /**
      * UriMatcher, used to decode incoming URIs.
      */
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
-        sUriMatcher.addURI(AUTHORITY, "articles", ROUTE_articles);
+        sUriMatcher.addURI(AUTHORITY, "articles", ROUTE_ARTICLES);
         sUriMatcher.addURI(AUTHORITY, "articles/*", ROUTE_articles_ID);
     }
 
@@ -77,7 +76,7 @@ public class FeedProvider extends ContentProvider {
     public String getType(Uri uri) {
         final int match = sUriMatcher.match(uri);
         switch (match) {
-            case ROUTE_articles:
+            case ROUTE_ARTICLES:
                 return FeedContract.Entry.CONTENT_TYPE;
             case ROUTE_articles_ID:
                 return FeedContract.Entry.CONTENT_ITEM_TYPE;
@@ -105,7 +104,7 @@ public class FeedProvider extends ContentProvider {
                 // Return a single entry, by ID.
                 String id = uri.getLastPathSegment();
                 builder.where(FeedContract.Entry._ID + "=?", id);
-            case ROUTE_articles:
+            case ROUTE_ARTICLES:
                 // Return all known articles.
                 builder.table(FeedContract.Entry.TABLE_NAME)
                        .where(selection, selectionArgs);
@@ -132,7 +131,7 @@ public class FeedProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         Uri result;
         switch (match) {
-            case ROUTE_articles:
+            case ROUTE_ARTICLES:
                 long id = db.insertOrThrow(FeedContract.Entry.TABLE_NAME, null, values);
                 Log.i("TAG", "probaby inserted sucesfully; id=" + id);
                 result = Uri.parse(FeedContract.Entry.CONTENT_URI + "/" + id);
@@ -159,7 +158,7 @@ public class FeedProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         int count;
         switch (match) {
-            case ROUTE_articles:
+            case ROUTE_ARTICLES:
                 count = builder.table(FeedContract.Entry.TABLE_NAME)
                         .where(selection, selectionArgs)
                         .delete(db);
@@ -191,7 +190,7 @@ public class FeedProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         int count;
         switch (match) {
-            case ROUTE_articles:
+            case ROUTE_ARTICLES:
                 count = builder.table(FeedContract.Entry.TABLE_NAME)
                         .where(selection, selectionArgs)
                         .update(db, values);
@@ -211,53 +210,5 @@ public class FeedProvider extends ContentProvider {
         ctx.getContentResolver().notifyChange(uri, null, false);
         return count;
     }
-
-    /**
-     * SQLite backend for @{link FeedProvider}.
-     *
-     * Provides access to an disk-backed, SQLite datastore which is utilized by FeedProvider. This
-     * database should never be accessed by other parts of the application directly.
-     */
-
-   /* static class FeedDatabase extends SQLiteOpenHelper {
-        *//** Schema version. *//*
-        public static final int DATABASE_VERSION = 1;
-        *//** Filename for SQLite file. *//*
-        public static final String DATABASE_NAME = "articles.db";
-
-        private static final String TYPE_TEXT = " TEXT";
-        private static final String TYPE_INTEGER = " INTEGER";
-        private static final String COMMA_SEP = ",";
-        *//** SQL statement to create "entry" table. *//*
-        private static final String SQL_CREATE_articles =
-                "CREATE TABLE " + FeedContract.Entry.TABLE_NAME + " (" +
-                        FeedContract.Entry._ID + " INTEGER PRIMARY KEY," +
-                        FeedContract.Entry.COLUMN_NAME_ENTRY_ID + TYPE_TEXT + COMMA_SEP +
-                        FeedContract.Entry.COLUMN_NAME_TITLE    + TYPE_TEXT + COMMA_SEP +
-                        FeedContract.Entry.COLUMN_NAME_IMAGE_LINK    + TYPE_TEXT + COMMA_SEP +
-                        FeedContract.Entry.COLUMN_NAME_LINK + TYPE_TEXT +
-                        ")";
-
-        *//** SQL statement to drop "entry" table. *//*
-        private static final String SQL_DELETE_articles =
-                "DROP TABLE IF EXISTS " + FeedContract.Entry.TABLE_NAME;
-
-        public FeedDatabase(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL(SQL_CREATE_articles);
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            // This database is only a cache for online data, so its upgrade policy is
-            // to simply to discard the data and start over
-            db.execSQL(SQL_DELETE_articles);
-            onCreate(db);
-        }
-    }*/
 
 }

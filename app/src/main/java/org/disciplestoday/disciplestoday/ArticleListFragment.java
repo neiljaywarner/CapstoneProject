@@ -52,9 +52,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
     private static final String ARG_NAV_ID = "arg_nav_item_id";
     private static final int LOADER_ID = 100;
     private List<Article> mArticles;
-    private FeedLoaderAsyncTask asyncTask;
     private RecyclerView recyclerView;
-    private WebView webviewLocator;
 
     private int mNavItemId;
 
@@ -150,39 +148,14 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.d(TAG, "onAttach() called with: activity = [" + activity + "]");
-        // Create account, if needed
+        // Create account, if needed, which on app open causes the initial data sync.
         SyncUtils.CreateSyncAccount(activity);
     }
 
 
-
-    /*
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String moduleId = "";
-        *//*
-        if (args == null) {
-            //moduleId = "353"; //HIGHLIGHTED
-            mNavItemId = R.id.nav_highlighted;
-        } else {
-            mNavItemId = getArguments().getInt(ARG_NAV_ID);
-        }
-        *//*
+    public Loader<Cursor> onCreateLoader(int loader_id, Bundle bundle) {
 
-        Log.i("NJW", "in onCreateLoader");
-        String[] projection = { Article.FIELD_ID, Article.FIELD_TITLE };
-        projection = null;
-        //TODO: remove projection if it is not neede.
-        CursorLoader cursorLoader = new CursorLoader(this.getContext(),
-                FeedProvider.CONTENT_URI, projection, null, null, null);
-        return cursorLoader;
-    }
-*/
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        // We only have one loader, so we can ignore the value of i.
-        // (It'll be '0', as set in onCreate().)
         return new CursorLoader(getActivity(),  // Context
                 FeedContract.Entry.CONTENT_URI, // URI
                 null,                // Projection
@@ -195,9 +168,9 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mArticles = cupboard().withCursor(data).list(Article.class);
         if (mArticles == null) {
-            Log.e("NJW", "marticles=null, no articles in db?");
+            Log.e("NJW", "NO Articles in the database, what happened?");
         } else {
-            Log.e("NJW", "just finished loading articles, count=" + mArticles.size());
+            Log.i("NJW", "just finished loading articles, count=" + mArticles.size());
         }
         updateUI();
     }
@@ -214,8 +187,6 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         super.onSaveInstanceState(outState);
     }
         //using https://github.com/aegis123/Bettyskitchen-app/blob/master/BettysKitchen-app/src/main/java/com/bettys/kitchen/recipes/app/activities/MainActivity.java
-
-
 
     private void updateUI() {
         Log.i("NJW", "in updateUI");
@@ -362,9 +333,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
                         });
             }
 
-
             holder.mContentView.setText(Html.fromHtml(item.getTitle()));
-
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -405,7 +374,6 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         }
     }
 
-    //TODO: FIX FOR TABLET MUCH LATER, just cleanup code
     private void showArticle(Article article) {
         trackContentSelection(article);
 
@@ -429,19 +397,6 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
-    //TODO: track view list and duration from selection to view.
     // https://developers.google.com/android/reference/com/google/firebase/analytics/FirebaseAnalytics.Event.html#constants
-/*
-    public void storeArticles(List<Article> articles) {
-        Log.i("NJW", "***in storeArticles");
-        for (Article article : articles) {
-            storeArticle(mDb, article);
-        }
-    }
-    public static long storeArticle(SQLiteDatabase database, Article article) {
-        Log.e("NJW", "Storing to db article:" + article.getTitle());
-        return cupboard().withDatabase(database).put(article);
-    }
-    */
 
 }

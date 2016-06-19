@@ -40,7 +40,6 @@ public class Item {
     }
 
 
-
     //NOTE: Must match json. TODO: use annotation so it doesn't have to.
     @SerializedName("extra_fields")
     private List<ExtraField> extra_fields;
