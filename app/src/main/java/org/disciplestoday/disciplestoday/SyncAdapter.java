@@ -143,9 +143,15 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
 
 
-        // 353 = Highlighted
-        String moduleId = "353";
-        Call<Feed> call = getCall();
+        // 353 = Highlighted, 288 campus
+        syncDownloadFeed(syncResult, "353");
+        syncDownloadFeed(syncResult, "288");
+
+        Log.i(TAG, "Network synchronization complete");
+    }
+
+    private void syncDownloadFeed(SyncResult syncResult, String moduleId) {
+        Call<Feed> call = getCall(moduleId);
         try {
             Response<Feed> feedResponse = call.execute();
             Log.e("NJW", "Just executed call. Returned code:" + feedResponse.code());
@@ -155,13 +161,8 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
-            return;
-
         }
-        Log.i(TAG, "Network synchronization complete");
     }
-
-
 
 
     public void updateLocalFeedData(String moduleId, Feed feed, final SyncResult syncResult)
@@ -169,7 +170,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
             OperationApplicationException, ParseException {
 
 
-        Log.i(TAG, "About to convert feed of items to articles.");
+        Log.i(TAG, "ModuleId"+ moduleId + ":About to convert feed of items to articles.");
 
         List<Article> articles = Article.getArticles(moduleId, feed);
 
@@ -231,7 +232,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
      * get call based on mItemId
      * @return
      */
-    public Call<Feed> getCall() {
+    public Call<Feed> getCall(String moduleId) {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
@@ -248,8 +249,6 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 .build();
 
         DTService service = retrofit.create(DTService.class);
-        String moduleId = "";
-        moduleId = "353";
         return service.listFeed(moduleId);
 
         /*
