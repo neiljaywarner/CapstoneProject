@@ -35,7 +35,6 @@ import com.google.gson.GsonBuilder;
 
 import org.disciplestoday.disciplestoday.data.DTService;
 import org.disciplestoday.disciplestoday.data.Feed;
-import org.disciplestoday.disciplestoday.data.Item;
 import org.disciplestoday.disciplestoday.provider.FeedContract;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -96,7 +95,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
      */
     private static final String[] PROJECTION = new String[] {
             FeedContract.Entry._ID,
-            FeedContract.Entry.COLUMN_NAME_ENTRY_ID,
+            FeedContract.Entry.COLUMN_NAME_ARTICLE_ID,
             FeedContract.Entry.COLUMN_NAME_TITLE,
             FeedContract.Entry.COLUMN_NAME_LINK};
 
@@ -141,13 +140,18 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
         Log.i(TAG, "Beginning network synchronization");
+
+
+
+        // 353 = Highlighted
+        String moduleId = "353";
         Call<Feed> call = getCall();
         try {
             Response<Feed> feedResponse = call.execute();
             Log.e("NJW", "Just executed call. Returned code:" + feedResponse.code());
             Feed feed = feedResponse.body();
             Log.d(TAG, "site=" + feed.getSite().getName());
-            updateLocalFeedData(feed, syncResult);
+            updateLocalFeedData(moduleId,feed, syncResult);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
@@ -159,34 +163,15 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
 
 
-    /**
-     * Read XML from an input stream, storing it into the content provider.
-     *
-     * <p>This is where incoming data is persisted, committing the results of a sync. In order to
-     * minimize (expensive) disk operations, we compare incoming data with what's already in our
-     * database, and compute a merge. Only changes (insert/update/delete) will result in a database
-     * write.
-     *
-     * <p>As an additional optimization, we use a batch operation to perform all database writes at
-     * once.
-     *
-     * <p>Merge strategy:
-     * 1. Get cursor to all items in feed<br/>
-     * 2. For each item, check if it's in the incoming data.<br/>
-     *    a. YES: Remove from "incoming" list. Check if data has mutated, if so, perform
-     *            database UPDATE.<br/>
-     *    b. NO: Schedule DELETE from database.<br/>
-     * (At this point, incoming database only contains missing items.)<br/>
-     * 3. For any items remaining in incoming list, ADD to database.
-     */
-    public void updateLocalFeedData(Feed feed, final SyncResult syncResult)
+
+    public void updateLocalFeedData(String moduleId, Feed feed, final SyncResult syncResult)
             throws IOException, XmlPullParserException, RemoteException,
             OperationApplicationException, ParseException {
 
 
         Log.i(TAG, "About to convert feed of items to articles.");
 
-        List<Article> articles = Article.getArticles(feed);
+        List<Article> articles = Article.getArticles(moduleId, feed);
 
         Log.i(TAG, "Parsing complete. " + articles.size() + " articles");
 
@@ -205,14 +190,18 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         for (Article e : entryMap.values()) {
             Log.i(TAG, "Scheduling insert: entry_id=" + e.getId());
             batch.add(ContentProviderOperation.newInsert(FeedContract.Entry.CONTENT_URI)
-                    .withValue(FeedContract.Entry.COLUMN_NAME_ENTRY_ID, e.getId())
+                    .withValue(FeedContract.Entry.COLUMN_NAME_ARTICLE_ID, e.getId())
+                    .withValue(FeedContract.Entry.COLUMN_NAME_MODULE_ID, e.getId())
                     .withValue(FeedContract.Entry.COLUMN_NAME_TITLE, e.getTitle())
-                    .withValue(FeedContract.Entry.COLUMN_NAME_LINK, e.getLink())
                     .withValue(FeedContract.Entry.COLUMN_NAME_IMAGE_LINK, e.getImageLink())
+                    .withValue(FeedContract.Entry.COLUMN_NAME_FULL_TEXT, e.getTitle())
+                    .withValue(FeedContract.Entry.COLUMN_NAME_AUTHOR, e.getTitle())
+                    .withValue(FeedContract.Entry.COLUMN_NAME_SUMMARY, e.getTitle())
+                    .withValue(FeedContract.Entry.COLUMN_NAME_LINK, e.getLink())
                     .build());
             syncResult.stats.numInserts++;
         }
-        Log.i(TAG, "Merge solution ready. Applying batch update");
+
         mContentResolver.applyBatch(FeedContract.CONTENT_AUTHORITY, batch);
         mContentResolver.notifyChange(
                 FeedContract.Entry.CONTENT_URI, // URI where data was modified

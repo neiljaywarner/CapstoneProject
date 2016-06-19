@@ -11,6 +11,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import org.disciplestoday.disciplestoday.Article;
+import org.disciplestoday.disciplestoday.provider.FeedContract;
+
+import nl.qbusict.cupboard.convert.EntityConverter;
 
 public class CupboardSQLiteOpenHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "disciplestoday.db";
@@ -26,11 +29,33 @@ public class CupboardSQLiteOpenHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    private static final String TYPE_TEXT = " TEXT";
+    private static final String TYPE_INTEGER = " INTEGER";
+    private static final String COMMA_SEP = ",";
+    /** SQL statement to create "entry" table. */
+
+    private static final String SQL_CREATE_articles =
+            "CREATE TABLE " + FeedContract.Entry.TABLE_NAME + " (" +
+                    FeedContract.Entry._ID + " INTEGER PRIMARY KEY," +
+                    FeedContract.Entry.COLUMN_NAME_ARTICLE_ID    + TYPE_TEXT  + " UNIQUE NOT NULL"+ COMMA_SEP +
+                    FeedContract.Entry.COLUMN_NAME_MODULE_ID    + TYPE_TEXT + COMMA_SEP +
+                    FeedContract.Entry.COLUMN_NAME_TITLE    + TYPE_TEXT + COMMA_SEP +
+                    FeedContract.Entry.COLUMN_NAME_IMAGE_LINK    + TYPE_TEXT + COMMA_SEP +
+                    FeedContract.Entry.COLUMN_NAME_FULL_TEXT    + TYPE_TEXT + COMMA_SEP +
+                    FeedContract.Entry.COLUMN_NAME_AUTHOR    + TYPE_TEXT + COMMA_SEP +
+                    FeedContract.Entry.COLUMN_NAME_SUMMARY    + TYPE_TEXT + COMMA_SEP +
+                    FeedContract.Entry.COLUMN_NAME_LINK + TYPE_TEXT +
+                    ")";
+
+    //TODO: Category_id field for a menu option for 'hope'
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         // this will ensure that all tables are created
-        cupboard().withDatabase(db).createTables();
-        // add indexes and other database tweaks
+        //using my own create statement to get the unique constraint on article_id
+        db.execSQL(SQL_CREATE_articles);
+
+        // TODO: Do we need any constraints?
     }
 
     @Override

@@ -21,7 +21,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,16 +29,9 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
-import org.disciplestoday.disciplestoday.data.DisciplesTodayContentProvider;
-import org.disciplestoday.disciplestoday.data.FeedLoaderAsyncTask;
-import org.disciplestoday.disciplestoday.data.Item;
 import org.disciplestoday.disciplestoday.provider.FeedContract;
-import org.disciplestoday.disciplestoday.provider.FeedProvider;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import nl.qbusict.cupboard.QueryResultIterable;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;

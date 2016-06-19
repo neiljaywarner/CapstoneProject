@@ -122,6 +122,14 @@ public class FeedProvider extends ContentProvider {
 
     /**
      * Insert a new entry into the database.
+     * NOTE: When the same article is already there, just replace.  This does four important things
+     * 1. Keeps us from having duplicates
+     * (In our case there could even be duplicates from feed to feed we'd rather not clog up our db with)
+     * TOOD: Make sure no side effects though - does constraint need tweaked - could near duplicate be in 2 feeds, etc?
+     * 2. Lets us grab all 10 all the time and never nave a problem
+     * 3. Lets us get updates if there are some, which woudl be expected behaviour.
+     * ----- If content is updated (fix a typo or whatever) and you said 'no, keep the old one' you'd lose valuable info
+     * 4. Leaves it up to well-tested deeply internal sqllite code to do it :)
      */
     @Override
     public Uri insert(Uri uri, ContentValues values) {
@@ -132,7 +140,7 @@ public class FeedProvider extends ContentProvider {
         Uri result;
         switch (match) {
             case ROUTE_ARTICLES:
-                long id = db.insertOrThrow(FeedContract.Entry.TABLE_NAME, null, values);
+                long id = db.insertWithOnConflict(FeedContract.Entry.TABLE_NAME, FeedContract.Entry.COLUMN_NAME_ARTICLE_ID, values, SQLiteDatabase.CONFLICT_REPLACE);
                 Log.i("TAG", "probaby inserted sucesfully; id=" + id);
                 result = Uri.parse(FeedContract.Entry.CONTENT_URI + "/" + id);
                 break;

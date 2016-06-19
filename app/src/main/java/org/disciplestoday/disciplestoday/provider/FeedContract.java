@@ -68,16 +68,27 @@ public class FeedContract {
         /**
          * Article ID. (Note: Not to be confused with the database primary key, which is _ID.
          */
-        public static final String COLUMN_NAME_ENTRY_ID = "id";
+        public static final String COLUMN_NAME_ARTICLE_ID = "id";
+
+        public static final String COLUMN_NAME_MODULE_ID = "moduleId";
 
         public static final String COLUMN_NAME_TITLE = "title";
 
-        public static final String COLUMN_NAME_LINK = "link";
-
         public static final String COLUMN_NAME_IMAGE_LINK = "imageLink";
 
-        /**
-         * Date article was published.
-         */
+        public static final String COLUMN_NAME_FULL_TEXT = "fullText";
+
+        public static final String COLUMN_NAME_AUTHOR = "author";
+
+        public static final String COLUMN_NAME_SUMMARY = "summary";
+
+        public static final String COLUMN_NAME_LINK = "link";
+
+
+
+
+
+
+
     }
 }

@@ -34,6 +34,8 @@ public class Article {
 
     private Long _id; // for db/cupboard.
     private String id;
+    private String categoryId; //Use this info to display hope info that has no rss feed...
+
     private String title;
     private String link;
     private String imageLink;
@@ -53,7 +55,6 @@ public class Article {
         return this;
     }
 
-    private String categoryId; //Use this info to display hope info that has no rss feed...
 
 
 
@@ -79,8 +80,10 @@ public class Article {
 
     }
 
-    private Article(String id, String title, String imageLink, String author, String summary, String fullText, String link) {
-        this.id = id;
+    //TODO: Add categoryid so we can add a feed for hope.
+    private Article(String moduleId, String articleId, String title, String imageLink, String author, String summary, String fullText, String link) {
+        this.id = articleId;
+        this.moduleId = moduleId;
         this.title = title;
         this.imageLink = imageLink;
         this.fullText = fullText.replace("images/", IMAGE_BASE_URL + "/images/");;
@@ -96,10 +99,6 @@ public class Article {
     public String getTitle() {
         return title;
     }
-
-
-
-
 
     /**
      *
@@ -125,10 +124,10 @@ public class Article {
      * @param item
      * @return
      */
-    public static Article newArticle(Item item) {
+    public static Article newArticle(String moduleId, Item item) {
         String author = item.getCreated_by_alias();
         if ((item.getExtraFields() == null) || item.getExtraFields().size() == 0) {
-            return new Article(item.getId(), item.getTitle(), item.getImageUrl(), author,
+            return new Article(moduleId, item.getId(), item.getTitle(), item.getImageUrl(), author,
                     item.getIntroText(), item.getFulltext(), item.getLink());
         }
 
@@ -136,7 +135,7 @@ public class Article {
         String description = item.getExtraFields().get(1).getValue();
         String image = item.getImageUrl();
 
-        return new Article(item.getId(), title, image, author, description, item.getFulltext(), item.getLink());
+        return new Article(moduleId, item.getId(), title, image, author, description, item.getFulltext(), item.getLink());
     }
 
     public String getImageLink() {
@@ -152,14 +151,14 @@ public class Article {
         }
     }
 
-    public static List<Article> getArticles(Feed feed) {
+    public static List<Article> getArticles(String moduleId, Feed feed) {
         List<Article> articles = new ArrayList<>();
         if (feed.getItems() == null) {
             return null;
         }
 
         for (Item item : feed.getItems()) {
-            articles.add(newArticle(item));
+            articles.add(newArticle(moduleId, item));
         }
         return  articles;
     }
