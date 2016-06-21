@@ -32,7 +32,7 @@ import org.disciplestoday.disciplestoday.provider.FeedContract;
  * Static helper methods for working with the sync framework.
  */
 public class SyncUtils {
-    private static final long SYNC_FREQUENCY = 60 * 60;  // 1 hour (in seconds)
+    private static final long SYNC_FREQUENCY = 60 * 60 * 12;  // 12 hours (in seconds)
 
     private static final String CONTENT_AUTHORITY = FeedContract.CONTENT_AUTHORITY;
     public static final String PREF_SETUP_COMPLETE = "setup_complete";
@@ -69,6 +69,7 @@ public class SyncUtils {
         if (newAccount || !setupComplete) {
             Log.i("NJW", "New account or setup incomplete, triggering refresh of initial module:" + moduleId);
             TriggerRefresh(moduleId);
+            //Probably not needed, triggering refresh for each screen if 0 files in db... simpler code..
 
         }
     }
