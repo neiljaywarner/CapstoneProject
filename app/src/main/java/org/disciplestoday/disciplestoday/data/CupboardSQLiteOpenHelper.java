@@ -37,7 +37,7 @@ public class CupboardSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_articles =
             "CREATE TABLE " + FeedContract.Entry.TABLE_NAME + " (" +
                     FeedContract.Entry._ID + " INTEGER PRIMARY KEY," +
-                    FeedContract.Entry.COLUMN_NAME_ARTICLE_ID    + TYPE_TEXT  + " UNIQUE NOT NULL"+ COMMA_SEP +
+                    FeedContract.Entry.COLUMN_NAME_ARTICLE_ID    + TYPE_TEXT  + " NOT NULL"+ COMMA_SEP +
                     FeedContract.Entry.COLUMN_NAME_MODULE_ID    + TYPE_TEXT + COMMA_SEP +
                     FeedContract.Entry.COLUMN_NAME_TITLE    + TYPE_TEXT + COMMA_SEP +
                     FeedContract.Entry.COLUMN_NAME_IMAGE_LINK    + TYPE_TEXT + COMMA_SEP +
@@ -45,9 +45,11 @@ public class CupboardSQLiteOpenHelper extends SQLiteOpenHelper {
                     FeedContract.Entry.COLUMN_NAME_AUTHOR    + TYPE_TEXT + COMMA_SEP +
                     FeedContract.Entry.COLUMN_NAME_SUMMARY    + TYPE_TEXT + COMMA_SEP +
                     FeedContract.Entry.COLUMN_NAME_LINK + TYPE_TEXT +
-                    ")";
+                    ", UNIQUE ("  + FeedContract.Entry.COLUMN_NAME_ARTICLE_ID + "," + FeedContract.Entry.COLUMN_NAME_MODULE_ID +"))";
 
     //TODO: Category_id field for a menu option for 'hope'
+    // see http://stackoverflow.com/questions/2701877/sqlite-table-constraint-unique-on-multiple-columns
+    // so that you can have duplicates within each feed, eg article with multiple moduleIds.
 
     @Override
     public void onCreate(SQLiteDatabase db) {

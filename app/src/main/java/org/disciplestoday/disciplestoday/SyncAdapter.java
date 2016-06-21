@@ -139,7 +139,6 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         // TODO: Fix magic #s, but they correspond to values in MainActivity.getModuleId() and the query parameters of the feeds
         // Download all feeds
         syncDownloadFeed(syncResult, "353"); // should we?
-        /*
         syncDownloadFeed(syncResult, "288");
         syncDownloadFeed(syncResult, "273");
         syncDownloadFeed(syncResult, "270");
@@ -150,7 +149,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         syncDownloadFeed(syncResult, "272");
         syncDownloadFeed(syncResult, "359");
         syncDownloadFeed(syncResult, "358");
-        */
+
 
         Log.i(TAG, "Network synchronization complete");
     }
