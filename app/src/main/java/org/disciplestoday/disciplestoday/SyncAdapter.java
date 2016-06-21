@@ -67,13 +67,6 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     //public static final String TAG = "SyncAdapter";
     public static final String TAG = "NJW";
 
-    /**
-     * URL to fetch content from during a sync.
-     *
-     * <p>This points to the Android Developers Blog. (Side note: We highly recommend reading the
-     * Android Developer Blog to stay up to date on the latest Android platform developments!)
-     */
-    private static final String FEED_URL = "http://android-developers.blogspot.com/atom.xml";
 
     /**
      * Network connection timeout, in milliseconds.
@@ -146,6 +139,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         // TODO: Fix magic #s, but they correspond to values in MainActivity.getModuleId() and the query parameters of the feeds
         // Download all feeds
         syncDownloadFeed(syncResult, "353"); // should we?
+        /*
         syncDownloadFeed(syncResult, "288");
         syncDownloadFeed(syncResult, "273");
         syncDownloadFeed(syncResult, "270");
@@ -156,6 +150,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         syncDownloadFeed(syncResult, "272");
         syncDownloadFeed(syncResult, "359");
         syncDownloadFeed(syncResult, "358");
+        */
 
         Log.i(TAG, "Network synchronization complete");
     }
@@ -180,11 +175,9 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
             OperationApplicationException, ParseException {
 
 
-        Log.i(TAG, "ModuleId"+ moduleId + ":About to convert feed of items to articles.");
-
         List<Article> articles = Article.getArticles(moduleId, feed);
 
-        Log.i(TAG, "Parsing complete. " + articles.size() + " articles");
+        Log.i(TAG, "***ModuoleId:"  + moduleId + " Parsing complete. " + articles.size() + " articles");
 
         ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
 
@@ -223,23 +216,8 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
 
-
     /**
-     * Given a string representation of a URL, sets up a connection and gets an input stream.
-     */
-    private InputStream downloadUrl(final URL url) throws IOException {
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setReadTimeout(NET_READ_TIMEOUT_MILLIS /* milliseconds */);
-        conn.setConnectTimeout(NET_CONNECT_TIMEOUT_MILLIS /* milliseconds */);
-        conn.setRequestMethod("GET");
-        conn.setDoInput(true);
-        // Starts the query
-        conn.connect();
-        return conn.getInputStream();
-    }
-
-    /**
-     * get call based on mItemId
+     * get call based on moduleid
      * @return
      */
     public Call<Feed> getCall(String moduleId) {

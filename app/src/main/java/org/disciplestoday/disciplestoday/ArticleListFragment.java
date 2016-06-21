@@ -78,14 +78,12 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         return fragment;
     }
     private CupboardSQLiteOpenHelper mCupboardSQLiteOpenHelper;
-    private SQLiteDatabase mDb;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mCupboardSQLiteOpenHelper = new CupboardSQLiteOpenHelper(this.getActivity().getApplicationContext());
-        mDb = mCupboardSQLiteOpenHelper.getWritableDatabase();
         if (getArguments() != null) {
             mModuleId = getArguments().getString(ARG_NAV_ID);
             Log.i("NJW", "Setting Module Id " + mModuleId);
@@ -175,6 +173,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         // anything to do here?
+
     }
 
 
