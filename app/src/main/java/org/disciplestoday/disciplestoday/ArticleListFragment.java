@@ -46,7 +46,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
     private List<Article> mArticles;
     private RecyclerView recyclerView;
 
-    private String mModuleId = "288"; //"353" highlighted, "288" campus
+    private String mModuleId; //"353" highlighted, "288" campus
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -89,7 +89,11 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
             Log.i("NJW", "Setting Module Id " + mModuleId);
         } else {
             mModuleId = "353"; // Highlighted feed
+            //TODO: Test this with FB invites, if a problem, switch to getActivity.getExtras() so that i can get correct navid in onAttach.
         }
+
+        SyncUtils.CreateSyncAccount(this.getContext(), mModuleId);
+
     }
 
     @Override
@@ -141,12 +145,12 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         super.onAttach(activity);
         Log.d(TAG, "onAttach() called with: activity = [" + activity + "]");
         // Create account, if needed, which on app open causes the initial data sync.
-        SyncUtils.CreateSyncAccount(activity);
     }
 
 
     @Override
     public Loader<Cursor> onCreateLoader(int loader_id, Bundle bundle) {
+        Log.e("NJW7777", "Creating loader for:" + mModuleId);
         String[] selectionArgs = new String[] {mModuleId};
         final String selection = "moduleId = ?";
         return new CursorLoader(getActivity(),  // Context
@@ -161,11 +165,18 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.e("NJW7777", "Loader finished for:" + mModuleId);
+
         mArticles = cupboard().withCursor(data).list(Article.class);
         if (mArticles == null) {
-            Log.e("NJW", "NO Articles in the database, what happened?");
+            Log.e("NJW7777", "NO Articles in the database, what happened?");
+            SyncUtils.TriggerRefresh(mModuleId);
         } else {
-            Log.i("NJW", "just finished loading articles, count=" + mArticles.size());
+            Log.i("NJW7777", "just finished loading articles, count=" + mArticles.size());
+            if (mArticles.size() == 0) {
+                Log.e("NJW7777", "NO Articles in the database, what happened?");
+                SyncUtils.TriggerRefresh(mModuleId);
+            }
         }
         updateUI();
     }

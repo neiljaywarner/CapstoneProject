@@ -94,7 +94,7 @@ public class FeedProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
-        Log.d(TAG, "--->>query() called with: uri = [" + uri + "], projection = [" + projection + "], selection = [" + selection + "], selectionArgs = [" + selectionArgs + "], sortOrder = [" + sortOrder + "]");
+      //  Log.d(TAG, "--->>query() called with: uri = [" + uri + "], projection = [" + projection + "], selection = [" + selection + "], selectionArgs = [" + selectionArgs + "], sortOrder = [" + sortOrder + "]");
 
         SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
         SelectionBuilder builder = new SelectionBuilder();
@@ -133,7 +133,7 @@ public class FeedProvider extends ContentProvider {
      */
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        Log.d(TAG, "insert() called with: uri = [" + uri + "], values = [" + values + "]");
+      //  Log.d(TAG, "insert() called with: uri = [" + uri + "], values = [" + values + "]");
         final SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
         assert db != null;
         final int match = sUriMatcher.match(uri);
@@ -141,7 +141,6 @@ public class FeedProvider extends ContentProvider {
         switch (match) {
             case ROUTE_ARTICLES:
                 long id = db.insertWithOnConflict(FeedContract.Entry.TABLE_NAME, FeedContract.Entry.COLUMN_NAME_ARTICLE_ID, values, SQLiteDatabase.CONFLICT_REPLACE);
-                Log.i("TAG", "probaby inserted sucesfully; id=" + id);
                 result = Uri.parse(FeedContract.Entry.CONTENT_URI + "/" + id);
                 break;
             case ROUTE_articles_ID:

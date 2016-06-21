@@ -26,6 +26,7 @@ import android.content.OperationApplicationException;
 import android.content.SyncResult;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 
@@ -54,6 +55,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static org.disciplestoday.disciplestoday.SyncUtils.PREF_SETUP_COMPLETE;
+
 /**
  * Define a sync adapter for the app.
  *
@@ -65,7 +68,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 class SyncAdapter extends AbstractThreadedSyncAdapter {
     //public static final String TAG = "SyncAdapter";
-    public static final String TAG = "NJW";
+    public static final String TAG = "NJWSyncAdapter";
 
 
     /**
@@ -77,6 +80,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
      * Network read timeout, in milliseconds.
      */
     private static final int NET_READ_TIMEOUT_MILLIS = 10000;  // 10 seconds
+    public static final String ARGS_MODULE_ID = "arg_module_id";
 
     /**
      * Content resolver, for performing database operations.
@@ -132,12 +136,42 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
-        Log.i(TAG, "Beginning network synchronization");
+        Log.i(TAG+"OPS", "Beginning network synchronization");
 
 
 
         // TODO: Fix magic #s, but they correspond to values in MainActivity.getModuleId() and the query parameters of the feeds
         // Download all feeds
+        if (extras == null) {
+            Log.e("NJW", "extra=null");
+            return;
+        }
+
+        if (extras != null && extras.getString(ARGS_MODULE_ID) != null) {
+            String moduleId = extras.getString(ARGS_MODULE_ID);
+            Log.i("NJW7777", "-->Syncing:" + moduleId);
+            syncDownloadFeed(syncResult, moduleId);
+        } else {
+          //  syncAllFeeds(syncResult);
+            boolean setupComplete = PreferenceManager
+                    .getDefaultSharedPreferences(this.getContext()).getBoolean(PREF_SETUP_COMPLETE, false);
+
+            if (setupComplete) {
+                Log.e("NJW7777", "-->Sync all feeds!");
+                syncAllFeeds(syncResult);
+            } else {
+                PreferenceManager.getDefaultSharedPreferences(this.getContext()).edit()
+                        .putBoolean(PREF_SETUP_COMPLETE, true).commit();
+                Log.e("NJW7777", "-->Sync all feeds next time... (marking setup complete)");
+            }
+
+        }
+
+        Log.i(TAG+"OPS", "Network synchronization complete");
+    }
+
+    private void syncAllFeeds(SyncResult syncResult) {
+        Log.e("NJW7777", "********Syncing all feeds every 2 minutes******");
         syncDownloadFeed(syncResult, "353"); // should we?
         syncDownloadFeed(syncResult, "288");
         syncDownloadFeed(syncResult, "273");
@@ -149,9 +183,6 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         syncDownloadFeed(syncResult, "272");
         syncDownloadFeed(syncResult, "359");
         syncDownloadFeed(syncResult, "358");
-
-
-        Log.i(TAG, "Network synchronization complete");
     }
 
     private void syncDownloadFeed(SyncResult syncResult, String moduleId) {
@@ -176,7 +207,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         List<Article> articles = Article.getArticles(moduleId, feed);
 
-        Log.i(TAG, "***ModuoleId:"  + moduleId + " Parsing complete. " + articles.size() + " articles");
+        Log.i(TAG, "***ModuleID:"  + moduleId + " Parsing complete. " + articles.size() + " articles");
 
         ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
 
@@ -191,7 +222,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         // Add new items
         for (Article e : entryMap.values()) {
-            Log.i(TAG, "Scheduling insert: entry_id=" + e.getId());
+            //Log.i(TAG, "Scheduling insert: entry_id=" + e.getId());
             batch.add(ContentProviderOperation.newInsert(FeedContract.Entry.CONTENT_URI)
                     .withValue(FeedContract.Entry.COLUMN_NAME_ARTICLE_ID, e.getId())
                     .withValue(FeedContract.Entry.COLUMN_NAME_MODULE_ID, e.getModuleId())
