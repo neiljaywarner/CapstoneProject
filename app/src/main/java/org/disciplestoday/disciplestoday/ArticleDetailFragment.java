@@ -13,6 +13,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.graphics.Palette;
 import android.text.Html;
 import android.util.Log;
@@ -24,6 +25,8 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
 import com.google.android.gms.appinvite.AppInvite;
 import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.android.gms.common.ConnectionResult;
@@ -111,7 +114,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
-                appBarLayout.setTitle(mTitle);
+                appBarLayout.setTitle(Html.fromHtml(mTitle));
                 appBarLayout.setExpandedTitleColor(ContextCompat.getColor(activity, android.R.color.transparent));
 
 
@@ -153,6 +156,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
 
 
 
+
                 //TODO: Try adding introtext as textview/metabar so it does't look like a wall of text, confirm from client
 
                 fabShare.setOnClickListener(new View.OnClickListener() {
@@ -184,8 +188,13 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
         */
 
         WebView webview = (WebView) rootView.findViewById(R.id.article_detail);
-        mFullText = Html.fromHtml(mFullText).toString();
-        webview.loadData(mFullText, "text/html; charset=utf-8", "utf-8");
+        Log.e("NJW7", mFullText);
+        String displayString = Html.fromHtml(mFullText).toString();
+        Log.e("NJW7", displayString);
+
+        displayString = Html.fromHtml(displayString).toString();
+        Log.e("NJW7", displayString);
+        webview.loadData(displayString, "text/html; charset=utf-8", "utf-8");
 
 
         return rootView;

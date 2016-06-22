@@ -339,8 +339,12 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
                             }
                         });
             }
-
-            holder.mContentView.setText(Html.fromHtml(item.getTitle()));
+            /*
+            Log.e("NJW", "item.getTitle" + item.getTitle());
+            String titleDisplayString = Html.fromHtml(item.getTitle()).toString();
+            Log.e("NJW", titleDisplayString);
+            */
+            holder.mContentView.setText(item.getTitle());
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

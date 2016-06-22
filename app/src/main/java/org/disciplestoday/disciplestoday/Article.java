@@ -1,7 +1,9 @@
 package org.disciplestoday.disciplestoday;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.disciplestoday.disciplestoday.data.DTService;
@@ -97,16 +99,22 @@ public class Article {
     }
 
     public String getTitle() {
-        return title;
+        return Html.fromHtml(title).toString();
     }
 
     /**
      *
      * @return html-escaped text with duplicate images hidden. (for use in webview)
      */
+    /*
     String getFullText() {
         String text = fullText;
         return Html.escapeHtml(text);
+    }
+    */
+
+    public String getFullText() {
+        return Html.fromHtml(fullText).toString();
     }
 
     public String getAuthor() {
@@ -126,20 +134,23 @@ public class Article {
      */
     public static Article newArticle(String moduleId, Item item) {
         String author = item.getCreated_by_alias();
+        String fullText = item.getFulltext();
+        if (TextUtils.isEmpty(fullText)) {
+            fullText = item.getIntroText();
+        }
         if ((item.getExtraFields() == null) || item.getExtraFields().size() == 0) {
             return new Article(moduleId, item.getId(), item.getTitle(), item.getImageUrl(), author,
-                    item.getIntroText(), item.getFulltext(), item.getLink());
+                    item.getIntroText(), fullText, item.getLink());
         }
 
         String title = item.getExtraFields().get(0).getValue();
         String description = item.getExtraFields().get(1).getValue();
         String image = item.getImageUrl();
-
-        return new Article(moduleId, item.getId(), title, image, author, description, item.getFulltext(), item.getLink());
+        return new Article(moduleId, item.getId(), title, image, author, description, fullText, item.getLink());
     }
 
     public String getImageLink() {
-        return imageLink;
+        return Uri.decode(imageLink);
     }
 
     public String getDetailImageLink() {
@@ -147,7 +158,7 @@ public class Article {
         if (s1.contains(imageLink)) {
             return "duplicate_image:'" + imageLink + "'";
         } else {
-            return imageLink;
+            return Uri.decode(imageLink);
         }
     }
 
