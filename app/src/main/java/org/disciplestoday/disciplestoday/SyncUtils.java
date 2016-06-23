@@ -32,10 +32,11 @@ import org.disciplestoday.disciplestoday.provider.FeedContract;
  * Static helper methods for working with the sync framework.
  */
 public class SyncUtils {
-    private static final long SYNC_FREQUENCY = 60 * 60 * 12;  // 12 hours (in seconds)
+    private static final long SYNC_FREQUENCY = 60 * 60 * 7;  // 7 hours (in seconds)
 
     private static final String CONTENT_AUTHORITY = FeedContract.CONTENT_AUTHORITY;
-    public static final String PREF_SETUP_COMPLETE = "setup_complete";
+    static final String PREF_SETUP_COMPLETE = "setup_complete";
+    private static final String TAG = SyncUtils.class.getSimpleName();
 
     /**
      * Create an entry for this application in the system account list, if it isn't already there.
@@ -67,7 +68,7 @@ public class SyncUtils {
         // data has been deleted. (Note that it's possible to clear app data WITHOUT affecting
         // the account list, so wee need to check both.)
         if (newAccount || !setupComplete) {
-            Log.i("NJW", "New account or setup incomplete, triggering refresh of initial module:" + moduleId);
+            Log.i(TAG, "New account or setup incomplete, triggering refresh of initial module:" + moduleId);
             TriggerRefresh(moduleId);
             //Probably not needed, triggering refresh for each screen if 0 files in db... simpler code..
 
@@ -93,7 +94,7 @@ public class SyncUtils {
         b.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         b.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         b.putString(SyncAdapter.ARGS_MODULE_ID, moduleId);
-        Log.e("NJW7", "***Triggering Refresh for moduleId:" + moduleId);
+        Log.e(TAG, "***Triggering Refresh for moduleId:" + moduleId);
         ContentResolver.requestSync(
                 GenericAccountService.GetAccount(),      // Sync account
                 FeedContract.CONTENT_AUTHORITY, // Content authority

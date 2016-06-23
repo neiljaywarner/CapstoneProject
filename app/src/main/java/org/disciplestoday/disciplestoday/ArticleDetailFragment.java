@@ -9,11 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.graphics.Palette;
 import android.text.Html;
 import android.util.Log;
@@ -23,10 +20,7 @@ import android.view.ViewGroup;
 import android.webkit.URLUtil;
 import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.GlideUrl;
 import com.google.android.gms.appinvite.AppInvite;
 import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.android.gms.common.ConnectionResult;
@@ -35,7 +29,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.net.URLDecoder;
 
 import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
 
@@ -62,19 +55,13 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
     public static final String TAG = ArticleDetailFragment.class.getSimpleName();
     private static final int REQUEST_INVITE = 100 ;
 
-    public FirebaseAnalytics mFirebaseAnalytics;
-    private GoogleApiClient mGoogleApiClient;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
-
-
-    //TOOD: Use parcelable and/or remove these items (remember to handle saveInstanceState)
     private String mArticleId;
     private String mTitle;
     private String mLink;
     private String mFullText;
     private String mImageUrl;
-    // TODO: Use package for network with the classes to parse gson, and package model for data model to be passed as parcelable
-    // and/or used with content provider.
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -88,7 +75,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
         super.onCreate(savedInstanceState);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this.getActivity());
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this.getContext())
+        GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this.getContext())
                 .addApi(AppInvite.API)
                 .enableAutoManage(this.getActivity(), this)
                 .build();
@@ -195,21 +182,10 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.article_detail, container, false);
 
-        // TODO: Use id from content provider to get item
-        /*
-        if (mItem != null) {
-           //Load via parcelable for performance?
-           //load list via contentprovider and cursorloaders.
-        }
-        */
-
         WebView webview = (WebView) rootView.findViewById(R.id.article_detail);
-        Log.e("NJW7", mFullText);
         String displayString = Html.fromHtml(mFullText).toString();
-        Log.e("NJW7", displayString);
 
-        displayString = Html.fromHtml(displayString).toString();
-        Log.e("NJW7", displayString);
+       // displayString = Html.fromHtml(displayString).toString();
         webview.loadData(displayString, "text/html; charset=utf-8", "utf-8");
 
 
@@ -224,13 +200,6 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
         fab.setRippleColor(lightVibrantColor);
         fab.setBackgroundTintList(ColorStateList.valueOf(vibrantColor));
         fab.setVisibility(View.VISIBLE);
-    }
-    //TODO: Use advertising ID so we get interests and more geographic data.
-    //TODO: We could consider tracking how long it takes to load things as      params.putDouble(Param.VALUE, 10ms);
-
-    //TODO: Use this one after i have content provider and use share.
-    private void trackContentShare(Article article) {
-        trackContentShare(article.getId(), article.getTitle());
     }
 
     private void trackContentShare(String id, String title) {

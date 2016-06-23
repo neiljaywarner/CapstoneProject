@@ -8,10 +8,6 @@ import java.util.List;
 
 public class Feed {
 
-    public Site getSite() {
-        return site;
-    }
-
     private Site site;
 
     private List<Item> items;
@@ -19,7 +15,5 @@ public class Feed {
     public List<Item> getItems() {
         return items;
     }
-
-    //TODO: Make package for network and in the network model the network/json classes can go, then in data package contnet provider and pojos go.
 
 }

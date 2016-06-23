@@ -29,7 +29,6 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -40,9 +39,6 @@ import org.disciplestoday.disciplestoday.provider.FeedContract;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,40 +63,14 @@ import static org.disciplestoday.disciplestoday.SyncUtils.PREF_SETUP_COMPLETE;
  * SyncService.
  */
 class SyncAdapter extends AbstractThreadedSyncAdapter {
-    //public static final String TAG = "SyncAdapter";
-    public static final String TAG = "NJWSyncAdapter";
+    public static final String TAG = "SyncAdapter";
 
-
-    /**
-     * Network connection timeout, in milliseconds.
-     */
-    private static final int NET_CONNECT_TIMEOUT_MILLIS = 15000;  // 15 seconds
-
-    /**
-     * Network read timeout, in milliseconds.
-     */
-    private static final int NET_READ_TIMEOUT_MILLIS = 10000;  // 10 seconds
     public static final String ARGS_MODULE_ID = "arg_module_id";
 
     /**
      * Content resolver, for performing database operations.
      */
     private final ContentResolver mContentResolver;
-
-    /**
-     * Project used when querying content provider. Returns all known fields.
-     */
-    private static final String[] PROJECTION = new String[] {
-            FeedContract.Entry._ID,
-            FeedContract.Entry.COLUMN_NAME_ARTICLE_ID,
-            FeedContract.Entry.COLUMN_NAME_TITLE,
-            FeedContract.Entry.COLUMN_NAME_LINK};
-
-    // Constants representing column positions from PROJECTION.
-    public static final int COLUMN_ID = 0;
-    public static final int COLUMN_ENTRY_ID = 1;
-    public static final int COLUMN_TITLE = 2;
-    public static final int COLUMN_LINK = 3;
 
     /**
      * Constructor. Obtains handle to content resolver for later use.
@@ -138,31 +108,28 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                               ContentProviderClient provider, SyncResult syncResult) {
         Log.i(TAG+"OPS", "Beginning network synchronization");
 
-
-
         // TODO: Fix magic #s, but they correspond to values in MainActivity.getModuleId() and the query parameters of the feeds
         // Download all feeds
         if (extras == null) {
-            Log.e("NJW", "extra=null");
+            Log.e(TAG, "extra=null");
             return;
         }
 
-        if (extras != null && extras.getString(ARGS_MODULE_ID) != null) {
+        if (extras.getString(ARGS_MODULE_ID) != null) {
             String moduleId = extras.getString(ARGS_MODULE_ID);
-            Log.i("NJW7777", "-->Syncing:" + moduleId);
+            Log.i(TAG, "-->Syncing:" + moduleId);
             syncDownloadFeed(syncResult, moduleId);
         } else {
-          //  syncAllFeeds(syncResult);
             boolean setupComplete = PreferenceManager
                     .getDefaultSharedPreferences(this.getContext()).getBoolean(PREF_SETUP_COMPLETE, false);
 
             if (setupComplete) {
-                Log.e("NJW7777", "-->Sync all feeds!");
+                Log.e(TAG, "-->Sync all feeds!");
                 syncAllFeeds(syncResult);
             } else {
                 PreferenceManager.getDefaultSharedPreferences(this.getContext()).edit()
                         .putBoolean(PREF_SETUP_COMPLETE, true).commit();
-                Log.e("NJW7777", "-->Sync all feeds next time... (marking setup complete)");
+                Log.e(TAG, "-->Sync all feeds next time... (marking setup complete)");
             }
 
         }
@@ -171,8 +138,8 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void syncAllFeeds(SyncResult syncResult) {
-        Log.e("NJW7777", "********Syncing all feeds every 2 minutes******");
-        syncDownloadFeed(syncResult, "353"); // should we?
+        Log.e(TAG, "********Syncing all feeds");
+        syncDownloadFeed(syncResult, "353");
         syncDownloadFeed(syncResult, "288");
         syncDownloadFeed(syncResult, "273");
         syncDownloadFeed(syncResult, "270");
@@ -189,9 +156,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         Call<Feed> call = getCall(moduleId);
         try {
             Response<Feed> feedResponse = call.execute();
-            Log.e("NJW", "Just executed call. Returned code:" + feedResponse.code());
             Feed feed = feedResponse.body();
-            Log.d(TAG, "site=" + feed.getSite().getName());
             updateLocalFeedData(moduleId,feed, syncResult);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
@@ -217,12 +182,8 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
             entryMap.put(e.getId(), e);
         }
 
-
-
-
         // Add new items
         for (Article e : entryMap.values()) {
-            //Log.i(TAG, "Scheduling insert: entry_id=" + e.getId());
             batch.add(ContentProviderOperation.newInsert(FeedContract.Entry.CONTENT_URI)
                     .withValue(FeedContract.Entry.COLUMN_NAME_ARTICLE_ID, e.getId())
                     .withValue(FeedContract.Entry.COLUMN_NAME_MODULE_ID, e.getModuleId())
@@ -241,8 +202,6 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                 FeedContract.Entry.CONTENT_URI, // URI where data was modified
                 null,                           // No local observer
                 false);                         // IMPORTANT: Do not sync to network
-        // This sample doesn't support uploads, but if *your* code does, make sure you set
-        // syncToNetwork=false in the line above to prevent duplicate syncs.
     }
 
 
@@ -268,54 +227,6 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         DTService service = retrofit.create(DTService.class);
         return service.listFeed(moduleId);
-
-        /*
-        @IdRes int itemId;
-        if (menuItem == null) {
-            itemId = R.id.nav_highlighted;
-            Log.i(TAG, "getCall() - HIGHLIGHTED");
-        } else {
-            itemId = menuItem.getItemId();
-            Log.i(TAG, "getCall() - MenuItem Title="+ menuItem.getTitle());
-        }
-        */
-        /*
-        @IdRes int itemId = menuItemId;
-        switch (itemId) {
-            case R.id.nav_campus:
-                moduleId = "288";
-                break;
-            case R.id.nav_singles:
-                moduleId = "273";
-                break;
-            case R.id.nav_bible_study:
-                moduleId = "270";
-                break;
-            case R.id.nav_commentary:
-                moduleId = "347";
-                break;
-            case R.id.nav_kingdom_kids:
-                moduleId = "289";
-                break;
-            case R.id.nav_youth_and_family:
-                moduleId = "271";
-                break;
-            case R.id.nav_missions:
-                moduleId = "334";
-                break;
-            case R.id.nav_man_up:
-                moduleId = "272";
-                break;
-            case R.id.nav_specialty_ministries:
-                moduleId = "359";
-                break;
-            case R.id.nav_regional_news:
-                moduleId = "358";
-                break;
-            default:
-                moduleId = "353";
-                */
-       // }
 
     }
 }
