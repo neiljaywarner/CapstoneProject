@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +33,10 @@ import com.squareup.picasso.Picasso;
 import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
 import org.disciplestoday.disciplestoday.provider.FeedContract;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.List;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
@@ -317,8 +323,15 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
             if (!imageUrl.isEmpty())
             {
 
-                Picasso.with(holder.mImageView.getContext()).load(imageUrl)
+
+                if (BuildConfig.DEBUG) {
+                    Picasso.with(holder.mImageView.getContext()).setIndicatorsEnabled(true);
+                    Picasso.with(holder.mImageView.getContext()).setLoggingEnabled(true);
+                }
+                Picasso.with(holder.mImageView.getContext())
+                        .load(Uri.parse(imageUrl))
                         .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+                        .error(R.mipmap.ic_launcher)
                         .into(holder.mImageView, new Callback() {
                             @Override public void onSuccess() {
                                 Bitmap bitmap = ((BitmapDrawable) holder.mImageView.getDrawable()).getBitmap();
@@ -335,9 +348,13 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
                             }
 
                             @Override public void onError() {
-                                Log.e("NJW", "Picasso:Error loading:" + imageUrl);
+                                Log.e("NJW", "Picasso:Error loading:" + Uri.parse(imageUrl));
+
+
+
                             }
                         });
+
             }
             /*
             Log.e("NJW", "item.getTitle" + item.getTitle());

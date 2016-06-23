@@ -150,7 +150,7 @@ public class Article {
     }
 
     public String getImageLink() {
-        return Uri.decode(imageLink);
+        return imageLink;
     }
 
     public String getDetailImageLink() {
@@ -158,7 +158,7 @@ public class Article {
         if (s1.contains(imageLink)) {
             return "duplicate_image:'" + imageLink + "'";
         } else {
-            return Uri.decode(imageLink);
+            return imageLink;
         }
     }
 

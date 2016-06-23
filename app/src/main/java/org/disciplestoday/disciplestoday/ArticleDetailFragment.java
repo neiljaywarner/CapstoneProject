@@ -35,6 +35,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.net.URLDecoder;
+
 import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
 
 
@@ -119,6 +121,12 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
 
 
                 final ImageView imageView = (ImageView) activity.findViewById(R.id.article_detail_image);
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openInBrowser(mLink);
+                    }
+                });
                 final FloatingActionButton fabShare = (FloatingActionButton) activity.findViewById(R.id.fabShareArticle);
 
                 fabShare.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +144,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
 
                     Picasso.with(imageView.getContext()).load(mImageUrl)
                             .placeholder(android.R.drawable.progress_horizontal)
+                            .error(R.mipmap.ic_launcher)
                             .into(imageView, new Callback() {
                                 @Override public void onSuccess() {
                                     Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
@@ -167,6 +176,13 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
                 });
             }
         }
+    }
+
+    private void openInBrowser(String mLink) {
+        Intent browserIntent = new Intent();
+        browserIntent.setAction(Intent.ACTION_VIEW);
+        browserIntent.setData(Uri.parse(mLink));
+        startActivity(browserIntent);
     }
 
     private void share() {
