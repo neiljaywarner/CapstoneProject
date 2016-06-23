@@ -36,6 +36,7 @@ public class AppWidgetProvider extends android.appwidget.AppWidgetProvider {
             Picasso.with(context)
                     .load(article.getImageLink())
                     .into(views, R.id.imageView, new int[] {appWidgetId});
+
             // Tell the AppWidgetManager to perform an update on the current app widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
