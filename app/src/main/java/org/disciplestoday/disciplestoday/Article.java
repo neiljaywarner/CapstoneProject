@@ -1,33 +1,20 @@
 package org.disciplestoday.disciplestoday;
 
-import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 
 import org.disciplestoday.disciplestoday.data.DTService;
 import org.disciplestoday.disciplestoday.data.Feed;
 import org.disciplestoday.disciplestoday.data.Item;
-import org.disciplestoday.disciplestoday.utils.ArticleUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 /**
  * Created by neil on 5/28/16.
  */
 
 public class Article {
-
-    public static final String FIELD_ID = "_id";
-    public static final String FIELD_TITLE = "title";
-    public static final String FIELD_LINK = "link";
-
-    public static final String FIELD_NUMBEROFCOMMENTS = "numberOfComments";
-        //save on teh reflection
 
     private static final String IMAGE_BASE_URL = DTService.DISCIPLES_TODAY_BASE_URL;
     public static final String DEFAULT_IMAGE_URL = "https://pbs.twimg.com/profile_images/186752127/DToday_logo_Gradient_Orange_400x400.jpg";
@@ -56,10 +43,6 @@ public class Article {
         this.categoryId = categoryId;
         return this;
     }
-
-
-
-
 
     public String getModuleId() {
         return moduleId;
@@ -101,17 +84,6 @@ public class Article {
     public String getTitle() {
         return Html.fromHtml(title).toString();
     }
-
-    /**
-     *
-     * @return html-escaped text with duplicate images hidden. (for use in webview)
-     */
-    /*
-    String getFullText() {
-        String text = fullText;
-        return Html.escapeHtml(text);
-    }
-    */
 
     public String getFullText() {
         return Html.fromHtml(fullText).toString();
@@ -173,11 +145,4 @@ public class Article {
         }
         return  articles;
     }
-
-    public boolean isInList(List<Article> articles) {
-        return ArticleUtils.hasArticle(articles, this);
-    }
-
-
-
 }

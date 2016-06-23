@@ -42,9 +42,7 @@ import java.util.Map;
  * thread safe.
  */
 public class SelectionBuilder {
-   // private static final String TAG = SelectionBuilder.class.getSimpleName();
-    private static final String TAG = "NJW";
-
+    private static final String TAG = SelectionBuilder.class.getSimpleName();
 
     private String mTable = null;
     private Map<String, String> mProjectionMap = Maps.newHashMap();
@@ -147,7 +145,6 @@ public class SelectionBuilder {
                         String having, String orderBy, String limit) {
         assertTable();
         if (columns != null) mapColumns(columns);
-       // Log.v(TAG, "query(columns=" + Arrays.toString(columns) + ") " + this);
         return db.query(mTable, columns, getSelection(), getSelectionArgs(), groupBy, having,
                 orderBy, limit);
     }

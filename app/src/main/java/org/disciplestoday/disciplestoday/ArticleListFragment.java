@@ -33,20 +33,14 @@ import com.squareup.picasso.Picasso;
 import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
 import org.disciplestoday.disciplestoday.provider.FeedContract;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.List;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
 
-
 public class ArticleListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-   // private static final String TAG = ArticleListFragment.class.getSimpleName();
-    public static final String TAG = "NJW";
+    private static final String TAG = ArticleListFragment.class.getSimpleName();
     private static final String ARG_NAV_ID = "arg_nav_item_id";
     private static final int LOADER_ID = 100;
     private List<Article> mArticles;
@@ -68,7 +62,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
      * @return Instance of fragment to display list of articles
      */
     public static ArticleListFragment newInstance(String moduleId) {
-        Log.i("NJW", "newInstance ArticlelistFragment with Navigation Menu Item:" + moduleId);
+        Log.i(TAG, "newInstance ArticlelistFragment with Navigation Menu Item:" + moduleId);
         ArticleListFragment fragment = new ArticleListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_NAV_ID, moduleId);
@@ -76,23 +70,14 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         return fragment;
     }
 
-
-    public static ArticleListFragment newInstance() {
-        Log.i("NJW", "New Instance of ArticleListFragment with no paramter - app open");
-        ArticleListFragment fragment = new ArticleListFragment();
-
-        return fragment;
-    }
-    private CupboardSQLiteOpenHelper mCupboardSQLiteOpenHelper;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mCupboardSQLiteOpenHelper = new CupboardSQLiteOpenHelper(this.getActivity().getApplicationContext());
+        //CupboardSQLiteOpenHelper mCupboardSQLiteOpenHelper = new CupboardSQLiteOpenHelper(this.getActivity().getApplicationContext());
         if (getArguments() != null) {
             mModuleId = getArguments().getString(ARG_NAV_ID);
-            Log.i("NJW", "Setting Module Id " + mModuleId);
+            Log.i(TAG, "Setting Module Id " + mModuleId);
         } else {
             mModuleId = "353"; // Highlighted feed
             //TODO: Test this with FB invites, if a problem, switch to getActivity.getExtras() so that i can get correct navid in onAttach.
@@ -107,56 +92,20 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.article_list, container, false);
 
-        // TODO: instance state
-        Log.i("NJW", "in oncreateview, just inflated xml");
-        // Set the adapter
         if (root instanceof RecyclerView) {
             recyclerView = (RecyclerView) root;
-           // recyclerView.setNestedScrollingEnabled(false);
             recyclerView.setNestedScrollingEnabled(true);
-
-
-            /*
-            if (getArguments() == null) {
-                Log.e("NJW", "onCreateView args=null");
-
-                showNews();
-            } else {
-                Log.e("NJW", "onCreateView args!=null");
-
-                mNavItemId = getArguments().getInt(ARG_NAV_ID);
-                if (getActivity() != null) {
-                    showNews(mNavItemId);
-                }
-
-            }
-            */
 
             getLoaderManager().initLoader(LOADER_ID, getArguments(), this);
 
         }
 
-
         return root;
     }
 
-    /**
-     * Create SyncAccount at launch, if needed.
-     *
-     * <p>This will create a new account with the system for our application, register our
-     * {@link SyncService} with it, and establish a sync schedule.
-     */
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        Log.d(TAG, "onAttach() called with: activity = [" + activity + "]");
-        // Create account, if needed, which on app open causes the initial data sync.
-    }
-
-
     @Override
     public Loader<Cursor> onCreateLoader(int loader_id, Bundle bundle) {
-        Log.e("NJW7777", "Creating loader for:" + mModuleId);
+        Log.d(TAG, "Creating loader for:" + mModuleId);
         String[] selectionArgs = new String[] {mModuleId};
         final String selection = "moduleId = ?";
         return new CursorLoader(getActivity(),  // Context
@@ -167,20 +116,18 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
                 null); // Sort string is optional
     }
 
-    //TODO: Best practice use sselectionarrgs
-
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.e("NJW7777", "Loader finished for:" + mModuleId);
+        Log.d(TAG, "Loader finished for:" + mModuleId);
 
         mArticles = cupboard().withCursor(data).list(Article.class);
         if (mArticles == null) {
-            Log.e("NJW7777", "NO Articles in the database, what happened?");
+            Log.e(TAG, "NO Articles in the database - trigger first sync for this moduleId");
             SyncUtils.TriggerRefresh(mModuleId);
         } else {
-            Log.i("NJW7777", "just finished loading articles, count=" + mArticles.size());
+            Log.i(TAG, "just finished loading articles, count=" + mArticles.size());
             if (mArticles.size() == 0) {
-                Log.e("NJW7777", "NO Articles in the database, what happened?");
+                Log.e(TAG, "NO Articles in the database - trigger first sync for this moduleId");
                 SyncUtils.TriggerRefresh(mModuleId);
             }
         }
@@ -202,7 +149,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         //using https://github.com/aegis123/Bettyskitchen-app/blob/master/BettysKitchen-app/src/main/java/com/bettys/kitchen/recipes/app/activities/MainActivity.java
 
     private void updateUI() {
-        Log.i("NJW", "in updateUI");
+        Log.i(TAG, "in updateUI");
         if (mArticles.isEmpty()) {
             return;
         }
@@ -210,7 +157,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         setupRecyclerView(recyclerView);
 
         if (progressDialog!= null && progressDialog.isShowing()) {
-            Log.i("NJW", "****** Dismissing spinner.");
+            Log.i(TAG, "****** Dismissing spinner.");
             progressDialog.dismiss();
             progressDialog = null;
         }
@@ -233,65 +180,6 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         view.setBackgroundColor(lightVibrantColor);
         view.setTextColor(darkVibrantColor);
     }
-
-
-    /**
-     * Show the default news feed (highlighted/featured) via syncadapter/content provider.
-     */
-/*
-    private void showNews() {
-        // TODO: Update so that db can save feed type and do more than just highlighted.
-        Log.i("NJW", "in showNews()");
-
-        if (mArticles.isEmpty()) {
-            Log.e("NJW", "articles=empty");
-            showNews(null);
-        } else {
-            updateUI();
-        }
-    }
-    */
-/*
-    private void showNews(MenuItem menuItem) {
-        Log.i("NJW", "in showNews:" + menuItem.getTitle());
-        if (mArticles.isEmpty()) {
-            Log.i("NJW", "Show Spinner;Loading via network");
-
-            progressDialog = new ProgressDialog(this.getActivity());
-            progressDialog.setTitle(R.string.fetching_articles);
-            progressDialog.show();
-            progressDialog.setMessage(getString(R.string.fetching_articles_message));
-            asyncTask = new FeedLoaderAsyncTask(this, menuItem);
-            asyncTask.execute();
-        } else {
-            Log.i("NJW", "No spinner, just show from db.");
-
-            updateUI();
-        }
-
-    }
-    */
-
-/*
-    private void showNews(int menuItemId) {
-        Log.e("NJW", "aha, showNes with menuItemId");
-            Log.e("NJW", "empty after checking db.");
-
-            progressDialog = new ProgressDialog(this.getActivity());
-            progressDialog.setTitle(R.string.fetching_articles);
-            progressDialog.show();
-            progressDialog.setMessage(getString(R.string.fetching_articles_message));
-            asyncTask = new FeedLoaderAsyncTask(this, menuItemId);
-            asyncTask.execute();
-        } else {
-            Log.e("NJW", "Found:" + mArticles.size() + " in db.");
-
-            updateUI();
-        }
-
-    }
-       */
-
 
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
@@ -323,11 +211,6 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
             if (!imageUrl.isEmpty())
             {
 
-
-                if (BuildConfig.DEBUG) {
-                    Picasso.with(holder.mImageView.getContext()).setIndicatorsEnabled(true);
-                    Picasso.with(holder.mImageView.getContext()).setLoggingEnabled(true);
-                }
                 Picasso.with(holder.mImageView.getContext())
                         .load(Uri.parse(imageUrl))
                         .placeholder(android.R.drawable.progress_indeterminate_horizontal)
@@ -348,19 +231,12 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
                             }
 
                             @Override public void onError() {
-                                Log.e("NJW", "Picasso:Error loading:" + Uri.parse(imageUrl));
-
-
-
+                                Log.e(TAG, "Picasso:Error loading:" + Uri.parse(imageUrl) + "; using launcher as 'other image'");
                             }
                         });
 
             }
-            /*
-            Log.e("NJW", "item.getTitle" + item.getTitle());
-            String titleDisplayString = Html.fromHtml(item.getTitle()).toString();
-            Log.e("NJW", titleDisplayString);
-            */
+
             holder.mContentView.setText(item.getTitle());
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -404,9 +280,8 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
 
     private void showArticle(Article article) {
         trackContentSelection(article);
-
+        //simple and speedy...
         Intent intent = new Intent(this.getActivity(), ArticleDetailActivity.class);
-        //TODO: Just pass via parcelable due to speed eventually, for now use articleId due to deep links
 
         intent.putExtra(ArticleDetailFragment.ARG_ITEM_ID, article.getId());
         intent.putExtra(ArticleDetailFragment.ARG_ITEM_TITLE, article.getTitle());

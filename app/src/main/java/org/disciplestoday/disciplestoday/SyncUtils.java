@@ -69,9 +69,7 @@ public class SyncUtils {
         // the account list, so wee need to check both.)
         if (newAccount || !setupComplete) {
             Log.i(TAG, "New account or setup incomplete, triggering refresh of initial module:" + moduleId);
-            TriggerRefresh(moduleId);
-            //Probably not needed, triggering refresh for each screen if 0 files in db... simpler code..
-
+           // TriggerRefresh(moduleId);
         }
     }
 

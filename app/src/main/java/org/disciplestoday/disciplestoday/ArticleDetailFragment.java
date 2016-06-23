@@ -75,6 +75,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
         super.onCreate(savedInstanceState);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this.getActivity());
 
+        /*suppress unused*/
         GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this.getContext())
                 .addApi(AppInvite.API)
                 .enableAutoManage(this.getActivity(), this)
@@ -89,23 +90,15 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
             mImageUrl = getArguments().getString(ARG_ITEM_IMAGE_URL);
             Log.i(TAG, "mImageurl=" + mImageUrl);
 
-
             if (mFullText.contains(Html.escapeHtml(mImageUrl))) {
                 mImageUrl = "invalid_url_don't_show_duplicate";
             }
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
-           // mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
-            //TODO: GO back to example from template when doing content provider... or pass as parcelable...or both
-            // See http://stackoverflow.com/questions/30323424/android-pass-a-parcelable-array-or-fetch-data-again-from-content-provider
-            // content provider for the course though..
+
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
                 appBarLayout.setTitle(Html.fromHtml(mTitle));
                 appBarLayout.setExpandedTitleColor(ContextCompat.getColor(activity, android.R.color.transparent));
-
 
                 final ImageView imageView = (ImageView) activity.findViewById(R.id.article_detail_image);
                 imageView.setOnClickListener(new View.OnClickListener() {
@@ -123,37 +116,31 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
                     }
                 });
 
-
                 fabShare.setVisibility(View.GONE);
                 if (!URLUtil.isValidUrl(mImageUrl)) {
                     mImageUrl = Article.DEFAULT_IMAGE_URL;
                 }
 
-                    Picasso.with(imageView.getContext()).load(mImageUrl)
-                            .placeholder(android.R.drawable.progress_horizontal)
-                            .error(R.mipmap.ic_launcher)
-                            .into(imageView, new Callback() {
-                                @Override public void onSuccess() {
-                                    Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-                                    Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-                                        public void onGenerated(Palette palette) {
-                                            updateBackground(fabShare, palette);
-                                            int lightVibrantColorList = palette.getLightVibrantColor(getResources().getColor(android.R.color.white));
+                Picasso.with(imageView.getContext()).load(mImageUrl)
+                        .placeholder(android.R.drawable.progress_horizontal)
+                        .error(R.mipmap.ic_launcher)
+                        .into(imageView, new Callback() {
+                            @Override public void onSuccess() {
+                                Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                                    public void onGenerated(Palette palette) {
+                                        updateBackground(fabShare, palette);
+                                        int lightVibrantColorList = palette.getLightVibrantColor(getResources().getColor(android.R.color.white));
 
-                                            imageView.setBackgroundColor(lightVibrantColorList);
-                                        }
-                                    });
-                                }
+                                        imageView.setBackgroundColor(lightVibrantColorList);
+                                    }
+                                });
+                            }
 
-                                @Override public void onError() {
+                            @Override public void onError() {
 
-                                }
-                            });
-
-
-
-
-                //TODO: Try adding introtext as textview/metabar so it does't look like a wall of text, confirm from client
+                            }
+                        });
 
                 fabShare.setOnClickListener(new View.OnClickListener() {
                     @Override
