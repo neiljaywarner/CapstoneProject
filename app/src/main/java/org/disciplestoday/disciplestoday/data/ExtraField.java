@@ -5,6 +5,7 @@ package org.disciplestoday.disciplestoday.data;
  */
 public class ExtraField {
     String name;
+    String value;
 
     public String getValue() {
         return value;
@@ -22,5 +23,4 @@ public class ExtraField {
         this.name = name;
     }
 
-    String value;
 }

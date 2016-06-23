@@ -21,7 +21,6 @@ import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.disciplestoday.disciplestoday.accounts.GenericAccountService;
@@ -42,12 +41,8 @@ public class SyncUtils {
      * Create an entry for this application in the system account list, if it isn't already there.
      *
      * @param context Context
-     * @param moduleId Initial module/feed to open, highlighted or other if installed via firebase invite.
      */
-    public static void CreateSyncAccount(Context context, String moduleId) {
-        boolean newAccount = false;
-        boolean setupComplete = PreferenceManager
-                .getDefaultSharedPreferences(context).getBoolean(PREF_SETUP_COMPLETE, false);
+    public static void CreateSyncAccount(Context context) {
 
         // Create account, if it's missing. (Either first run, or user has deleted account.)
         Account account = GenericAccountService.GetAccount();
@@ -61,15 +56,6 @@ public class SyncUtils {
             // on other scheduled syncs and network utilization.
             ContentResolver.addPeriodicSync(
                     account, CONTENT_AUTHORITY, new Bundle(),SYNC_FREQUENCY);
-            newAccount = true;
-        }
-
-        // Schedule an initial sync if we detect problems with either our account or our local
-        // data has been deleted. (Note that it's possible to clear app data WITHOUT affecting
-        // the account list, so wee need to check both.)
-        if (newAccount || !setupComplete) {
-            Log.i(TAG, "New account or setup incomplete, triggering refresh of initial module:" + moduleId);
-           // TriggerRefresh(moduleId);
         }
     }
 

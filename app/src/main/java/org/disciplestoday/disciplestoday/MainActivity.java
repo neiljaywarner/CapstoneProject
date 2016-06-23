@@ -28,7 +28,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
@@ -94,7 +93,7 @@ public class MainActivity extends AppCompatActivity
         String moduleId = getModuleId(menuItem);
         ArticleListFragment listFragment = ArticleListFragment.newInstance(moduleId);
 
-        Log.i("NJW", "Showing list fragment:" + menuItem.getTitle());
+        Log.i(TAG, "Showing list fragment:" + menuItem.getTitle());
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.article_list_container, listFragment)
                 .commit();
@@ -123,11 +122,9 @@ public class MainActivity extends AppCompatActivity
     private void navigateTo(MenuItem item) {
 
         // Handle navigation view item clicks here.
-        Log.e("NJW", "CLICKED:" + item.getTitleCondensed());
         if (item.getItemId() != R.id.nav_share) {
             mNavMenuItem = item;
-            Log.e("NJW", "setting navmenuitem to :" + item.getTitleCondensed());
-
+            Log.e(TAG, "setting navmenuitem to :" + item.getTitleCondensed());
         }
         int id = item.getItemId();
 
@@ -174,7 +171,6 @@ public class MainActivity extends AppCompatActivity
      * @param link
      */
     private void openInBrowser(String link)  {
-        Log.e("NJW", "Opening link=" + link);
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
         startActivity(browserIntent);
     }
@@ -191,7 +187,6 @@ public class MainActivity extends AppCompatActivity
             }
         }
         return "";
-        //TODO: Make this less brittle via JSON asset files or something.
     }
 
     private void setPageTitle(MenuItem item) {
@@ -253,16 +248,9 @@ public class MainActivity extends AppCompatActivity
         mFeedLoadStart = System.nanoTime();
     }
 
-
-    //TODO: Refactor into trackerhelper so we can use google analytics and/or flurry if we want and more easily do duration
-    // at least get gogole analytics (For city)
-
-
-    //TODO: Walk the nav tree in subroutine to build the path and unwalk the tree to use the path so it 'just works'
     private void onInviteClicked() {
 
         Uri deepLink = getDeepLinkUri(mNavMenuItem);
-
 
         //------
         String htmlEmailContent = getString(R.string.invitation_html_email_content);

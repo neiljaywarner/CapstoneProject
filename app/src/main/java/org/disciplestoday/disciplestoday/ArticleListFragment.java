@@ -1,10 +1,8 @@
 package org.disciplestoday.disciplestoday;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -16,13 +14,10 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,7 +25,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
 import org.disciplestoday.disciplestoday.provider.FeedContract;
 
 import java.util.List;
@@ -74,16 +68,14 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //CupboardSQLiteOpenHelper mCupboardSQLiteOpenHelper = new CupboardSQLiteOpenHelper(this.getActivity().getApplicationContext());
         if (getArguments() != null) {
             mModuleId = getArguments().getString(ARG_NAV_ID);
             Log.i(TAG, "Setting Module Id " + mModuleId);
         } else {
             mModuleId = "353"; // Highlighted feed
-            //TODO: Test this with FB invites, if a problem, switch to getActivity.getExtras() so that i can get correct navid in onAttach.
         }
 
-        SyncUtils.CreateSyncAccount(this.getContext(), mModuleId);
+        SyncUtils.CreateSyncAccount(this.getContext());
 
     }
 
@@ -139,7 +131,6 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         // anything to do here?
 
     }
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

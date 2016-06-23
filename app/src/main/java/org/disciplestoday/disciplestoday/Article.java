@@ -47,11 +47,12 @@ public class Article {
     public String getModuleId() {
         return moduleId;
     }
-
+/*
     public Article setModuleId(String moduleId) {
         this.moduleId = moduleId;
         return this;
     }
+    */
 
 
     public String getLink() {

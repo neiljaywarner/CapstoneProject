@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Feed {
 
-    private Site site;
+  // private Site site;
 
     private List<Item> items;
 
