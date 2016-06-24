@@ -7,8 +7,8 @@ android {
         applicationId "org.disciplestoday.disciplestoday"
         minSdkVersion 16 // 16 to use escapeHtml, important
         targetSdkVersion 23
-        versionCode 10
-        versionName "1.0alpha-1a"
+        versionCode 15
+        versionName "1.0beta"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
