@@ -12,7 +12,7 @@
         android:icon="@drawable/ic_menu_share"
         android:title="@string/invite_your_friends" />
 
-    <item android:title="News">
+    <item android:title="@string/news">
 
     <menu>
         <group android:checkableBehavior="single">
