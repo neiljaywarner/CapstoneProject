@@ -23,9 +23,8 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@+id/toolbar">
 
-
             <ImageView
-                android:contentDescription="@string/featured_image"
+                android:contentDescription="@string/detail_image"
                 app:layout_collapseMode="parallax"
                 android:fitsSystemWindows="true"
                 android:id="@+id/article_detail_image"

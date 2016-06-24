@@ -20,10 +20,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!--
-            <include layout="@layout/featured_article" />
-            -->
-
             <FrameLayout
                 android:layout_weight="1"
                 android:layout_width="match_parent"

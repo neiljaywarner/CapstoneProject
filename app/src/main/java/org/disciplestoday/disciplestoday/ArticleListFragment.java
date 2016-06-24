@@ -89,22 +89,21 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
             recyclerView.setNestedScrollingEnabled(true);
 
             getLoaderManager().initLoader(LOADER_ID, getArguments(), this);
-
         }
 
         return root;
     }
-
+    //using https://github.com/aegis123/Bettyskitchen-app/blob/master/BettysKitchen-app/src/main/java/com/bettys/kitchen/recipes/app/activities/MainActivity.java
     @Override
     public Loader<Cursor> onCreateLoader(int loader_id, Bundle bundle) {
         Log.d(TAG, "Creating loader for:" + mModuleId);
         String[] selectionArgs = new String[] {mModuleId};
         final String selection = "moduleId = ?";
-        return new CursorLoader(getActivity(),  // Context
-                FeedContract.Entry.CONTENT_URI, // URI
-                null,                // Projection
-                selection,                           // Selection
-                selectionArgs,                           // Selection args
+        return new CursorLoader(getActivity(),      // Context
+                FeedContract.Entry.CONTENT_URI,     // URI
+                null,                               // Projection
+                selection,                          // Selection
+                selectionArgs,                      // Selection args
                 null); // Sort string is optional
     }
 
@@ -113,23 +112,22 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         Log.d(TAG, "Loader finished for:" + mModuleId);
 
         mArticles = cupboard().withCursor(data).list(Article.class);
-        if (mArticles == null) {
+        Log.i(TAG, "just finished loading articles, count=" + mArticles.size());
+        if (mArticles.size() == 0) {
             Log.e(TAG, "NO Articles in the database - trigger first sync for this moduleId");
+            progressDialog = new ProgressDialog(this.getContext());
+            progressDialog.setTitle(R.string.fetching_articles);
+            progressDialog.setMessage(getString(R.string.fetching_articles_message));
+            progressDialog.show();
             SyncUtils.TriggerRefresh(mModuleId);
-        } else {
-            Log.i(TAG, "just finished loading articles, count=" + mArticles.size());
-            if (mArticles.size() == 0) {
-                Log.e(TAG, "NO Articles in the database - trigger first sync for this moduleId");
-                SyncUtils.TriggerRefresh(mModuleId);
-            }
         }
+
         updateUI();
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         // anything to do here?
-
     }
 
     @Override
