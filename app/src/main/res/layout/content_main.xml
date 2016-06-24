@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_main"
+    android:descendantFocusability="afterDescendants"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -12,15 +13,19 @@
     tools:layout_editor_absoluteY="81dp">
 
     <ScrollView
+        android:nextFocusDown="@+id/article_list"
+        android:descendantFocusability="afterDescendants"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
             android:id="@+id/layout_news"
+            android:descendantFocusability="afterDescendants"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <FrameLayout
+                android:descendantFocusability="afterDescendants"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:id="@+id/article_list_container"

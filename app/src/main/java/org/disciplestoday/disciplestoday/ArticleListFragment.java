@@ -156,7 +156,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         }
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
+    private void setupRecyclerView(@NonNull final RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mArticles));
         recyclerView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
         recyclerView.setOnKeyListener(new View.OnKeyListener() {
@@ -179,6 +179,16 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
                 }
 
                 return true;
+            }
+        });
+
+        recyclerView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean currFocus) {
+                Log.i("ONFOCUSCHANGE- reclist", "focus has changed I repeat the focus has changed! current focus = " + currFocus);
+
+                    recyclerView.getChildAt(0).requestFocus();
+
             }
         });
     }
