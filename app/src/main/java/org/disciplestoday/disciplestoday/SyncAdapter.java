@@ -63,7 +63,7 @@ import static org.disciplestoday.disciplestoday.SyncUtils.PREF_SETUP_COMPLETE;
  * SyncService.
  */
 class SyncAdapter extends AbstractThreadedSyncAdapter {
-    public static final String TAG = "SyncAdapter";
+    public static final String TAG = SyncAdapter.class.getSimpleName();
 
     public static final String ARGS_MODULE_ID = "arg_module_id";
 
