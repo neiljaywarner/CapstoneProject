@@ -13,24 +13,15 @@
 
     <string name="invitation_call_to_action_button_text">Try DT App</string>
 
-
-    <!-- NOTE The call to action text must be 2-20 characters -->
     <!-- TODO: for version 1.1 and beyond->Confirm this text for all 3, and/or just use custom email per best practices -->
     <!-- see: https://firebase.google.com/docs/invites/best-practices -->
 
-   <string-array name="links">
-       <item>https://www.biblegateway.com/</item>
-       <item>http://www.icochotnews.com</item>
-       <item>http://www.dtmediastore.com/</item>
-       <item>http://www.disciplestoday.org/dt-travel</item>
-
-   </string-array>
-
-
-    <string-array name="deep_links">
-        <item>/highlighted/2/1</item>
-        <item>/highlighted/2/2</item>
-        <item>//2/3</item>
+    <string-array name="links">
+        <item>https://www.biblegateway.com/</item>
+        <item>http://www.icochotnews.com</item>
+        <item>http://www.dtmediastore.com/</item>
+        <item>http://www.disciplestoday.org/dt-travel</item>
+        <item>http://dtheartandsoul.com/</item>
 
     </string-array>
 
@@ -41,7 +32,6 @@
 
     ]]>
     </string>
-
 
     <string name="share_article_html_email_content">
         <![CDATA[
@@ -59,7 +49,6 @@
         then we can support open in app with deep link -->
         <!-- Can open in web for iOS until they support it and for web, then can call it 'Open in App -->
     </string>
-
 
     <!-- content descriptions -->
     <string name="featured_image">Featured Image</string>

@@ -126,6 +126,12 @@
                     android:titleCondensed="Link:Travel"
                     android:id="@+id/nav_dt_travel"
                     android:title="DT Travel" />
+
+                <item
+                    android:icon="@android:drawable/ic_menu_set_as"
+                    android:titleCondensed="Link:Travel"
+                    android:id="@+id/nav_dt_heart_and_soul"
+                    android:title="DT Heart and Soul" />
             </group>
         </menu>
     </item>
