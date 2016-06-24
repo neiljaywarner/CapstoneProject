@@ -240,8 +240,7 @@ public class MainActivity extends AppCompatActivity
         //------
         String htmlEmailContent = getString(R.string.invitation_html_email_content);
         htmlEmailContent = htmlEmailContent.replace("%%FEED%%", mNavMenuItem.getTitle());
-        String invitationScreenTitle = "Share " + mNavMenuItem.getTitle() + " articles.";
-        //TODO: Internationalize with string parameter
+        String invitationScreenTitle = String.format(getResources().getString(R.string.invitation_screen_title), mNavMenuItem.getTitle());
 
         Intent intent = new AppInviteInvitation.IntentBuilder(invitationScreenTitle)
                 .setMessage(getString(R.string.invitation_message))

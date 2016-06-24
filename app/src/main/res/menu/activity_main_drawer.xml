@@ -5,12 +5,12 @@
     <item
         android:id="@+id/nav_locator"
         android:icon="@android:drawable/ic_menu_compass"
-        android:title="Locator" />
+        android:title="@string/locator" />
 
     <item
         android:id="@+id/nav_share"
         android:icon="@drawable/ic_menu_share"
-        android:title="Invite your friends" />
+        android:title="@string/invite_your_friends" />
 
     <item android:title="News">
 
@@ -21,7 +21,7 @@
                 android:icon="@drawable/ic_menu_gallery"
                 android:titleCondensed="Highlighted"
                 android:id="@+id/nav_highlighted"
-                android:title="Highlighted" />
+                android:title="@string/highlighted" />
             <!--
             TODO: Do when have data loaded in db and can load by category or when they fix API
 
@@ -34,71 +34,71 @@
                 android:id="@+id/nav_campus"
                 android:titleCondensed="Campus"
                 android:icon="@drawable/ic_menu_gallery"
-                android:title="Campus" />
+                android:title="@string/campus" />
             <item
                 android:id="@+id/nav_singles"
                 android:titleCondensed="Singles"
                 android:icon="@drawable/ic_menu_gallery"
-                android:title="Singles" />
+                android:title="@string/singles" />
             <item
                 android:id="@+id/nav_youth_and_family"
                 android:icon="@drawable/ic_menu_gallery"
                 android:titleCondensed="Family"
-                android:title="Youth \u0026 Family" />
+                android:title="@string/young_and_family" />
 
             <item
                 android:id="@+id/nav_missions"
                 android:titleCondensed="Missions"
                 android:icon="@drawable/ic_menu_gallery"
-                android:title="Missions" />
+                android:title="@string/missions" />
 
             <item
                 android:id="@+id/nav_man_up"
                 android:icon="@drawable/ic_menu_gallery"
                 android:titleCondensed="Men"
-                android:title="Man Up!" />
+                android:title="@string/man_up" />
 
             <item
                 android:visible="false"
                 android:id="@+id/nav_women"
                 android:icon="@drawable/ic_menu_gallery"
                 android:titleCondensed="Women"
-                android:title="Women Today" />
+                android:title="@string/women" />
             <!-- note: the ones false don't seem to have RSS feed as of May 30, 2016 -->
 
             <item
                 android:id="@+id/nav_commentary"
                 android:icon="@drawable/ic_menu_gallery"
                 android:titleCondensed="Commentary"
-                android:title="Commentary" />
+                android:title="@string/commentary" />
 
             <item
                 android:id="@+id/nav_bible_study"
                 android:icon="@drawable/ic_menu_gallery"
                 android:titleCondensed="Bible"
-                android:title="Bible Study" />
+                android:title="@string/bible_study" />
 
             <item
                 android:id="@+id/nav_kingdom_kids"
                 android:icon="@drawable/ic_menu_gallery"
                 android:titleCondensed="Kids"
-                android:title="Kingdom Kids" />
+                android:title="@string/kids" />
 
             <item
                 android:id="@+id/nav_specialty_ministries"
                 android:icon="@drawable/ic_menu_gallery"
                 android:titleCondensed="Specialty"
-                android:title="Specialty Ministries" />
+                android:title="@string/specialty" />
 
             <item
                 android:id="@+id/nav_regional_news"
                 android:icon="@drawable/ic_menu_gallery"
                 android:titleCondensed="Regional"
-                android:title="Regional News" />
+                android:title="@string/regional" />
         </group>
     </menu>
     </item>
-    <item android:title="Links">
+    <item android:title="@string/links">
 
         <menu>
             <group android:checkableBehavior="none">
@@ -107,31 +107,31 @@
                     android:icon="@android:drawable/ic_menu_set_as"
                     android:titleCondensed="Link:Bible"
                     android:id="@+id/nav_bible_gateway"
-                    android:title="Bible Gateway" />
+                    android:title="@string/bible_gateway" />
 
                 <item
                     android:icon="@android:drawable/ic_menu_set_as"
                     android:titleCondensed="Link:HotNews"
                     android:id="@+id/nav_hot_news"
-                    android:title="ICOC Hot News" />
+                    android:title="@string/hotnews" />
 
                 <item
                     android:icon="@android:drawable/ic_menu_set_as"
                     android:titleCondensed="Link:Media"
                     android:id="@+id/nav_dt_media_store"
-                    android:title="DT Media Store" />
+                    android:title="@string/media" />
 
                 <item
                     android:icon="@android:drawable/ic_menu_set_as"
                     android:titleCondensed="Link:Travel"
                     android:id="@+id/nav_dt_travel"
-                    android:title="DT Travel" />
+                    android:title="@string/travel" />
 
                 <item
                     android:icon="@android:drawable/ic_menu_set_as"
                     android:titleCondensed="Link:Travel"
                     android:id="@+id/nav_dt_heart_and_soul"
-                    android:title="DT Heart and Soul" />
+                    android:title="@string/heart_and_soul" />
             </group>
         </menu>
     </item>

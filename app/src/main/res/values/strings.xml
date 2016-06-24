@@ -24,6 +24,9 @@
         <item>http://dtheartandsoul.com/</item>
 
     </string-array>
+    <string name="invitation_screen_title">Share "%s" articles.</string>
+    <string name="share_article_screen_title">Share "%s".</string>
+
 
     <string name="invitation_html_email_content">
         <![CDATA[
@@ -54,6 +57,41 @@
     <string name="featured_image">Featured Image</string>
     <string name="detail_image">Article Detail Image</string>
     <string name="thumbnail_image">Thumbnail Image</string>
+
+
+    <string name="locator">Locator</string>
+    <string name="invite_your_friends">Invite your friends.</string> <!-- best practice page by Google -->
+    <string name="highlighted">Highlighted</string>
+    <string name="campus">Campus</string>
+    <string name="singles">Singles</string>
+    <string name="young_and_family">Youth \u0026 Family</string>
+    <string name="missions">Missions</string>
+    <string name="man_up">Man Up!</string>
+    <string name="women">Women Today</string>
+    <string name="commentary">Commentary</string>
+    <string name="bible_study">Bible Study</string>
+    <string name="kids">Kingdom Kids</string>
+    <string name="specialty">Specialty Ministries</string>
+
+    <string name="regional">Regional News</string>
+
+
+    <string name="links">Links</string>
+
+
+    <string name="bible_gateway">Bible Gateway</string>
+    <string name="hotnews">ICOC Hot News</string>
+    <string name="media">DT Media Store</string>
+
+    <string name="travel">DT Travel</string>
+
+    <string name="heart_and_soul">DT Heart and Soul</string>
+
+
+
+
+
+
 
 
 
