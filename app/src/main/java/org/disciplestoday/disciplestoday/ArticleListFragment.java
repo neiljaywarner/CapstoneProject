@@ -15,6 +15,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -157,6 +158,29 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mArticles));
+        recyclerView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+        recyclerView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                Log.i("NJW", "event=" + event.toString());
+                if(event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER) {
+                    // Add your code here
+                    Log.i("NJW", "dpad center");
+                }
+
+                if(event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP) {
+                    // Add your code here
+                    Log.i("NJW", "dpad down or up");
+                }
+
+                if(event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT) {
+                    // Add your code here
+                    Log.i("NJW", "dpad right or left");
+                }
+
+                return true;
+            }
+        });
     }
 
     ProgressDialog progressDialog;

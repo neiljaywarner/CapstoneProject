@@ -7,4 +7,6 @@
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
     android:descendantFocusability="afterDescendants"
+    android:focusable="true"
+    android:importantForAccessibility="yes"
     tools:listitem="@layout/article_list_content" />
