@@ -3,6 +3,7 @@ package org.disciplestoday.disciplestoday;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -31,14 +32,12 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
-
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String LOCATOR_URL = "http://www.dtodayinfo.net/Dtoday";
     private static final int HIGHLIGHTED_SUBITEM_INDEX = 0;
     private static final int REQUEST_INVITE = 1 ;
     public static final int SUBMENU_LINKS_INDEX = 3;
     public static final int NEWS_MENU_INDEX = 2;
-    private boolean mTwoPane;
 
     public FirebaseAnalytics mFirebaseAnalytics;
     private GoogleApiClient mGoogleApiClient;
@@ -88,7 +87,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showNewsFeedFragment(MenuItem menuItem) {
-       // mLayoutNews.setVisibility(View.VISIBLE);
         webviewLocator.setVisibility(View.GONE);
         String moduleId = getModuleId(menuItem);
         ArticleListFragment listFragment = ArticleListFragment.newInstance(moduleId);
@@ -98,7 +96,6 @@ public class MainActivity extends AppCompatActivity
                 .replace(R.id.article_list_container, listFragment)
                 .commit();
     }
-
 
     @Override
     public void onBackPressed() {
@@ -149,8 +146,6 @@ public class MainActivity extends AppCompatActivity
                     mLayoutNews.setVisibility(View.INVISIBLE);
                     showNewsFeedFragment(item);
                 }
-
-                //TODO: (Someday) Let this list be loaded from local storage so the user doesn't see the ones s/he's not interested in.
 
                 break;
         }
@@ -209,22 +204,12 @@ public class MainActivity extends AppCompatActivity
         webSettings.setJavaScriptEnabled(true);
         webSettings.setBuiltInZoomControls(true);
         webSettings.setDisplayZoomControls(true);
-      //  webSettings.setMinimumFontSize(33);
         webSettings.setSupportZoom(true);
-       // webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setPluginState(WebSettings.PluginState.ON_DEMAND);
 
-        // TODO: See how many of these we should use on the other webviews!
-        // e.g. plugin state...
-
-        // see https://developer.android.com/reference/android/webkit/WebSettings.LayoutAlgorithm.html
-        //webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
-        //TODO: Enable for api 19 and above. 75% and above (kitkat and above) and climbing i'm sure.
         webviewLocator.setVisibility(View.GONE);
     }
-
-
 
     /**
      * Temporary locator via webview
@@ -255,7 +240,6 @@ public class MainActivity extends AppCompatActivity
         //------
         String htmlEmailContent = getString(R.string.invitation_html_email_content);
         htmlEmailContent = htmlEmailContent.replace("%%FEED%%", mNavMenuItem.getTitle());
-       // htmlEmailContent = Html.escapeHtml(htmlEmailContent);
         String invitationScreenTitle = "Share " + mNavMenuItem.getTitle() + " articles.";
         //TODO: Internationalize with string parameter
 
@@ -308,8 +292,6 @@ public class MainActivity extends AppCompatActivity
                     //TODO: Track to analytics that they invited X number of people?
                 }
             } else {
-                // Sending failed or it was canceled, show failure message to the user
-                // ...
                 Log.e("NJW", "Sending failed or was canceled");
                 Toast.makeText(this, "Sending invite(s) canceled or failed, sorry about that.", Toast.LENGTH_LONG).show();
             }
@@ -329,17 +311,15 @@ public class MainActivity extends AppCompatActivity
                             public void onResult(AppInviteInvitationResult result) {
                                 Log.d(TAG, "getInvitation:onResult:" + result.getStatus());
                                 if (result.getStatus().isSuccess()) {
-                                    // Extract information from the intent
                                     Intent intent = result.getInvitationIntent();
                                     String deepLinkString = AppInviteReferral.getDeepLink(intent);
-                                    Log.i("NJW", "Deep Link=" + deepLinkString);
+                                    Log.i(TAG, "Deep Link=" + deepLinkString);
                                     if (deepLinkString.contains("article")) {
                                         // TODO: Open in new ArticleDetailActivity
                                         return;
                                     }
 
                                     int deepLinkSubMenuIndex = Integer.parseInt(deepLinkString.split("/")[3]);
-                                    Log.e("NJW", "subMenuIndex=" + deepLinkSubMenuIndex);
                                     MenuItem newsFeedMenuItem = mNavigationView.getMenu()
                                             .getItem(NEWS_MENU_INDEX).getSubMenu()
                                             .getItem(deepLinkSubMenuIndex);
@@ -355,7 +335,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
 
@@ -385,7 +365,5 @@ public class MainActivity extends AppCompatActivity
                 return "353";
 
         }
-
-
     }
 }

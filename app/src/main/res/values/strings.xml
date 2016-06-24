@@ -61,5 +61,11 @@
     </string>
 
 
+    <!-- content descriptions -->
+    <string name="featured_image">Featured Image</string>
+    <string name="thumbnail_image">Thumbnail Image</string>
+
+
+
 
 </resources>

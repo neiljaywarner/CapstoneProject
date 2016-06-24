@@ -18,10 +18,10 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 public class DisciplesTodayContentProvider extends ContentProvider {
     //using http://www.vogella.com/tutorials/AndroidSQLite/article.html in addition to file-> new contentprovider, etc
+    // Google's sample app mostly...
 
     private CupboardSQLiteOpenHelper mDatabaseHelper;
     private static final Object LOCK = new Object();
-
 
     // used for the UriMatcher
     private static final int ARTICLES = 10; //List screen/fragment/recyclerview
@@ -32,13 +32,6 @@ public class DisciplesTodayContentProvider extends ContentProvider {
     private static final String AUTHORITY = "org.disciplestoday.disciplestoday";
 
     private static final String BASE_PATH = "articles";
-    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
-            + "/" + BASE_PATH);
-
-    public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
-            + "/articles";
-    public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
-            + "/article";
 
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
@@ -108,10 +101,9 @@ public class DisciplesTodayContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
-        // the a-ha moment is realizing all you hae to do is return a cusor.
+        // the a-ha moment is realizing all you have to do is return a cursor.
 
         //https://github.com/aegis123/Bettyskitchen-app/blob/master/BettysKitchen-app/src/main/java/com/bettys/kitchen/recipes/app/providers/RecipeProvider.java
-
 
         // make sure that potential listeners are getting notified
         cursor.setNotificationUri(getContext().getContentResolver(), uri);

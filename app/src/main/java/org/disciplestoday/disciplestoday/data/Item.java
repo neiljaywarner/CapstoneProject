@@ -24,9 +24,6 @@ public class Item {
     String link;
     private String created_by_alias;
 
-
-    //TODO: Clean up unneeded getters/setters.
-
     public String getLink() {
         return DISCIPLES_TODAY_BASE_URL + link;
     }
@@ -101,10 +98,6 @@ public class Item {
             return imageUrl;
         }
 
-
-
-        //TODO: utilize json fields image,imageSmall, imageMedium fields as needed.
-
             //This is the twitter image, seems like a decent default.
         return Article.DEFAULT_IMAGE_URL;
 
@@ -123,8 +116,7 @@ public class Item {
         }
 
         String s = fieldToSearch.substring(start, end);
-        String image = DISCIPLES_TODAY_BASE_URL + s + "." + fileSuffix;
-        return image;
+        return DISCIPLES_TODAY_BASE_URL + s + "." + fileSuffix;
     }
 
     public String getCreated_by_alias() {

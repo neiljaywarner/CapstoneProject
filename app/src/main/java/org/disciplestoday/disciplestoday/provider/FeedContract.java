@@ -38,7 +38,7 @@ public class FeedContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     /**
-     * Path component for "entry"-type resources..
+     * Path component for "article"-type resources..
      */
     private static final String PATH_articles = "articles";
 
@@ -58,7 +58,7 @@ public class FeedContract {
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.disciplestoday.article";
 
         /**
-         * Fully qualified URI for "entry" resources.
+         * Fully qualified URI for "article" resources.
          */
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_articles).build();
@@ -83,12 +83,6 @@ public class FeedContract {
         public static final String COLUMN_NAME_SUMMARY = "summary";
 
         public static final String COLUMN_NAME_LINK = "link";
-
-
-
-
-
-
 
     }
 }

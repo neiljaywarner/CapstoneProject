@@ -25,6 +25,7 @@
 
 
             <ImageView
+                android:contentDescription="@string/featured_image"
                 app:layout_collapseMode="parallax"
                 android:fitsSystemWindows="true"
                 android:id="@+id/article_detail_image"

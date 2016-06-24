@@ -10,6 +10,7 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:contentDescription="@string/thumbnail_image"
             android:id="@+id/imageView"
             android:layout_width="@dimen/thumbnail_width"
             android:layout_height="match_parent"

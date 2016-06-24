@@ -172,9 +172,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
         WebView webview = (WebView) rootView.findViewById(R.id.article_detail);
         String displayString = Html.fromHtml(mFullText).toString();
 
-       // displayString = Html.fromHtml(displayString).toString();
         webview.loadData(displayString, "text/html; charset=utf-8", "utf-8");
-
 
         return rootView;
     }
@@ -216,10 +214,6 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
         htmlEmailContent = htmlEmailContent.replace("%%ARTICLE_TITLE%%", articleTitle);
         htmlEmailContent = htmlEmailContent.replace("%%ARTICLE_TEXT%%", fullText);
         htmlEmailContent = htmlEmailContent.replace("%%ARTICLE_LINK%%", articleLink);
-            //TODO: Could ask client if this should be introText
-
-        //TODO: DELETE ALL THE TODOS and put in github issues :)
-
 
             //Note: fromHtml handles stuff like &quot to quotation marks, which was in the data.
         String invitationScreenTitle = "Share '" + Html.fromHtml(articleTitle) + "'";
@@ -251,5 +245,4 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
-
 }

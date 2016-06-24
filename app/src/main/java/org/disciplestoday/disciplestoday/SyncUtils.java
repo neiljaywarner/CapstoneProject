@@ -84,5 +84,4 @@ public class SyncUtils {
                 FeedContract.CONTENT_AUTHORITY, // Content authority
                 b);                                      // Extras
     }
-
 }

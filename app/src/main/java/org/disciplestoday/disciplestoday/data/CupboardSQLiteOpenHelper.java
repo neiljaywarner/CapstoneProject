@@ -17,8 +17,7 @@ import nl.qbusict.cupboard.convert.EntityConverter;
 
 public class CupboardSQLiteOpenHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "disciplestoday.db";
-    public static final String TABLE_NAME = "Articles";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
 
     static {
         // register our model
@@ -30,7 +29,6 @@ public class CupboardSQLiteOpenHelper extends SQLiteOpenHelper {
     }
 
     private static final String TYPE_TEXT = " TEXT";
-    private static final String TYPE_INTEGER = " INTEGER";
     private static final String COMMA_SEP = ",";
     /** SQL statement to create "entry" table. */
 
@@ -57,7 +55,6 @@ public class CupboardSQLiteOpenHelper extends SQLiteOpenHelper {
         //using my own create statement to get the unique constraint on article_id
         db.execSQL(SQL_CREATE_articles);
 
-        // TODO: Do we need any constraints?
     }
 
     @Override
