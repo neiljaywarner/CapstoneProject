@@ -187,7 +187,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
             public void onFocusChange(View v, boolean currFocus) {
                 Log.i("ONFOCUSCHANGE- reclist", "focus has changed I repeat the focus has changed! current focus = " + currFocus);
 
-                    recyclerView.getChildAt(0).requestFocus();
+                recyclerView.getChildAt(0).requestFocus();
 
             }
         });
