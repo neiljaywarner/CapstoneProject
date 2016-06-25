@@ -229,6 +229,11 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
 
         @Override
         public void onBindViewHolder(final SimpleItemRecyclerViewAdapter.ViewHolder holder, int position) {
+            if (isDetached()) {
+                Log.e("NJW", "Fragment is detached, don't try to use resources or bind viewholder");
+                // This was a bug firebase test lab found - getResources() complaining i think.
+                return;
+            }
             final Article item = mArticles.get(position);
             final String imageUrl = item.getImageLink();
             if (!imageUrl.isEmpty())
