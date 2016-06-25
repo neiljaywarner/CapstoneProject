@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity
                 }
             } else {
                 Log.e("NJW", "Sending failed or was canceled");
-                Toast.makeText(this, "Sending invite(s) canceled or failed, sorry about that.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getResources().getString(R.string.invite_error_or_cancel), Toast.LENGTH_LONG).show();
             }
         }
     }

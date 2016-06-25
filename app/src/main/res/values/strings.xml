@@ -36,6 +36,9 @@
     ]]>
     </string>
 
+
+    <string name="invite_error_or_cancel">Sending invite(s) canceled or failed, sorry about that.</string>
+
     <string name="share_article_html_email_content">
         <![CDATA[
         Check out the article %%ARTICLE_TITLE%% articles from Disciples Today!
