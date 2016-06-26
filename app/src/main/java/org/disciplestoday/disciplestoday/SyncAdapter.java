@@ -78,6 +78,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         mContentResolver = context.getContentResolver();
+        Log.i("NJW", "construct syncadapter");
     }
 
     /**
@@ -85,6 +86,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
      */
     public SyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs) {
         super(context, autoInitialize, allowParallelSyncs);
+        Log.i("NJW", "constructs sycadapter; allowparallelsyncs:" + allowParallelSyncs);
         mContentResolver = context.getContentResolver();
     }
 
@@ -106,7 +108,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
-        Log.i(TAG+"OPS", "Beginning network synchronization");
+        Log.i("NJW", "Beginning network synchronization");
 
         // TODO: Fix magic #s, but they correspond to values in MainActivity.getModuleId() and the query parameters of the feeds
         // Download all feeds
@@ -155,8 +157,11 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     private void syncDownloadFeed(SyncResult syncResult, String moduleId) {
         Call<Feed> call = getCall(moduleId);
         try {
+            Log.i("NJW", "About to execute call for moduleId:" + moduleId);
             Response<Feed> feedResponse = call.execute();
             Feed feed = feedResponse.body();
+            Log.i("NJW", "got: feed with items size:" + feed.getItems().size());
+
             updateLocalFeedData(moduleId,feed, syncResult);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());

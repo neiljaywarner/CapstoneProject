@@ -35,7 +35,10 @@ public class SyncUtils {
 
     private static final String CONTENT_AUTHORITY = FeedContract.CONTENT_AUTHORITY;
     static final String PREF_SETUP_COMPLETE = "setup_complete";
-    private static final String TAG = SyncUtils.class.getSimpleName();
+
+    //  private static final String TAG = SyncUtils.class.getSimpleName();
+    private static final String TAG = "NJW";
+
 
     /**
      * Create an entry for this application in the system account list, if it isn't already there.
@@ -43,7 +46,7 @@ public class SyncUtils {
      * @param context Context
      */
     public static void CreateSyncAccount(Context context) {
-
+        Log.i("NJW", "in Create Account");
         // Create account, if it's missing. (Either first run, or user has deleted account.)
         Account account = GenericAccountService.GetAccount();
         AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);

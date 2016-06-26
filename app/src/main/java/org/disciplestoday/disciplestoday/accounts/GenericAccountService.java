@@ -47,6 +47,7 @@ public class GenericAccountService extends Service {
         // This string should *not* be localized. If the user switches locale, we would not be
         // able to locate the old account, and may erroneously register multiple accounts.
         final String accountName = ACCOUNT_NAME;
+        Log.i("NJW", "in get Account");
         return new Account(accountName, ACCOUNT_TYPE);
     }
 
