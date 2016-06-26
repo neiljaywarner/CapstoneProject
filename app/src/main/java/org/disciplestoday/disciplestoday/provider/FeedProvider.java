@@ -133,7 +133,7 @@ public class FeedProvider extends ContentProvider {
      */
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-      //  Log.d(TAG, "insert() called with: uri = [" + uri + "], values = [" + values + "]");
+        Log.d(TAG, "insert() called with: uri = [" + uri + "], values = [" + values + "]");
         final SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
         assert db != null;
         final int match = sUriMatcher.match(uri);

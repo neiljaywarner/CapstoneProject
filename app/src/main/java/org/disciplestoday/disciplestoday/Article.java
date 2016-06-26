@@ -78,7 +78,7 @@ public class Article {
     }
 
     public String getFullText() {
-        return Html.fromHtml(fullText).toString();
+        return fullText;
     }
 
     public String getAuthor() {

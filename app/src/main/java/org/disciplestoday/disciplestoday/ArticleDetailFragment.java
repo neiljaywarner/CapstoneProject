@@ -170,9 +170,8 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
         View rootView = inflater.inflate(R.layout.article_detail, container, false);
 
         WebView webview = (WebView) rootView.findViewById(R.id.article_detail);
-        String displayString = Html.fromHtml(mFullText).toString();
 
-        webview.loadData(displayString, "text/html; charset=utf-8", "utf-8");
+        webview.loadData(mFullText, "text/html; charset=utf-8", "utf-8");
 
         return rootView;
     }
