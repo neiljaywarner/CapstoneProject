@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:focusable="true"
+    android:clickable="true"
+    android:foreground="?android:selectableItemBackground"
+
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
-        android:descendantFocusability="afterDescendants"
-        android:focusable="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+
+        >
 
         <ImageView
-            android:focusable="true"
             android:contentDescription="@string/thumbnail_image"
             android:id="@+id/imageView"
             android:layout_width="@dimen/thumbnail_width"
@@ -22,7 +24,6 @@
 
         <TextView
             android:id="@+id/content"
-            android:focusable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"

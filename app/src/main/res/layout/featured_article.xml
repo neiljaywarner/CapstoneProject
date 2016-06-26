@@ -6,11 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:focusable="true"
-    android:descendantFocusability="afterDescendants"
+    android:clickable="true"
+    android:foreground="?android:selectableItemBackground"
     tools:showIn="@layout/content_main">
 
     <ImageView
-        android:focusable="true"
         android:contentDescription="@string/featured_image"
         tools:src="@mipmap/ic_launcher"
         android:id="@+id/imageView"
@@ -23,7 +23,6 @@
         android:layout_height="1dp" />
 
     <TextView
-        android:focusable="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         tools:text="Volunteer Opportunities at Reach 2016"
         android:layout_width="match_parent"
@@ -39,5 +38,3 @@
         android:layout_width="match_parent"
         android:layout_height="1dp" />
 </LinearLayout>
-
-            
