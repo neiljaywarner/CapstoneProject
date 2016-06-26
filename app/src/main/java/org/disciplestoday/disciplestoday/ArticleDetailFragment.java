@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.URLUtil;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
@@ -170,6 +171,12 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
         View rootView = inflater.inflate(R.layout.article_detail, container, false);
 
         WebView webview = (WebView) rootView.findViewById(R.id.article_detail);
+
+        WebSettings webSettings = webview.getSettings();
+
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setDisplayZoomControls(false);
+        webSettings.setSupportZoom(true);
 
         webview.loadData(mFullText, "text/html; charset=utf-8", "utf-8");
 

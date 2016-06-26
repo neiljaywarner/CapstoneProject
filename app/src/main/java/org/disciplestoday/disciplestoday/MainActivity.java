@@ -280,7 +280,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("NJW", "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
+        Log.d(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
 
         if (requestCode == REQUEST_INVITE) {
             if (resultCode == RESULT_OK) {
@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity
                     //TODO: Track to analytics that they invited X number of people?
                 }
             } else {
-                Log.e("NJW", "Sending failed or was canceled");
+                Log.e(TAG, "Sending failed or was canceled");
                 Toast.makeText(this, getResources().getString(R.string.invite_error_or_cancel), Toast.LENGTH_LONG).show();
             }
         }

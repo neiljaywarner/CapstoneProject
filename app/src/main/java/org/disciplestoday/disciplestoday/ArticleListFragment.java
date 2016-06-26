@@ -248,12 +248,26 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
                                 Bitmap bitmap = ((BitmapDrawable) holder.mImageView.getDrawable()).getBitmap();
                                 Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
                                     public void onGenerated(Palette listViewPallette) {
-                                        int lightVibrantColorList = listViewPallette.getLightVibrantColor(getResources().getColor(android.R.color.white));
-
-                                        holder.mImageView.setBackgroundColor(lightVibrantColorList);
-                                        if (holder.getAdapterPosition() == 0) {
-                                            updateTextView(holder.mContentView, listViewPallette);
+                                        if (!ArticleListFragment.this.isVisible()) {
+                                            Log.e("NJW", "fragment is not visible");
+                                            return;
                                         }
+                                        if (ArticleListFragment.this.isDetached()) {
+                                            Log.e("NJW", "Fragment is detached");
+                                            return;
+                                            // Prelaunch report shows crash here 4/13th of the tests.
+                                        }
+                                        try {
+                                            int lightVibrantColorList = listViewPallette.getLightVibrantColor(getResources().getColor(android.R.color.white));
+
+                                            holder.mImageView.setBackgroundColor(lightVibrantColorList);
+                                            if (holder.getAdapterPosition() == 0) {
+                                                updateTextView(holder.mContentView, listViewPallette);
+                                            }
+                                        } catch (Exception e) {
+                                            Log.e("NJW", "exception: " + e.getMessage());
+                                        }
+
                                     }
                                 });
                             }
