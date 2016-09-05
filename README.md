@@ -1,9 +1,8 @@
-# CapstoneProject
-Udacity capstone project for disciplestoday.org
+# DT App Beta
 
-* for Android Nanodegree and version 1 for DisciplesToday app
 
 * Recent Changes
+* Added a sort order so newest is on top; better than oldest on top, later get an ordering from DT hopefully.
 * Fixed Detail issue
 * This is my submission 2 to Udacity's program, waiting to get approved
 * this is branch release/1.0beta3
