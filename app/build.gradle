@@ -22,11 +22,13 @@ android {
     buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "org.disciplestoday.disciplestoday"
-        minSdkVersion 16 // 16 to use escapeHtml, important
+        minSdkVersion 21
         targetSdkVersion 23
-        versionCode 16
-        versionName "1.0beta-2"
+        versionCode 17
+        versionName "1.0beta-4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
     }
     buildTypes {
         release {
@@ -58,4 +60,5 @@ dependencies {
     apply plugin: 'com.google.gms.google-services'
     compile 'com.google.firebase:firebase-invites:9.0.2'
     compile 'com.google.guava:guava:14.0.1'
+    compile 'com.android.support.test.espresso:espresso-contrib:2.2.2'
 }
