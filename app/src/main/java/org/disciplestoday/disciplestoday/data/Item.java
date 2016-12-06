@@ -1,125 +1,44 @@
 package org.disciplestoday.disciplestoday.data;
 
-import android.util.Log;
-
-import com.google.gson.annotations.SerializedName;
-
-import org.disciplestoday.disciplestoday.Article;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Root;
 
 import java.util.List;
 
 /**
- * Created by neil on 5/25/16.
+ * Created by neil on 12/1/16.
  */
+@Root(name = "item", strict = false) //strict=false keeps us from having to put everything
 public class Item {
+    //https://jeaniesjourneys.com/feed/?paged=3
+    @Element(name = "title")
+    public String title;
 
-    public static final String DISCIPLES_TODAY_BASE_URL = DTService.DISCIPLES_TODAY_BASE_URL;
-    String title;
+    @Element(name = "link")
+    public String link;
 
-
-    String id;
-    private String introtext;
-    private String fulltext;
-   // private String image;
-    String link;
-    private String created_by_alias;
-
-    public String getLink() {
-        return DISCIPLES_TODAY_BASE_URL + link;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getFulltext() {
-        return fulltext;
-    }
+    @ElementList(inline = true)
+    public List<Content> contentList;
 
 
-    //NOTE: Must match json. TODO: use annotation so it doesn't have to.
-    @SerializedName("extra_fields")
-    private List<ExtraField> extra_fields;
+    @Element(name = "creator", data=true)
+    public String creator;
+
+    @Element(name = "description", data=true)
+    public String description;
+
+    @Element(name = "encoded", data=true) //content:encoded with cdata
+    public String encoded;
 
 
-    public List<ExtraField> getExtraFields() {
-        return extra_fields;
-    }
-    //TODO: Use extra fields when needed.
 
-    public String getTitle() {
-        return title;
-    }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
-    public String getIntroText() {
-        return introtext;
-    }
 
-    public String getImageUrl()
-    {
-        String imageUrl;
-        imageUrl = getImageUrl(introtext, "jpg");
-        if (!imageUrl.isEmpty())
-        {
-            return imageUrl;
-        }
+    @Element(name = "pubDate")
+    public String pubDate;
 
-        imageUrl = getImageUrl(introtext, "png");
-        if (!imageUrl.isEmpty())
-        {
-            return imageUrl;
-        }
 
-        imageUrl = getImageUrl(introtext, "gif");
-        if (!imageUrl.isEmpty())
-        {
-            return imageUrl;
-        }
 
-        imageUrl = getImageUrl(fulltext, "jpg");
-        if (!imageUrl.isEmpty())
-        {
-            return imageUrl;
-        }
-
-        imageUrl = getImageUrl(fulltext, "png");
-        if (!imageUrl.isEmpty())
-        {
-            return imageUrl;
-        }
-
-        imageUrl = getImageUrl(fulltext, "gif");
-        if (!imageUrl.isEmpty())
-        {
-            return imageUrl;
-        }
-
-            //This is the twitter image, seems like a decent default.
-        return Article.DEFAULT_IMAGE_URL;
-
-    }
-
-    private String getImageUrl(String fieldToSearch, String fileSuffix)
-    {
-        int start = fieldToSearch.indexOf("images");
-        if (start < 0) {
-            return "";
-        }
-        int end = fieldToSearch.indexOf("." + fileSuffix);
-        if (end < 0)
-        {
-            return "";
-        }
-
-        String s = fieldToSearch.substring(start, end);
-        return DISCIPLES_TODAY_BASE_URL + s + "." + fileSuffix;
-    }
-
-    public String getCreated_by_alias() {
-        return created_by_alias;
-    }
 }

@@ -33,8 +33,9 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.disciplestoday.disciplestoday.data.DTService;
+import org.disciplestoday.disciplestoday.data.ArticleResponse;
 import org.disciplestoday.disciplestoday.data.Feed;
+import org.disciplestoday.disciplestoday.data.WordPressService;
 import org.disciplestoday.disciplestoday.provider.FeedContract;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -50,6 +51,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 import static org.disciplestoday.disciplestoday.SyncUtils.PREF_SETUP_COMPLETE;
 
@@ -140,29 +142,22 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void syncAllFeeds(SyncResult syncResult) {
-        Log.e(TAG, "********Syncing all feeds");
-        syncDownloadFeed(syncResult, "353");
-        syncDownloadFeed(syncResult, "288");
-        syncDownloadFeed(syncResult, "273");
-        syncDownloadFeed(syncResult, "270");
-        syncDownloadFeed(syncResult, "347");
-        syncDownloadFeed(syncResult, "289");
-        syncDownloadFeed(syncResult, "271");
-        syncDownloadFeed(syncResult, "334");
-        syncDownloadFeed(syncResult, "272");
-        syncDownloadFeed(syncResult, "359");
-        syncDownloadFeed(syncResult, "358");
+        Log.e(TAG, "********Syncing / downloading first two pages");
+        //TODO: Download all of them...
+        syncDownloadFeed(syncResult, "1");
+        syncDownloadFeed(syncResult, "2");
+
     }
 
-    private void syncDownloadFeed(SyncResult syncResult, String moduleId) {
-        Call<Feed> call = getCall(moduleId);
+    private void syncDownloadFeed(SyncResult syncResult, String page) {
+        Call<ArticleResponse> call = getCall(page);
         try {
-            Log.i("NJW", "About to execute call for moduleId:" + moduleId);
-            Response<Feed> feedResponse = call.execute();
-            Feed feed = feedResponse.body();
-            Log.i("NJW", "got: feed with items size:" + feed.getItems().size());
+            Log.i("NJW", "---About to execute call for page:" + page);
+            Response<ArticleResponse> feedResponse = call.execute();
+            ArticleResponse feed = feedResponse.body();
+            Log.i("NJW", "got: feed with items size:" + feed.channel.items.size());
 
-            updateLocalFeedData(moduleId,feed, syncResult);
+            updateLocalFeedData(page,feed, syncResult);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
@@ -170,7 +165,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
 
-    public void updateLocalFeedData(String moduleId, Feed feed, final SyncResult syncResult)
+    public void updateLocalFeedData(String moduleId, ArticleResponse feed, final SyncResult syncResult)
             throws IOException, XmlPullParserException, RemoteException,
             OperationApplicationException, ParseException {
 
@@ -211,27 +206,30 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
 
     /**
-     * get call based on moduleid
+     * get call based on pageNum
      * @return
      */
-    public Call<Feed> getCall(String moduleId) {
+    public Call<ArticleResponse> getCall(String pageNum) {
+        //todo: figure out how to get logging in again.
+        /*
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .create();
+*/
 
-        GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson);
+        // https://jeaniesjourneys.com/feed/?paged=2
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(DTService.DISCIPLES_TODAY_BASE_URL)
-                .client(client)
-                .addConverterFactory(gsonConverterFactory)
+                .baseUrl(WordPressService.JEANIE_SHAW_BLOG_URL)
+                .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build();
 
-        DTService service = retrofit.create(DTService.class);
-        return service.listFeed(moduleId);
+        WordPressService service = retrofit.create(WordPressService.class);
+
+        Call<ArticleResponse> articleResponseCall = service.getFeed(pageNum);
+
+
+        return articleResponseCall;
 
     }
 }

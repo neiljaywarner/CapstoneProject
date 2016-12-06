@@ -3,9 +3,10 @@ package org.disciplestoday.disciplestoday;
 import android.text.Html;
 import android.text.TextUtils;
 
-import org.disciplestoday.disciplestoday.data.DTService;
+import org.disciplestoday.disciplestoday.data.ArticleResponse;
 import org.disciplestoday.disciplestoday.data.Feed;
 import org.disciplestoday.disciplestoday.data.Item;
+import org.disciplestoday.disciplestoday.data.WordPressService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +17,9 @@ import java.util.List;
 
 public class Article {
 
-    private static final String IMAGE_BASE_URL = DTService.DISCIPLES_TODAY_BASE_URL;
+    private static final String IMAGE_BASE_URL = WordPressService.JEANIE_SHAW_BLOG_URL;
     public static final String DEFAULT_IMAGE_URL = "https://pbs.twimg.com/profile_images/186752127/DToday_logo_Gradient_Orange_400x400.jpg";
+    //TODO: FIX THIS PART
     public static final String TRACK_TYPE_ARTICLE="article";
 
 
@@ -96,21 +98,20 @@ public class Article {
      * @param item
      * @return
      */
-    public static Article newArticle(String moduleId, Item item) {
-        String author = item.getCreated_by_alias();
-        String fullText = item.getFulltext();
+    public static Article newArticle(String pageNum, Item item) {
+        String author = "jeanie";
+        String fullText = item.encoded;
         if (TextUtils.isEmpty(fullText)) {
-            fullText = item.getIntroText();
+            fullText = item.description;
         }
-        if ((item.getExtraFields() == null) || item.getExtraFields().size() == 0) {
-            return new Article(moduleId, item.getId(), item.getTitle(), item.getImageUrl(), author,
-                    item.getIntroText(), fullText, item.getLink());
-        }
+        String imageLink = item.contentList.get(1).url;
 
-        String title = item.getExtraFields().get(0).getValue();
-        String description = item.getExtraFields().get(1).getValue();
-        String image = item.getImageUrl();
-        return new Article(moduleId, item.getId(), title, image, author, description, fullText, item.getLink());
+        return new Article(pageNum, "no_id", item.title, imageLink,
+                    author,
+                    item.description, fullText, item.link);
+
+
+
     }
 
     public String getImageLink() {
@@ -126,13 +127,13 @@ public class Article {
         }
     }
 
-    public static List<Article> getArticles(String moduleId, Feed feed) {
+    public static List<Article> getArticles(String moduleId, ArticleResponse feed) {
         List<Article> articles = new ArrayList<>();
-        if (feed.getItems() == null) {
+        if (feed.channel == null) {
             return null;
         }
 
-        for (Item item : feed.getItems()) {
+        for (Item item : feed.channel.items) {
             articles.add(newArticle(moduleId, item));
         }
         return  articles;
