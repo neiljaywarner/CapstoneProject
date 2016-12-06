@@ -142,10 +142,11 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void syncAllFeeds(SyncResult syncResult) {
-        Log.e(TAG, "********Syncing / downloading first two pages");
+        Log.e(TAG, "********Syncing / downloading second");
         //TODO: Download all of them...
-        syncDownloadFeed(syncResult, "1");
+        //syncDownloadFeed(syncResult, "1");
         syncDownloadFeed(syncResult, "2");
+        //TODO: Figure out how to get an id... perhpas teh id in the permalink
 
     }
 

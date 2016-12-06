@@ -238,6 +238,8 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
             }
             final Article item = mArticles.get(position);
             final String imageUrl = item.getImageLink();
+            //final String imageUrl = "https://jeaniesjourneys.files.wordpress.com/2016/11/why-cant-i-buy-you-shoes.png?w=300";
+            Log.e("NJW", "onBindViewHolder: image=" + imageUrl);
             if (!imageUrl.isEmpty())
             {
 

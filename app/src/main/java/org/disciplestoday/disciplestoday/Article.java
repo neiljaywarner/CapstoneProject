@@ -92,28 +92,6 @@ public class Article {
         return summary;
     }
 
-    /**
-     * Given: Extra fields are title/description/image as of May 28,2016
-     * They have name='title' etc,but is that better?
-     * Waiting for API.
-     * @param item
-     * @return
-     */
-    public static Article newArticle(String pageNum, Item item) {
-        String author = "jeanie";
-        String fullText = item.encoded;
-        if (TextUtils.isEmpty(fullText)) {
-            fullText = item.description;
-        }
-        String imageLink = item.contentList.get(1).url;
-
-        return new Article(pageNum, "no_id", item.title, imageLink,
-                    author,
-                    item.description, fullText, item.link);
-
-
-
-    }
 
     public static Article newArticle(int id,String pageNum, Item item) {
         String author = "jeanie";
@@ -121,9 +99,11 @@ public class Article {
         if (TextUtils.isEmpty(fullText)) {
             fullText = item.description;
         }
-        String imageLink = item.contentList.get(1).url;
-        Log.e("NJW", "in newArticle:" +  imageLink);
-
+        int lastImage = item.contentList.size() -1;
+        String imageLink = item.contentList.get(lastImage).url;
+        Log.e("NJW", "imageLink1=" + imageLink);
+        imageLink = imageLink.replace("http://", "https://");
+        Log.e("NJW", "imageLink2=" + imageLink);
         return new Article(pageNum, String.valueOf(id), item.title, imageLink,
                 author,
                 item.description, fullText, item.link);
@@ -145,7 +125,7 @@ public class Article {
         }
     }
 
-    public static List<Article> getArticles(String moduleId, ArticleResponse feed) {
+    public static List<Article> getArticles(String page, ArticleResponse feed) {
         List<Article> articles = new ArrayList<>();
         if (feed.channel == null) {
             return null;
@@ -153,7 +133,7 @@ public class Article {
         int i=0;
         for (Item item : feed.channel.items) {
             i++;
-            articles.add(newArticle(i,moduleId, item));
+            articles.add(newArticle(i,page, item));
         }
         return  articles;
     }
