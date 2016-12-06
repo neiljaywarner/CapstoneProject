@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity
                     Log.i(TAG, "Navdrawer->Show appropriate news feed.");
                     // Track via titleCondensed b/c title will be localized.
                     setPageTitle(item);
-                    trackFeedSelection(item.getTitleCondensed().toString());
+                    //trackFeedSelection(item.getTitleCondensed().toString());
                     mLayoutNews.setVisibility(View.INVISIBLE);
                     showNewsFeedFragment(item);
                 }
@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity
     private void trackFeedSelection(String feedName) {
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, feedName);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM_LIST, bundle);
+        //mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM_LIST, bundle);
         mFeedLoadStart = System.nanoTime();
     }
 

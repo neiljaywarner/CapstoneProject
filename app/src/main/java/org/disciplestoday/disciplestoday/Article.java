@@ -2,6 +2,7 @@ package org.disciplestoday.disciplestoday;
 
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 
 import org.disciplestoday.disciplestoday.data.ArticleResponse;
 import org.disciplestoday.disciplestoday.data.Feed;
@@ -114,6 +115,23 @@ public class Article {
 
     }
 
+    public static Article newArticle(int id,String pageNum, Item item) {
+        String author = "jeanie";
+        String fullText = item.encoded;
+        if (TextUtils.isEmpty(fullText)) {
+            fullText = item.description;
+        }
+        String imageLink = item.contentList.get(1).url;
+        Log.e("NJW", "in newArticle:" +  imageLink);
+
+        return new Article(pageNum, String.valueOf(id), item.title, imageLink,
+                author,
+                item.description, fullText, item.link);
+
+
+
+    }
+
     public String getImageLink() {
         return imageLink;
     }
@@ -132,9 +150,10 @@ public class Article {
         if (feed.channel == null) {
             return null;
         }
-
+        int i=0;
         for (Item item : feed.channel.items) {
-            articles.add(newArticle(moduleId, item));
+            i++;
+            articles.add(newArticle(i,moduleId, item));
         }
         return  articles;
     }

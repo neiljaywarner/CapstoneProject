@@ -73,7 +73,8 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
             mModuleId = getArguments().getString(ARG_NAV_ID);
             Log.i(TAG, "Setting Module Id " + mModuleId);
         } else {
-            mModuleId = "353"; // Highlighted feed
+           // mModuleId = "353"; // Highlighted feed
+            //TODOFIXME
         }
 
         SyncUtils.CreateSyncAccount(this.getContext());
