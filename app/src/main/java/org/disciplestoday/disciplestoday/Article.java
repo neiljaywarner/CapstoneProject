@@ -19,7 +19,7 @@ import java.util.List;
 public class Article {
 
     private static final String IMAGE_BASE_URL = WordPressService.JEANIE_SHAW_BLOG_URL;
-    public static final String DEFAULT_IMAGE_URL = "https://pbs.twimg.com/profile_images/186752127/DToday_logo_Gradient_Orange_400x400.jpg";
+    public static final String DEFAULT_IMAGE_URL = "https://jeaniesjourneys.files.wordpress.com/2012/01/cropped-morning-cup-cover.jpg";
     //TODO: FIX THIS PART
     public static final String TRACK_TYPE_ARTICLE="article";
 
