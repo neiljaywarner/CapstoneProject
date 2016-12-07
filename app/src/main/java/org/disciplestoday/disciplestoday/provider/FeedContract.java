@@ -30,10 +30,10 @@ public class FeedContract {
     /**
      * Content provider authority.
      */
-    public static final String CONTENT_AUTHORITY = "org.disciplestoday.disciplestoday";
+    public static final String CONTENT_AUTHORITY = "com.jeaniesjourneys.cba";
 
     /**
-     * Base URI. (content://org.disciplestoday.disciplestoday)
+     * Base URI. (content://com.jeaniesjourneys.cba)
      */
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 

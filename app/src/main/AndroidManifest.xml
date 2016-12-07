@@ -37,7 +37,7 @@
 
         <provider
             android:name=".provider.FeedProvider"
-            android:authorities="org.disciplestoday.disciplestoday"
+            android:authorities="com.jeaniesjourneys.cba"
             android:exported="false" />
 
 
