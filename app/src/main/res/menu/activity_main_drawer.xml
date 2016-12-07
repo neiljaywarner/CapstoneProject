@@ -2,7 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
+    <!--TODO: Delete? or do somethign similar? probably delete -->
     <item
+        android:visible="false"
         android:id="@+id/nav_locator"
         android:icon="@android:drawable/ic_menu_compass"
         android:title="@string/locator" />

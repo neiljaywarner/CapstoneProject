@@ -24,6 +24,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.OperationApplicationException;
 import android.content.SyncResult;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
@@ -34,6 +35,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.disciplestoday.disciplestoday.data.ArticleResponse;
+import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
 import org.disciplestoday.disciplestoday.data.Feed;
 import org.disciplestoday.disciplestoday.data.WordPressService;
 import org.disciplestoday.disciplestoday.provider.FeedContract;
@@ -45,6 +47,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import nl.qbusict.cupboard.Cupboard;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -158,6 +161,10 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
             ArticleResponse feed = feedResponse.body();
             Log.i("NJW", "got: feed with items size:" + feed.channel.items.size());
 
+
+            //TODO: FIXME--maybe
+
+            //
             updateLocalFeedData(page,feed, syncResult);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
