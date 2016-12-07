@@ -342,26 +342,9 @@ public class MainActivity extends AppCompatActivity
     //TODO: Change these to just a few tags.
     private String getModuleId(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.nav_campus:
-                return "288";
-            case R.id.nav_singles:
-                return "273";
-            case R.id.nav_bible_study:
-                return "270";
-            case R.id.nav_commentary:
-                return "347";
-            case R.id.nav_kingdom_kids:
-                return "289";
-            case R.id.nav_youth_and_family:
-                return "271";
-            case R.id.nav_missions:
-                return "334";
-            case R.id.nav_man_up:
-                return "272";
-            case R.id.nav_specialty_ministries:
-                return "359";
-            case R.id.nav_regional_news:
-                return "358";
+
+            case R.id.nav_recent:
+                return "2";
             default:
                 return "1";
 
