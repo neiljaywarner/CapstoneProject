@@ -21,11 +21,12 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
     defaultConfig {
-        applicationId "org.disciplestoday.disciplestoday"
+        applicationId "com.jeaniesjourneys.cba"
+        //TODO: Make default be all of them, and Jeanie's flavor be jeanie's
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 94
-        versionName "1.0beta-4 (0.94)"
+        versionCode 1
+        versionName "0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
