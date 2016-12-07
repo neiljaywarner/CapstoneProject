@@ -56,6 +56,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
+import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 import static org.disciplestoday.disciplestoday.SyncUtils.PREF_SETUP_COMPLETE;
 
 /**
@@ -122,6 +123,11 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
             return;
         }
 
+        //NJW TODO: Maybe fix this later, for now this prevents collision issues that occur b/c no id
+        // for now. TODO: Create ID from permalink
+        CupboardSQLiteOpenHelper helper = new CupboardSQLiteOpenHelper(this.getContext());
+        cupboard().withDatabase(helper.getWritableDatabase()).dropAllTables();
+
         if (extras.getString(ARGS_MODULE_ID) != null) {
             String moduleId = extras.getString(ARGS_MODULE_ID);
             Log.i(TAG, "-->Syncing:" + moduleId);
@@ -145,10 +151,10 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void syncAllFeeds(SyncResult syncResult) {
-        Log.e(TAG, "********Syncing / downloading second");
+        Log.e(TAG, "********Syncing / downloading first");
         //TODO: Download all of them...
-        //syncDownloadFeed(syncResult, "1");
-        syncDownloadFeed(syncResult, "2");
+        syncDownloadFeed(syncResult, "1");
+        //syncDownloadFeed(syncResult, "2");
         //TODO: Figure out how to get an id... perhpas teh id in the permalink
 
     }

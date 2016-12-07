@@ -3,6 +3,8 @@ package org.disciplestoday.disciplestoday;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -26,6 +28,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
 import org.disciplestoday.disciplestoday.provider.FeedContract;
 
 import java.util.List;
@@ -76,6 +79,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
            // mModuleId = "353"; // Highlighted feed
             //TODOFIXME
         }
+
 
         SyncUtils.CreateSyncAccount(this.getContext());
 
