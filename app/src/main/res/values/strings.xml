@@ -72,6 +72,11 @@
 
 
     <string name="recent">Recent</string>
+    <string name="prayer">Prayer</string>
+
+    <string name="gratitude">Gratitude</string>
+    <string name="faith">Faith</string>
+
 
 
     <string name="links">Links</string>

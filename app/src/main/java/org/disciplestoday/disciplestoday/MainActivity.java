@@ -345,6 +345,12 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.nav_recent:
                 return "2";
+            case R.id.nav_prayer:
+                return "prayer";
+            case R.id.nav_gratitude:
+                return "gratitude";
+            case R.id.nav_faith:
+                return "faith";
             default:
                 return "1";
 

@@ -30,6 +30,24 @@
                 android:icon="@drawable/ic_menu_gallery"
                 android:titleCondensed="Recent"
                 android:title="@string/recent" />
+
+            <item
+                android:id="@+id/nav_prayer"
+                android:icon="@drawable/ic_menu_gallery"
+                android:titleCondensed="Prayer"
+                android:title="Prayer" />
+
+            <item
+                android:id="@+id/nav_gratitude"
+                android:icon="@drawable/ic_menu_gallery"
+                android:titleCondensed="Recent"
+                android:title="Gratitude" />
+
+            <item
+                android:id="@+id/nav_faith"
+                android:icon="@drawable/ic_menu_gallery"
+                android:titleCondensed="Recent"
+                android:title="Faith" />
             <!-- TODO: FIX, Change to tags -->
         </group>
     </menu>

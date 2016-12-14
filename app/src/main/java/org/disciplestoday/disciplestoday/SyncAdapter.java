@@ -28,6 +28,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.FieldNamingPolicy;
@@ -116,6 +117,17 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
                               ContentProviderClient provider, SyncResult syncResult) {
         Log.i("NJW", "Beginning network synchronization");
 
+        CupboardSQLiteOpenHelper helper = new CupboardSQLiteOpenHelper(this.getContext());
+        SQLiteDatabase db = helper.getWritableDatabase();
+        //Delete all articles for now. TODO: FIXME, delete only the relevant page...
+
+
+        // or by selection
+        //cupboard().withDatabase(db).delete(Article.class, "title = ?", "android");
+        // for now delete all entries in a given table
+        //Log.e("NJW", "About to delete articles");
+        //cupboard().withDatabase(db).delete(Article.class, null);
+
         // TODO: Fix magic #s, but they correspond to values in MainActivity.getModuleId() and the query parameters of the feeds
         // Download all feeds
         if (extras == null) {
@@ -125,8 +137,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         //NJW TODO: Maybe fix this later, for now this prevents collision issues that occur b/c no id
         // for now. TODO: Create ID from permalink
-        CupboardSQLiteOpenHelper helper = new CupboardSQLiteOpenHelper(this.getContext());
-        cupboard().withDatabase(helper.getWritableDatabase()).dropAllTables();
+
 
         if (extras.getString(ARGS_MODULE_ID) != null) {
             String moduleId = extras.getString(ARGS_MODULE_ID);
@@ -159,10 +170,20 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     }
 
-    private void syncDownloadFeed(SyncResult syncResult, String page) {
-        Call<ArticleResponse> call = getCall(page);
+    private void syncDownloadFeed(SyncResult syncResult, String tag) {
+
+
+        //TODO: Delete just the relevant page before re-syncing it.
+        //CupboardSQLiteOpenHelper helper = new CupboardSQLiteOpenHelper(this.getContext());
+
+
+        /*
+        int numDeleted = cupboard().withDatabase(helper.getWritableDatabase()).delete(Article.class,"module= ?", page);
+        Log.e("NJW", "numdeleted=" + numDeleted);
+        */
+        Call<ArticleResponse> call = getCall(tag);
         try {
-            Log.i("NJW", "---About to execute call for page:" + page);
+            Log.i("NJW", "---About to execute call for page:" + tag);
             Response<ArticleResponse> feedResponse = call.execute();
             ArticleResponse feed = feedResponse.body();
             Log.i("NJW", "got: feed with items size:" + feed.channel.items.size());
@@ -171,7 +192,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
             //TODO: FIXME--maybe
 
             //
-            updateLocalFeedData(page,feed, syncResult);
+            updateLocalFeedData(tag,feed, syncResult);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
@@ -223,7 +244,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
      * get call based on pageNum
      * @return
      */
-    public Call<ArticleResponse> getCall(String pageNum) {
+    public Call<ArticleResponse> getCall(int pageNum) {
         //todo: figure out how to get logging in again.
         /*
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -240,10 +261,43 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         WordPressService service = retrofit.create(WordPressService.class);
 
-        Call<ArticleResponse> articleResponseCall = service.getFeed(pageNum);
+        Call<ArticleResponse> articleResponseCall = service.getFeed(String.valueOf(pageNum));
 
-
+        Log.d("NJW", "articleResponseCall url:" + articleResponseCall.request().url().toString());
         return articleResponseCall;
+
+    }
+
+    /**
+     * get call based on pageNum
+     * @return
+     */
+    public Call<ArticleResponse> getCall(String tag) {
+
+        if (TextUtils.isDigitsOnly(tag)) {
+            int page = Integer.valueOf(tag);
+            return getCall(page);
+        } else {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(WordPressService.JEANIE_SHAW_BLOG_URL)
+                    .addConverterFactory(SimpleXmlConverterFactory.create())
+                    .build();
+
+            WordPressService service = retrofit.create(WordPressService.class);
+
+            Call<ArticleResponse> articleResponseCall = service.getTagFeed(tag);
+
+            Log.d("NJW", "Tag articleResponse call:" + articleResponseCall.request().url().toString());
+            return articleResponseCall;
+        }
+        //todo: figure out how to get logging in again.
+        /*
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
+*/
+
 
     }
 }
