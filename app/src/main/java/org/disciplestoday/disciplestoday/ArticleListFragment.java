@@ -66,7 +66,6 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         Bundle args = new Bundle();
         args.putString(ARG_NAV_ID, moduleId);
         fragment.setArguments(args);
-        FirebaseCrash.report(new Exception("NJWTEST->newInstance of ArticlieListFragmetn:My first Android non-fatal error"));
 
         return fragment;
     }
