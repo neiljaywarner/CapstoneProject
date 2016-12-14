@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crash.FirebaseCrash;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -65,6 +66,8 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         Bundle args = new Bundle();
         args.putString(ARG_NAV_ID, moduleId);
         fragment.setArguments(args);
+        FirebaseCrash.report(new Exception("NJWTEST->newInstance of ArticlieListFragmetn:My first Android non-fatal error"));
+
         return fragment;
     }
 

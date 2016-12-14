@@ -28,6 +28,7 @@ import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crash.FirebaseCrash;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -79,6 +80,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this.getActivity());
+        FirebaseCrash.logcat(Log.DEBUG, TAG, "Opening detail fragment");
 
         /*suppress unused*/
         GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this.getContext())
@@ -92,6 +94,8 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
             mFullText = getArguments().getString(ARG_ITEM_FULLTEXT);
             mLink = getArguments().getString(ARG_ITEM_LINK);
             mPubDate = getArguments().getString(ARG_ITEM_PUB_DATE);
+            FirebaseCrash.logcat(Log.DEBUG, TAG, "Setting mPubDate to:" + mPubDate);
+
 
             mImageUrl = getArguments().getString(ARG_ITEM_IMAGE_URL);
             Log.i(TAG, "mImageurl=" + mImageUrl);
@@ -155,6 +159,8 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
                     }
                 });
             }
+        } else {
+            FirebaseCrash.logcat(Log.DEBUG, TAG, "No article title argument");
         }
     }
 
@@ -174,13 +180,18 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.article_detail, container, false);
-        TextView textView = (TextView) rootView.findViewById(R.id.textViewPubDate);
-        //TODO: fixme via simpledateformat?
-        String dayOfMonth = mPubDate.split(" ")[1];
-        String shortMonth = mPubDate.split(" ")[2];
-        String year = mPubDate.split(" ")[3];
-        String displayDate = shortMonth + " " + dayOfMonth + ", " + year;
-        textView.setText("Posted on: " + displayDate);
+
+        if (mPubDate != null && mPubDate.split(" ").length > 2) {
+            TextView textView = (TextView) rootView.findViewById(R.id.textViewPubDate);
+            //TODO: fixme via simpledateformat?
+
+            String dayOfMonth = mPubDate.split(" ")[1];
+            String shortMonth = mPubDate.split(" ")[2];
+            String year = mPubDate.split(" ")[3];
+            String displayDate = shortMonth + " " + dayOfMonth + ", " + year;
+            textView.setText("Posted on: " + displayDate);
+
+        }
         WebView webview = (WebView) rootView.findViewById(R.id.article_detail);
 
         WebSettings webSettings = webview.getSettings();
