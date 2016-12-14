@@ -83,10 +83,12 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
         FirebaseCrash.logcat(Log.DEBUG, TAG, "Opening detail fragment");
 
         /*suppress unused*/
+        /*
         GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this.getContext())
                 .addApi(AppInvite.API)
                 .enableAutoManage(this.getActivity(), this)
                 .build();
+                */
 
         if (getArguments().containsKey(ARG_ITEM_TITLE)) {
             mArticleId = getArguments().getString(ARG_ITEM_ID);
