@@ -37,6 +37,12 @@ public class Article {
     private String author;
     private String summary; //or description, byline, etc.
 
+    public String getPubDate() {
+        return pubDate;
+    }
+
+    private String pubDate;
+
 
     public String getCategoryId() {
         return categoryId;
@@ -61,13 +67,14 @@ public class Article {
     }
 
     //TODO: Add categoryid so we can add a feed for hope.
-    private Article(String moduleId, String articleId, String title, String imageLink, String author, String summary, String fullText, String link) {
+    private Article(String moduleId, String articleId, String title, String imageLink, String author, String pubDate, String summary, String fullText, String link) {
         this.id = articleId;
         this.moduleId = moduleId;
         this.title = title;
         this.imageLink = imageLink;
         this.fullText = fullText.replace("images/", IMAGE_BASE_URL + "/images/");;
         this.author = author;
+        this.pubDate = pubDate;
         this.summary = summary;
         this.link = link;
     }
@@ -105,7 +112,7 @@ public class Article {
         imageLink = imageLink.replace("http://", "https://");
         Log.e("NJW", "imageLink2=" + imageLink);
         return new Article(pageNum, String.valueOf(id), item.title, imageLink,
-                author,
+                author, item.pubDate,
                 item.description, fullText, item.link);
 
 

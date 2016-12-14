@@ -21,6 +21,7 @@ import android.webkit.URLUtil;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.appinvite.AppInvite;
 import com.google.android.gms.appinvite.AppInviteInvitation;
@@ -49,6 +50,8 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
 
     public static final String ARG_ITEM_TITLE = "item_title";
     public static final String ARG_ITEM_LINK = "item_link";
+    public static final String ARG_ITEM_PUB_DATE = "item_pub_date";
+
 
     public static final String ARG_ITEM_FULLTEXT = "item_fulltext";
     public static final String ARG_ITEM_IMAGE_URL = "item_image_url";
@@ -63,6 +66,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
     private String mLink;
     private String mFullText;
     private String mImageUrl;
+    private String mPubDate;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -87,6 +91,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
             mTitle = getArguments().getString(ARG_ITEM_TITLE);
             mFullText = getArguments().getString(ARG_ITEM_FULLTEXT);
             mLink = getArguments().getString(ARG_ITEM_LINK);
+            mPubDate = getArguments().getString(ARG_ITEM_PUB_DATE);
 
             mImageUrl = getArguments().getString(ARG_ITEM_IMAGE_URL);
             Log.i(TAG, "mImageurl=" + mImageUrl);
@@ -169,7 +174,13 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.article_detail, container, false);
-
+        TextView textView = (TextView) rootView.findViewById(R.id.textViewPubDate);
+        //TODO: fixme via simpledateformat?
+        String dayOfMonth = mPubDate.split(" ")[1];
+        String shortMonth = mPubDate.split(" ")[2];
+        String year = mPubDate.split(" ")[3];
+        String displayDate = shortMonth + " " + dayOfMonth + ", " + year;
+        textView.setText("Posted on: " + displayDate);
         WebView webview = (WebView) rootView.findViewById(R.id.article_detail);
 
         WebSettings webSettings = webview.getSettings();

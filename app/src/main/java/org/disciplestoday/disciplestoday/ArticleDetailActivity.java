@@ -46,6 +46,8 @@ public class ArticleDetailActivity extends AppCompatActivity {
                     getIntent().getStringExtra(ArticleDetailFragment.ARG_ITEM_ID));
             arguments.putString(ArticleDetailFragment.ARG_ITEM_TITLE,
                     getIntent().getStringExtra(ArticleDetailFragment.ARG_ITEM_TITLE));
+            arguments.putString(ArticleDetailFragment.ARG_ITEM_PUB_DATE,
+                    getIntent().getStringExtra(ArticleDetailFragment.ARG_ITEM_PUB_DATE));
             arguments.putString(ArticleDetailFragment.ARG_ITEM_LINK,
                     getIntent().getStringExtra(ArticleDetailFragment.ARG_ITEM_LINK));
             arguments.putString(ArticleDetailFragment.ARG_ITEM_FULLTEXT,

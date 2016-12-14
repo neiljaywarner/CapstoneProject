@@ -82,6 +82,9 @@ public class FeedContract {
 
         public static final String COLUMN_NAME_SUMMARY = "summary";
 
+        public static final String COLUMN_NAME_PUB_DATE = "pubDate";
+
+
         public static final String COLUMN_NAME_LINK = "link";
 
     }

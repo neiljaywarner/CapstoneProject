@@ -41,10 +41,13 @@ public class CupboardSQLiteOpenHelper extends SQLiteOpenHelper {
                     FeedContract.Entry.COLUMN_NAME_IMAGE_LINK    + TYPE_TEXT + COMMA_SEP +
                     FeedContract.Entry.COLUMN_NAME_FULL_TEXT    + TYPE_TEXT + COMMA_SEP +
                     FeedContract.Entry.COLUMN_NAME_AUTHOR    + TYPE_TEXT + COMMA_SEP +
+                    FeedContract.Entry.COLUMN_NAME_PUB_DATE    + TYPE_TEXT + COMMA_SEP +
                     FeedContract.Entry.COLUMN_NAME_SUMMARY    + TYPE_TEXT + COMMA_SEP +
                     FeedContract.Entry.COLUMN_NAME_LINK + TYPE_TEXT +
                     ", UNIQUE ("  + FeedContract.Entry.COLUMN_NAME_ARTICLE_ID + "," + FeedContract.Entry.COLUMN_NAME_MODULE_ID +"))";
 
+
+    //TODO Store date by long?
     //TODO: Change moduleId to say tag, then tag none/null can be main feed
 
     //TODO: Category_id field for a menu option for 'hope'
