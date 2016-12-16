@@ -12,8 +12,8 @@ android {
         //TODO: Make default be all of them, and Jeanie's flavor be jeanie's
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 3
-        versionName "0.9"
+        versionCode 4
+        versionName "0.1a"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
