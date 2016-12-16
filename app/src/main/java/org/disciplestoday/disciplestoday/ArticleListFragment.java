@@ -106,14 +106,13 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
     public Loader<Cursor> onCreateLoader(int loader_id, Bundle bundle) {
         Log.d(TAG, "Creating loader for:" + mModuleId);
         String[] selectionArgs = new String[] {mModuleId};
-        final String selection = "moduleId = ?";
+        final String selection = FeedContract.Entry.COLUMN_NAME_MODULE_ID + " = ?";
         return new CursorLoader(getActivity(),      // Context
                 FeedContract.Entry.CONTENT_URI,     // URI
                 null,                               // Projection
                 selection,                          // Selection
                 selectionArgs,                      // Selection args
-                "pubDate desc "); // Sort string is optional
-        //TODO: Sort by modified? sort by some specific date?
+                FeedContract.Entry.COLUMN_NAME_PUB_DATE + " desc "); // Sort string is optional
     }
 
     @Override

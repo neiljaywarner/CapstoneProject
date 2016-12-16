@@ -9,6 +9,7 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import org.disciplestoday.disciplestoday.Article;
 import org.disciplestoday.disciplestoday.provider.FeedContract;
@@ -16,7 +17,7 @@ import org.disciplestoday.disciplestoday.provider.FeedContract;
 import nl.qbusict.cupboard.convert.EntityConverter;
 
 public class CupboardSQLiteOpenHelper extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "jeaniesjourney.db";
+    public static final String DATABASE_NAME = "morningcup.db";
     private static final int DATABASE_VERSION = 1;
 
     static {
@@ -58,6 +59,11 @@ public class CupboardSQLiteOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // this will ensure that all tables are created
         //using my own create statement to get the unique constraint on article_id
+        Log.d("DB", "***** Create statement begin ***");
+        Log.d("DB", SQL_CREATE_articles);
+        Log.d("DB", "***** Create statement end ***");
+
+
         db.execSQL(SQL_CREATE_articles);
 
     }
