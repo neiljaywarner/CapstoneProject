@@ -112,7 +112,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
                 null,                               // Projection
                 selection,                          // Selection
                 selectionArgs,                      // Selection args
-                "_id desc"); // Sort string is optional
+                "pubDate desc "); // Sort string is optional
         //TODO: Sort by modified? sort by some specific date?
     }
 

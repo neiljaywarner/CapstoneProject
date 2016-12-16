@@ -9,8 +9,11 @@ import org.disciplestoday.disciplestoday.data.Feed;
 import org.disciplestoday.disciplestoday.data.Item;
 import org.disciplestoday.disciplestoday.data.WordPressService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by neil on 5/28/16.
@@ -74,7 +77,12 @@ public class Article {
         this.imageLink = imageLink;
         this.fullText = fullText.replace("images/", IMAGE_BASE_URL + "/images/");;
         this.author = author;
-        this.pubDate = pubDate;
+        //this.pubDate = pubDate;
+        try {
+            this.pubDate =  String.valueOf(((new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH)).parse(pubDate)).getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         this.summary = summary;
         this.link = link;
     }

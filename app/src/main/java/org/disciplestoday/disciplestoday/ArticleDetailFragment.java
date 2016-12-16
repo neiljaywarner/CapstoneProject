@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.graphics.Palette;
 import android.text.Html;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,11 @@ import com.google.firebase.crash.FirebaseCrash;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
 
@@ -182,15 +188,22 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.article_detail, container, false);
 
-        if (mPubDate != null && mPubDate.split(" ").length > 2) {
+        if (mPubDate != null) {
             TextView textView = (TextView) rootView.findViewById(R.id.textViewPubDate);
-            //TODO: fixme via simpledateformat?
+//            //TODO: fixme via simpledateformat?
+//
+//            String dayOfMonth = mPubDate.split(" ")[1];
+//            String shortMonth = mPubDate.split(" ")[2];
+//            String year = mPubDate.split(" ")[3];
+//            String displayDate = shortMonth + " " + dayOfMonth + ", " + year;
+            Long dateLong = Long.parseLong(mPubDate);
+            SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy", Locale.US);
 
-            String dayOfMonth = mPubDate.split(" ")[1];
-            String shortMonth = mPubDate.split(" ")[2];
-            String year = mPubDate.split(" ")[3];
-            String displayDate = shortMonth + " " + dayOfMonth + ", " + year;
-            textView.setText("Posted on: " + displayDate);
+            GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("US/Central"));
+            calendar.setTimeInMillis(dateLong);
+
+
+            textView.setText("Posted on: " + sdf.format(calendar.getTime()));
 
         }
         WebView webview = (WebView) rootView.findViewById(R.id.article_detail);
