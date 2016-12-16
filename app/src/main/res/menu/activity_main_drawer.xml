@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <!--TODO: Delete? or do somethign similar? probably delete -->
     <item
-        android:visible="false"
+        android:visible="true"
         android:id="@+id/nav_locator"
         android:icon="@android:drawable/ic_menu_compass"
         android:title="@string/locator" />
+    <!-- TODO: Clean up naming... make it typically about.. -->
 
     <item
         android:id="@+id/nav_share"
@@ -24,12 +24,6 @@
                 android:titleCondensed="Highlighted"
                 android:id="@+id/nav_highlighted"
                 android:title="@string/highlighted" />
-
-            <item
-                android:id="@+id/nav_recent"
-                android:icon="@drawable/ic_menu_gallery"
-                android:titleCondensed="Recent"
-                android:title="@string/recent" />
 
             <item
                 android:id="@+id/nav_prayer"

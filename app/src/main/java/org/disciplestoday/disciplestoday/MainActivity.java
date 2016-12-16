@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final String LOCATOR_URL = "http://www.dtodayinfo.net/Dtoday";
+    private static final String LOCATOR_URL = "https://jeaniesjourneys.com/about/";
     private static final int HIGHLIGHTED_SUBITEM_INDEX = 0;
     private static final int REQUEST_INVITE = 1 ;
     public static final int SUBMENU_LINKS_INDEX = 3;
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity
     private View mLayoutNews;
     private MenuItem mNavMenuItem;
 
+    //TOODO: BUILD BACKSTACK!!! so that 'back' from about doesn't exit the app..
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -343,8 +344,9 @@ public class MainActivity extends AppCompatActivity
     private String getModuleId(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
 
-            case R.id.nav_recent:
-                return "2";
+            //TODO: Section for archives coudl take in '2016', '2015' etc
+            //case R.id.nav_recent:
+            //    return "2";
             case R.id.nav_prayer:
                 return "prayer";
             case R.id.nav_gratitude:
