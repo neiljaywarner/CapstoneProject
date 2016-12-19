@@ -26,22 +26,22 @@
                 android:title="@string/highlighted" />
 
             <item
-                android:id="@+id/nav_prayer"
+                android:id="@+id/nav_tag1"
                 android:icon="@drawable/ic_menu_gallery"
-                android:titleCondensed="Prayer"
-                android:title="Prayer" />
+                android:titleCondensed="tag:life-story"
+                android:title="Life Story" />
 
             <item
-                android:id="@+id/nav_gratitude"
+                android:id="@+id/nav_tag2"
                 android:icon="@drawable/ic_menu_gallery"
-                android:titleCondensed="Recent"
-                android:title="Gratitude" />
+                android:titleCondensed="tag:truth"
+                android:title="Truth" />
 
             <item
-                android:id="@+id/nav_faith"
+                android:id="@+id/nav_tag3"
                 android:icon="@drawable/ic_menu_gallery"
-                android:titleCondensed="Recent"
-                android:title="Faith" />
+                android:titleCondensed="tag:love"
+                android:title="Love" />
             <!-- TODO: FIX, Change to tags -->
         </group>
     </menu>

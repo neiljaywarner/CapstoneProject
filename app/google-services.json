@@ -1,35 +1,27 @@
 {
   "project_info": {
-    "project_number": "859154256893",
-    "firebase_url": "https://jeanies-journey-app.firebaseio.com",
-    "project_id": "jeanies-journey-app",
-    "storage_bucket": "jeanies-journey-app.appspot.com"
+    "project_number": "926206552017",
+    "firebase_url": "https://honest-abby-site.firebaseio.com",
+    "project_id": "honest-abby-site",
+    "storage_bucket": "honest-abby-site.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:859154256893:android:b434cd5fa64ca832",
+        "mobilesdk_app_id": "1:926206552017:android:303803e000e84fdf",
         "android_client_info": {
-          "package_name": "com.jeaniesjourneys.cba"
+          "package_name": "org.honestabbysite.cba"
         }
       },
       "oauth_client": [
         {
-          "client_id": "859154256893-ffsaoaf3463io7ahq0334vjb30reus8k.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.jeaniesjourneys.cba",
-            "certificate_hash": "BD07E3D079C70FC3D6E84BF0EEF6AEB6F95F3C4B"
-          }
-        },
-        {
-          "client_id": "859154256893-3gs1n6jh3jo471hth6ib9fa6gefk8hio.apps.googleusercontent.com",
+          "client_id": "926206552017-bjepj1n072r961sqrk4ei3i3pl2f53hb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAMGwA_X0nQvlxoOxnaQK_f4K1zLpeSOnQ"
+          "current_key": "AIzaSyABjDbhHmbD6ICsc3BVkIvlfvC7TWeKZ94"
         }
       ],
       "services": {
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "859154256893-3gs1n6jh3jo471hth6ib9fa6gefk8hio.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

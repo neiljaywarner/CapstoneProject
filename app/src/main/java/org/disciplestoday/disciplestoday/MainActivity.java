@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final String LOCATOR_URL = "https://jeaniesjourneys.com/about/";
+    private static final String LOCATOR_URL = "https://honestabbysite.org/about/";
+    //TODO: Put this in constants file, preferably via sitename or something
     private static final int HIGHLIGHTED_SUBITEM_INDEX = 0;
     private static final int REQUEST_INVITE = 1 ;
     public static final int SUBMENU_LINKS_INDEX = 3;
@@ -342,20 +343,15 @@ public class MainActivity extends AppCompatActivity
 
     //TODO: Change these to just a few tags.
     private String getModuleId(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
 
-            //TODO: Section for archives coudl take in '2016', '2015' etc
-            //case R.id.nav_recent:
-            //    return "2";
-            case R.id.nav_prayer:
-                return "prayer";
-            case R.id.nav_gratitude:
-                return "gratitude";
-            case R.id.nav_faith:
-                return "faith";
-            default:
+
+            String shortTitle = menuItem.getTitleCondensed().toString();
+            if (shortTitle.startsWith("tag:")) {
+                return menuItem.getTitleCondensed().subSequence(4,shortTitle.length()).toString();
+            } else {
                 return "1";
+            }
 
-        }
+
     }
 }

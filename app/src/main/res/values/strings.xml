@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Morning Cup</string>
+    <string name="app_name">Honest Abby</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -8,10 +8,10 @@
     <string name="fetching_articles_message">Please wait while we load your articles.</string>
 
             <!-- This string is all the recipient see in text message and the title of email msg -->
-    <string name="invitation_title">Please try the Jeanie\'s Journeys app</string>
+    <string name="invitation_title">Please try the Honest Abby app</string>
     <string name="invitation_message">I think you would like this encouraging app with spiritual devotionals/thoughts.</string>
 
-    <string name="invitation_call_to_action_button_text">Try Jeanie\'s Journeys App</string>
+    <string name="invitation_call_to_action_button_text">Try Honest Abby App</string>
     <!-- TODO: REMOVE above? -->
     <!-- TODO: for version 1.1 and beyond->Confirm this text for all 3, and/or just use custom email per best practices -->
     <!-- see: https://firebase.google.com/docs/invites/best-practices -->
@@ -28,7 +28,7 @@
 
     <string name="invitation_html_email_content">
         <![CDATA[
-        Please try the Jeanie\'s Journeys App.<br/><br/>I wanted to share some great %%FEED%% articles from Jeanie\'s Journeys.<br/><br/><a href=\'%%APPINVITE_LINK_PLACEHOLDER%%\'>Open in app</a>
+        Please try the Jeanie\'s Journeys App.<br/><br/>I wanted to share some great %%FEED%% articles from Honest Abby<br/><br/><a href=\'%%APPINVITE_LINK_PLACEHOLDER%%\'>Open in app</a>
 
 
     ]]>
@@ -39,7 +39,7 @@
 
     <string name="share_article_html_email_content">
         <![CDATA[
-        Check out the article %%ARTICLE_TITLE%% articles from Jeanie\'s Journeys!
+        Check out the article %%ARTICLE_TITLE%% articles from Honest Abby
         <br/><br/><a href=\'%%APPINVITE_LINK_PLACEHOLDER%%\'>Install app</a>
         <hr/>
 
@@ -74,7 +74,7 @@
     <string name="recent">Recent</string> <!-- TODO: Figure out archive by year, page 2 from scrolling, something -->
     <string name="prayer">Prayer</string>
 
-    <string name="gratitude">Gratitude</string>
+    <string name="gratitude">Life Story</string>
     <string name="faith">Faith</string>
 
 

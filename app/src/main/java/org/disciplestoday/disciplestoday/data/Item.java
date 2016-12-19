@@ -28,7 +28,7 @@ public class Item {
     @Element(name = "description", data=true)
     public String description;
 
-    @Element(name = "encoded", data=true) //content:encoded with cdata
+    @Element(name = "encoded", data=true, required = false) //content:encoded with cdata
     public String encoded;
 
 

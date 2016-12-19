@@ -214,7 +214,11 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
         webSettings.setDisplayZoomControls(false);
         webSettings.setSupportZoom(true);
 
-        webview.loadData(mFullText, "text/html; charset=utf-8", "utf-8");
+        if (mFullText.contains("pixel.wp.com/b.gif?host=honestabbysite.org")) {
+            webview.loadUrl(mLink);
+        } else {
+            webview.loadData(mFullText, "text/html; charset=utf-8", "utf-8");
+        }
 
         return rootView;
     }

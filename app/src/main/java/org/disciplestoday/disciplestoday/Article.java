@@ -74,7 +74,11 @@ public class Article {
         this.id = articleId;
         this.moduleId = moduleId;
         this.title = title;
-        this.imageLink = imageLink;
+        if (imageLink.contains("gravatar.com")) {
+            this.imageLink = "";
+        } else {
+            this.imageLink = imageLink;
+        }
         this.fullText = fullText.replace("images/", IMAGE_BASE_URL + "/images/");;
         this.author = author;
         //this.pubDate = pubDate;
@@ -109,13 +113,16 @@ public class Article {
 
 
     public static Article newArticle(int id,String pageNum, Item item) {
-        String author = "jeanie";
+        String author = item.creator;
         String fullText = item.encoded;
         if (TextUtils.isEmpty(fullText)) {
             fullText = item.description;
         }
         int lastImage = item.contentList.size() -1;
         String imageLink = item.contentList.get(lastImage).url;
+        if (imageLink.contains("gravatar")) {
+            imageLink = "https://honestabbysite.files.wordpress.com/2016/05/img_65801.jpg?w=470";
+        }
         Log.e("NJW", "imageLink1=" + imageLink);
         imageLink = imageLink.replace("http://", "https://");
         Log.e("NJW", "imageLink2=" + imageLink);
