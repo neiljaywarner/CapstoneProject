@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.disciplestoday.disciplestoday.provider;
+package com.cba.provider;
 
 import android.content.ContentResolver;
 import android.net.Uri;

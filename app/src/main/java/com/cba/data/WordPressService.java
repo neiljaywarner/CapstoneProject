@@ -1,4 +1,4 @@
-package org.disciplestoday.disciplestoday.data;
+package com.cba.data;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

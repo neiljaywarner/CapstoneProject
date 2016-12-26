@@ -1,4 +1,4 @@
-package org.disciplestoday.disciplestoday;
+package com.cba;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.graphics.Palette;
 import android.text.Html;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,12 +33,14 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 
+import org.disciplestoday.disciplestoday.R;
+
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
+import static com.cba.Article.TRACK_TYPE_ARTICLE;
 
 
 /**

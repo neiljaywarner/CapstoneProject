@@ -1,4 +1,4 @@
-package org.disciplestoday.disciplestoday.data;
+package com.cba.data;
 
 /**
  * Created by neil on 6/7/16.
@@ -11,10 +11,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import org.disciplestoday.disciplestoday.Article;
-import org.disciplestoday.disciplestoday.provider.FeedContract;
-
-import nl.qbusict.cupboard.convert.EntityConverter;
+import com.cba.Article;
+import com.cba.provider.FeedContract;
 
 public class CupboardSQLiteOpenHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "morningcup.db";

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.disciplestoday.disciplestoday;
+package com.cba;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -23,8 +23,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
-import org.disciplestoday.disciplestoday.accounts.GenericAccountService;
-import org.disciplestoday.disciplestoday.provider.FeedContract;
+import com.cba.accounts.GenericAccountService;
+import com.cba.provider.FeedContract;
 
 
 /**

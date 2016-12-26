@@ -20,7 +20,7 @@
  * -Changed package name
  */
 
-package org.disciplestoday.disciplestoday.utils;
+package com.cba.utils;
 
 import android.content.ContentValues;
 import android.database.Cursor;

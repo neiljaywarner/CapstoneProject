@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.disciplestoday.disciplestoday.accounts;
+package com.cba.accounts;
 
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;

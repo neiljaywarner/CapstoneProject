@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.disciplestoday.disciplestoday.provider;
+package com.cba.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -25,8 +25,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
-import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
-import org.disciplestoday.disciplestoday.utils.SelectionBuilder;
+import com.cba.data.CupboardSQLiteOpenHelper;
+import com.cba.utils.SelectionBuilder;
 
 
 public class FeedProvider extends ContentProvider {

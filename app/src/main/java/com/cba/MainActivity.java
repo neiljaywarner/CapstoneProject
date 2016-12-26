@@ -1,4 +1,4 @@
-package org.disciplestoday.disciplestoday;
+package com.cba;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -28,6 +28,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
+
+import org.disciplestoday.disciplestoday.R;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {

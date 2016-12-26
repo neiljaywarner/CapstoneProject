@@ -1,15 +1,16 @@
-package org.disciplestoday.disciplestoday;
+package com.cba;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.squareup.picasso.Picasso;
 
-import org.disciplestoday.disciplestoday.provider.FeedContract;
+import com.cba.provider.FeedContract;
+
+import org.disciplestoday.disciplestoday.R;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 

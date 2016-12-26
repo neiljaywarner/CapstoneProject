@@ -1,10 +1,8 @@
-package org.disciplestoday.disciplestoday;
+package com.cba;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -25,17 +23,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.crash.FirebaseCrash;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
-import org.disciplestoday.disciplestoday.provider.FeedContract;
+import com.cba.provider.FeedContract;
+
+import org.disciplestoday.disciplestoday.R;
 
 import java.util.List;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
-import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
+import static com.cba.Article.TRACK_TYPE_ARTICLE;
 
 public class ArticleListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 

@@ -1,13 +1,12 @@
-package org.disciplestoday.disciplestoday;
+package com.cba;
 
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 
-import org.disciplestoday.disciplestoday.data.ArticleResponse;
-import org.disciplestoday.disciplestoday.data.Feed;
-import org.disciplestoday.disciplestoday.data.Item;
-import org.disciplestoday.disciplestoday.data.WordPressService;
+import com.cba.data.ArticleResponse;
+import com.cba.data.Item;
+import com.cba.data.WordPressService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

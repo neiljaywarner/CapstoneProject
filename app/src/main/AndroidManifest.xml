@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.cba.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
 
@@ -29,21 +29,21 @@
 
         </activity>
         <activity
-            android:name=".ArticleDetailActivity"
-            android:parentActivityName=".MainActivity"
+            android:name="com.cba.ArticleDetailActivity"
+            android:parentActivityName="com.cba.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.disciplestoday.disciplestoday.MainActivity" />
+                android:value="org.disciplestoday.disciplestoday.com.cba.MainActivity" />
         </activity>
 
         <provider
-            android:name=".provider.FeedProvider"
+            android:name="com.cba.provider.FeedProvider"
             android:authorities="org.honestabbysite.cba"
             android:exported="false" />
 
 
-        <service android:name=".SyncService"
+        <service android:name="com.cba.SyncService"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
@@ -56,7 +56,7 @@
         our SyncAdapter doesn't need to authenticate the current user (it just fetches a public
         feed), this account's implementation is largely empty. -->
 
-        <service android:name=".accounts.GenericAccountService">
+        <service android:name="com.cba.accounts.GenericAccountService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -64,7 +64,7 @@
                 android:resource="@xml/authenticator" />
         </service>
 
-        <receiver android:name="AppWidgetProvider" >
+        <receiver android:name="com.cba.AppWidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

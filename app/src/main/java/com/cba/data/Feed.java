@@ -1,4 +1,4 @@
-package org.disciplestoday.disciplestoday.data;
+package com.cba.data;
 
 import java.util.List;
 

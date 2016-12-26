@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.disciplestoday.disciplestoday;
+package com.cba;
 
 import android.accounts.Account;
 import android.content.AbstractThreadedSyncAdapter;
@@ -31,15 +31,10 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import org.disciplestoday.disciplestoday.data.ArticleResponse;
-import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
-import org.disciplestoday.disciplestoday.data.Feed;
-import org.disciplestoday.disciplestoday.data.WordPressService;
-import org.disciplestoday.disciplestoday.provider.FeedContract;
+import com.cba.data.ArticleResponse;
+import com.cba.data.CupboardSQLiteOpenHelper;
+import com.cba.data.WordPressService;
+import com.cba.provider.FeedContract;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -48,17 +43,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import nl.qbusict.cupboard.Cupboard;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
-
-import static nl.qbusict.cupboard.CupboardFactory.cupboard;
-import static org.disciplestoday.disciplestoday.SyncUtils.PREF_SETUP_COMPLETE;
 
 /**
  * Define a sync adapter for the app.
@@ -145,14 +133,14 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
             syncDownloadFeed(syncResult, moduleId);
         } else {
             boolean setupComplete = PreferenceManager
-                    .getDefaultSharedPreferences(this.getContext()).getBoolean(PREF_SETUP_COMPLETE, false);
+                    .getDefaultSharedPreferences(this.getContext()).getBoolean(SyncUtils.PREF_SETUP_COMPLETE, false);
 
             if (setupComplete) {
                 Log.e(TAG, "-->Sync all feeds!");
                 syncAllFeeds(syncResult);
             } else {
                 PreferenceManager.getDefaultSharedPreferences(this.getContext()).edit()
-                        .putBoolean(PREF_SETUP_COMPLETE, true).commit();
+                        .putBoolean(SyncUtils.PREF_SETUP_COMPLETE, true).commit();
                 Log.e(TAG, "-->Sync all feeds next time... (marking setup complete)");
             }
 

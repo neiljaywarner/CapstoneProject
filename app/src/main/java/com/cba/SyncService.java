@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.disciplestoday.disciplestoday;
+package com.cba;
 
 import android.app.Service;
 import android.content.Intent;
