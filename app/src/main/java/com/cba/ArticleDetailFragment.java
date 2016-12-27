@@ -33,7 +33,6 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 
-import org.disciplestoday.disciplestoday.R;
 
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;

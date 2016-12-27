@@ -10,8 +10,6 @@ import com.squareup.picasso.Picasso;
 
 import com.cba.provider.FeedContract;
 
-import org.disciplestoday.disciplestoday.R;
-
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 /**

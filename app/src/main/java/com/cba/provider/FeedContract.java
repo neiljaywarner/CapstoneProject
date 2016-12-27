@@ -50,12 +50,12 @@ public class FeedContract {
          * MIME type for lists of articles.
          */
         public static final String CONTENT_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.disciplestoday.articles";
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.cba.articles";
         /**
          * MIME type for individual articles.
          */
         public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.disciplestoday.article";
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.cba.article";
 
         /**
          * Fully qualified URI for "article" resources.

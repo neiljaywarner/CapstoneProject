@@ -28,7 +28,6 @@ import com.squareup.picasso.Picasso;
 
 import com.cba.provider.FeedContract;
 
-import org.disciplestoday.disciplestoday.R;
 
 import java.util.List;
 
