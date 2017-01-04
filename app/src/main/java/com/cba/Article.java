@@ -118,9 +118,18 @@ public class Article {
             fullText = item.description;
         }
         int lastImage = item.contentList.size() -1;
-        String imageLink = item.contentList.get(lastImage).url;
-        if (imageLink.contains("gravatar")) {
-            imageLink = "https://honestabbysite.files.wordpress.com/2016/05/img_65801.jpg?w=470";
+
+        String imageLink = "";
+        String thisLink = "";
+        for (int i=0; i <= lastImage; i++) {
+            thisLink = item.contentList.get(i).url;
+            Log.e("NJW", i + "thisLInk=" + thisLink);
+            if (!thisLink.contains("gravatar")) {
+                imageLink = thisLink;
+            }
+        }
+        if (TextUtils.isEmpty(imageLink)) {
+            imageLink = "https://honestabbysite.files.wordpress.com/2016/05/img_65801.jpg?w=270";
         }
         Log.e("NJW", "imageLink1=" + imageLink);
         imageLink = imageLink.replace("http://", "https://");
@@ -154,6 +163,7 @@ public class Article {
         int i=0;
         for (Item item : feed.channel.items) {
             i++;
+            Log.e("NJW", "about to articles.addnewarticle)");
             articles.add(newArticle(i,page, item));
         }
         return  articles;
