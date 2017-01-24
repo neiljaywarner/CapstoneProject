@@ -34,15 +34,37 @@
             <item
                 android:id="@+id/nav_gratitude"
                 android:icon="@drawable/ic_menu_gallery"
-                android:titleCondensed="Recent"
+                android:titleCondensed="Gratitude"
                 android:title="Gratitude" />
 
             <item
                 android:id="@+id/nav_faith"
                 android:icon="@drawable/ic_menu_gallery"
-                android:titleCondensed="Recent"
+                android:titleCondensed="Faith"
                 android:title="Faith" />
-            <!-- TODO: FIX, Change to tags -->
+
+            <item
+                android:id="@+id/nav_spiritual_growth"
+                android:icon="@drawable/ic_menu_gallery"
+                android:titleCondensed="spiritual-growth"
+                android:title="Spiritual Growth" />
+
+            <item
+                android:id="@+id/nav_trust"
+                android:icon="@drawable/ic_menu_gallery"
+                android:titleCondensed="Trust"
+                android:title="Trust" />
+            <item
+                android:id="@+id/nav_encouragement"
+                android:icon="@drawable/ic_menu_gallery"
+                android:titleCondensed="Encouragment"
+                android:title="Encouragement" />
+            <item
+                android:id="@+id/nav_perspective"
+                android:icon="@drawable/ic_menu_gallery"
+                android:titleCondensed="Perspective"
+                android:title="Perspective" />
+
         </group>
     </menu>
     </item>

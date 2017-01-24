@@ -340,11 +340,11 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    //TODO: Change these to just a few tags.
+    //TODO: Change these to less duplicate code somehow?.
     private String getModuleId(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
 
-            //TODO: Section for archives coudl take in '2016', '2015' etc
+            //TODO: Section for archives could take in '2016', '2015' etc
             //case R.id.nav_recent:
             //    return "2";
             case R.id.nav_prayer:
@@ -353,6 +353,14 @@ public class MainActivity extends AppCompatActivity
                 return "gratitude";
             case R.id.nav_faith:
                 return "faith";
+            case R.id.nav_spiritual_growth:
+                return "spiritual-growth";
+            case R.id.nav_trust:
+                return "trust";
+            case R.id.nav_encouragement:
+                return "encouragement";
+            case R.id.nav_perspective:
+                return "perspective";
             default:
                 return "1";
 
