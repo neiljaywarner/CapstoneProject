@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Obtain the FirebaseAnalytics instance.
-        //mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(AppInvite.API)

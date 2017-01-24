@@ -190,12 +190,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
 
         if (mPubDate != null) {
             TextView textView = (TextView) rootView.findViewById(R.id.textViewPubDate);
-//            //TODO: fixme via simpledateformat?
-//
-//            String dayOfMonth = mPubDate.split(" ")[1];
-//            String shortMonth = mPubDate.split(" ")[2];
-//            String year = mPubDate.split(" ")[3];
-//            String displayDate = shortMonth + " " + dayOfMonth + ", " + year;
+
             Long dateLong = Long.parseLong(mPubDate);
             SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy", Locale.US);
 
