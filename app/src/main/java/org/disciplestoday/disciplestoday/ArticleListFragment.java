@@ -350,7 +350,9 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
 
 
         intent.putExtra(ArticleDetailFragment.ARG_ITEM_FULLTEXT, article.getFullText());
-        intent.putExtra(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, article.getDetailImageLink());
+        intent.putExtra(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, article.getImageLink());
+        Log.e("NJW", "*** passing extra:" + article.getImageLink());
+        // ? should they match?
         startActivity(intent);
     }
 

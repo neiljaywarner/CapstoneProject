@@ -134,7 +134,8 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
                 });
 
                 fabShare.setVisibility(View.GONE);
-                if (!URLUtil.isValidUrl(mImageUrl)) {
+                if (!URLUtil.isValidUrl(mImageUrl) || mImageUrl.contains("gravatar.com")) {
+                    Log.e("NJW", "use default imageUrl b/c is invalid");
                     mImageUrl = Article.DEFAULT_IMAGE_URL;
                 }
 
