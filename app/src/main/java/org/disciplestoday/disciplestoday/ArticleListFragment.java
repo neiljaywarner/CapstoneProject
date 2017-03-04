@@ -242,7 +242,12 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
                 return;
             }
             final Article item = mArticles.get(position);
-            final String imageUrl = item.getImageLink();
+            String url = item.getImageLink();
+            if ((url.contains("gravatar.com")) && (isOdd(position))) {
+                url = "https://beboldforspiritualchange.files.wordpress.com/2017/02/istock-119804067.jpg?w=576&h=576&crop=1";
+            }
+            final String imageUrl = url;
+
             //final String imageUrl = "https://jeaniesjourneys.files.wordpress.com/2016/11/why-cant-i-buy-you-shoes.png?w=300";
             Log.e("NJW", "onBindViewHolder: image=" + imageUrl);
             if (!imageUrl.isEmpty())
@@ -327,6 +332,10 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
                 return super.toString() + " '" + mContentView.getText() + "'";
             }
         }
+    }
+
+    private boolean isOdd(int position) {
+        return (position % 2) == 0;
     }
 
     private void showArticle(Article article) {
