@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final String LOCATOR_URL = "https://jeaniesjourneys.com/about/";
+    private static final String LOCATOR_URL = "https://beboldforspiritualchange.wordpress.com/";
     private static final int HIGHLIGHTED_SUBITEM_INDEX = 0;
     private static final int REQUEST_INVITE = 1 ;
     public static final int SUBMENU_LINKS_INDEX = 3;
@@ -341,12 +341,14 @@ public class MainActivity extends AppCompatActivity
 
 
     //TODO: Change these to less duplicate code somehow?.
+
     private String getModuleId(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
 
             //TODO: Section for archives could take in '2016', '2015' etc
             //case R.id.nav_recent:
             //    return "2";
+            /*
             case R.id.nav_prayer:
                 return "prayer";
             case R.id.nav_gratitude:
@@ -361,6 +363,7 @@ public class MainActivity extends AppCompatActivity
                 return "encouragement";
             case R.id.nav_perspective:
                 return "perspective";
+                */
             default:
                 return "1";
 

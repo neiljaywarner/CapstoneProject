@@ -18,6 +18,7 @@
 
     <string-array name="links">
         <item>https://www.biblegateway.com/</item>
+        <item>https://beboldforspiritualchange.wordpress.com/answers-to-prayers/</item>
         <item>http://lizzylife.com/</item>
 
 
@@ -85,6 +86,7 @@
 
 
     <string name="bible_gateway">Bible Gateway</string>
+    <string name="answers_to_prayers">Answers to Prayers</string>
     <string name="media">Lizzie\'s Life</string>
 
 
