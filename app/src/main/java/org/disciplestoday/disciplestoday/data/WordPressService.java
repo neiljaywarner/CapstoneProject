@@ -10,8 +10,8 @@ import retrofit2.http.Query;
  */
 public interface WordPressService {
 
-
-        public static String JEANIE_SHAW_BLOG_URL = "https://jeaniesjourneys.com/";
+                        //https://beboldforspiritualchange.wordpress.com/blog/feed/
+        public static String BLOG_URL = "https://beboldforspiritualchange.wordpress.com/blog/";
 
         @GET("/feed/")
         Call<ArticleResponse> getFeed(@Query("paged") String pageNumber);

@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import org.disciplestoday.disciplestoday.data.ArticleResponse;
-import org.disciplestoday.disciplestoday.data.Feed;
 import org.disciplestoday.disciplestoday.data.Item;
 import org.disciplestoday.disciplestoday.data.WordPressService;
 
@@ -21,8 +20,8 @@ import java.util.Locale;
 
 public class Article {
 
-    private static final String IMAGE_BASE_URL = WordPressService.JEANIE_SHAW_BLOG_URL;
-    public static final String DEFAULT_IMAGE_URL = "https://jeaniesjourneys.files.wordpress.com/2012/01/cropped-morning-cup-cover.jpg";
+    private static final String IMAGE_BASE_URL = WordPressService.BLOG_URL;
+    public static final String DEFAULT_IMAGE_URL = "https://beboldforspiritualchange.files.wordpress.com/2017/02/istock-119804067.jpg?w=576&h=576&crop=1";
     //TODO: FIX THIS PART
     public static final String TRACK_TYPE_ARTICLE="article";
 
@@ -109,7 +108,7 @@ public class Article {
 
 
     public static Article newArticle(int id,String pageNum, Item item) {
-        String author = "jeanie";
+        String author = "";
         String fullText = item.encoded;
         if (TextUtils.isEmpty(fullText)) {
             fullText = item.description;

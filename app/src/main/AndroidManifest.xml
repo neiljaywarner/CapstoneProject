@@ -39,7 +39,7 @@
 
         <provider
             android:name=".provider.FeedProvider"
-            android:authorities="com.jeaniesjourneys.cba"
+            android:authorities="com.beboldwomensday"
             android:exported="false" />
 
 

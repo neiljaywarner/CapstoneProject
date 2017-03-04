@@ -330,7 +330,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
     }
 
     private void showArticle(Article article) {
-        //trackContentSelection(article);
+        trackContentSelection(article);
         //simple and speedy...
         Intent intent = new Intent(this.getActivity(), ArticleDetailActivity.class);
 
