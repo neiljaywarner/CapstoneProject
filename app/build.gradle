@@ -12,7 +12,7 @@ android {
         //TODO: Make default be all of them, and Jeanie's flavor be jeanie's
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 6
+        versionCode 7
         versionName "0.3"
         // 24-jan-2016 branching off the tag from jj_5_0.1b to a versioncode 6, version name 0.2 in branch jeaniesjourneys/0.2
         //NOTE: Tagging in the repo
