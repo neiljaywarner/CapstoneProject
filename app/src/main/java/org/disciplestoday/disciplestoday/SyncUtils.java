@@ -31,10 +31,14 @@ import org.disciplestoday.disciplestoday.provider.FeedContract;
  * Static helper methods for working with the sync framework.
  */
 public class SyncUtils {
-    private static final long SYNC_FREQUENCY = 60 * 60 * 7;  // 7 hours (in seconds)
+    //private static final long SYNC_FREQUENCY = 60 * 60 * 7;  // 7 hours (in seconds)
+    private static final long SYNC_FREQUENCY = 7;  // 7 hours (in seconds)
+
 
     private static final String CONTENT_AUTHORITY = FeedContract.CONTENT_AUTHORITY;
     static final String PREF_SETUP_COMPLETE = "setup_complete";
+    public static final String PREF_LAST_PUB_DATE = "last_pub_date";
+    //TODO: Refactor to prefs Manager
 
     //  private static final String TAG = SyncUtils.class.getSimpleName();
     private static final String TAG = "NJW";

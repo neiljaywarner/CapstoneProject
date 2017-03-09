@@ -17,11 +17,15 @@
 package org.disciplestoday.disciplestoday;
 
 import android.accounts.Account;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.content.SyncResult;
 import android.database.sqlite.SQLiteDatabase;
@@ -57,7 +61,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
+import static org.disciplestoday.disciplestoday.SyncUtils.PREF_LAST_PUB_DATE;
 import static org.disciplestoday.disciplestoday.SyncUtils.PREF_SETUP_COMPLETE;
 
 /**
@@ -73,6 +79,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     public static final String TAG = SyncAdapter.class.getSimpleName();
 
     public static final String ARGS_MODULE_ID = "arg_module_id";
+    public static final String MAIN_LIST_ID = "1";
 
     /**
      * Content resolver, for performing database operations.
@@ -164,7 +171,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     private void syncAllFeeds(SyncResult syncResult) {
         Log.e(TAG, "********Syncing / downloading first");
         //TODO: Download all of them...
-        syncDownloadFeed(syncResult, "1");
+        syncDownloadFeed(syncResult, MAIN_LIST_ID);
         //syncDownloadFeed(syncResult, "2");
         //TODO: Figure out how to get an id... perhpas teh id in the permalink
 
@@ -233,11 +240,46 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
             syncResult.stats.numInserts++;
         }
 
+        // Save date of top entry so we can know when there's another one.
+
+        long previousLatestPubDate = PreferenceManager.getDefaultSharedPreferences(this.getContext())
+                .getLong(PREF_LAST_PUB_DATE, Long.MIN_VALUE);
+
+
+        long latestPubDate = Long.valueOf(articles.get(0).getPubDate());
+        PreferenceManager.getDefaultSharedPreferences(this.getContext()).edit()
+                .putLong(PREF_LAST_PUB_DATE, latestPubDate).apply();
+
+        if (latestPubDate > previousLatestPubDate) {
+            Log.d("NJW9", "Send notification-newer date");
+            notifyUser();
+        }
         mContentResolver.applyBatch(FeedContract.CONTENT_AUTHORITY, batch);
         mContentResolver.notifyChange(
                 FeedContract.Entry.CONTENT_URI, // URI where data was modified
                 null,                           // No local observer
                 false);                         // IMPORTANT: Do not sync to network
+    }
+
+    private void notifyUser() {
+        Intent intent = new Intent(this.getContext(), MainActivity.class);
+        // use System.currentTimeMillis() to have a unique ID for the pending intent
+        PendingIntent pIntent = PendingIntent.getActivity(this.getContext(), (int) System.currentTimeMillis(), intent, 0);
+
+        // build notification
+        Notification n  = new Notification.Builder(this.getContext())
+                .setContentText("New Article(s) for: " + this.getContext().getResources().getString(R.string.app_name))
+                .setContentTitle("New Article(s)")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentIntent(pIntent)
+                .setAutoCancel(true).build();
+
+        NotificationManager notificationManager =
+                (NotificationManager) this.getContext().getSystemService(NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0, n);
+        ///See http://www.vogella.com/tutorials/AndroidNotifications/article.html
+        // could use BigTextStyle to give them some of the text to see if they want to open it.
     }
 
 
