@@ -345,7 +345,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
 */
-
+        //todo: make app so it doens't flash on first install.
 
     }
 }
