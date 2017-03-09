@@ -122,7 +122,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
-        Log.i("NJW", "Beginning network synchronization");
+        Log.i("NJW9", "Beginning network synchronization");
 
         CupboardSQLiteOpenHelper helper = new CupboardSQLiteOpenHelper(this.getContext());
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -190,7 +190,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         */
         Call<ArticleResponse> call = getCall(tag);
         try {
-            Log.i("NJW", "---About to execute call for page:" + tag);
+            Log.i("NJW9", "---About to execute call for page:" + tag);
             Response<ArticleResponse> feedResponse = call.execute();
             ArticleResponse feed = feedResponse.body();
             Log.i("NJW", "got: feed with items size:" + feed.channel.items.size());
@@ -253,6 +253,9 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         if (latestPubDate > previousLatestPubDate) {
             Log.d("NJW9", "Send notification-newer date");
             notifyUser();
+        } else {
+            Log.d("NJW9", "Nothing new");
+
         }
         mContentResolver.applyBatch(FeedContract.CONTENT_AUTHORITY, batch);
         mContentResolver.notifyChange(
