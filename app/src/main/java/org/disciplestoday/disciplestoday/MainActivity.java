@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity
     private static final String LOCATOR_URL = "https://jeaniesjourneys.com/about/";
     private static final int HIGHLIGHTED_SUBITEM_INDEX = 0;
     private static final int REQUEST_INVITE = 1 ;
-    public static final int SUBMENU_LINKS_INDEX = 3;
-    public static final int NEWS_MENU_INDEX = 2;
+    public static final int SUBMENU_LINKS_INDEX = 4;
+    public static final int NEWS_MENU_INDEX = 3;
 
     public FirebaseAnalytics mFirebaseAnalytics;
     private GoogleApiClient mGoogleApiClient;
@@ -132,6 +132,10 @@ public class MainActivity extends AppCompatActivity
                 Log.i(TAG, "Navdrawer->Locator");
                 gotoLocator();
                 break;
+            case R.id.nav_books:
+                Log.i(TAG, "Clicked books");
+                onBooksClicked();
+                break;
             case R.id.nav_share:
                 Log.i(TAG, "Clicked invite");
                 onInviteClicked();
@@ -150,6 +154,10 @@ public class MainActivity extends AppCompatActivity
 
                 break;
         }
+    }
+
+    private void onBooksClicked() {
+        startActivity(new Intent(getApplicationContext(), BooksActivity.class));
     }
 
     /**
