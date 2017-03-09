@@ -36,6 +36,7 @@ public class SyncUtils {
     private static final long SYNC_FREQUENCY = 3;  // 7 hours (in seconds)
     //maybe use 3 hours since that still shouldn't affect battery life 'too much' if it's 4 times in 12 hours.
     //TOD: Make it so that it doesn't show notification the first install.
+    // NOTE: 1 hour is enforced, so this is ever 1 hour
 
     private static final String CONTENT_AUTHORITY = FeedContract.CONTENT_AUTHORITY;
     static final String PREF_SETUP_COMPLETE = "setup_complete";
