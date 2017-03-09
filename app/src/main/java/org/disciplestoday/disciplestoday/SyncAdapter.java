@@ -268,12 +268,14 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         // build notification
         Notification n  = new Notification.Builder(this.getContext())
-                .setContentText("New Article(s) for: " + this.getContext().getResources().getString(R.string.app_name))
-                .setContentTitle("New Article(s)")
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("New Article(s) for: " + this.getContext().getResources().getString(R.string.app_name))
+                .setContentText("Tap here to check out encouraging new article(s)")
+                .setSmallIcon(R.drawable.ic_stat_mmc)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true).build();
-
+                // icon font is dancing script, could use more in app, it's a placeholder for now
+                // better than undreadable square from using app launcher icon.
+                // Note: can be custom iamge but must be transparent image source.
         NotificationManager notificationManager =
                 (NotificationManager) this.getContext().getSystemService(NOTIFICATION_SERVICE);
 
