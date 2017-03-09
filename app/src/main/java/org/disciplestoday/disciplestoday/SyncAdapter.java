@@ -250,7 +250,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         PreferenceManager.getDefaultSharedPreferences(this.getContext()).edit()
                 .putLong(PREF_LAST_PUB_DATE, latestPubDate).apply();
 
-        if (latestPubDate > previousLatestPubDate) {
+        if (latestPubDate > previousLatestPubDate && previousLatestPubDate != Long.MIN_VALUE) {
             Log.d("NJW9", "Send notification-newer date");
             notifyUser();
         } else {
