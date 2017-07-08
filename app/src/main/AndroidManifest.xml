@@ -84,9 +84,6 @@
                 android:resource="@xml/appwidget_info" />
         </receiver>
 
-        <activity android:label="@string/books"
-            android:name=".BooksActivity" android:parentActivityName=".BooksActivity"/>
-
     </application>
 
 </manifest>

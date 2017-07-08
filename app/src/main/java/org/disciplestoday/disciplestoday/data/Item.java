@@ -18,9 +18,11 @@ public class Item {
     @Element(name = "link")
     public String link;
 
+    //below is not in gordon's blog.
+    /*
     @ElementList(inline = true)
     public List<Content> contentList;
-
+*/
 
     @Element(name = "creator", data=true)
     public String creator;

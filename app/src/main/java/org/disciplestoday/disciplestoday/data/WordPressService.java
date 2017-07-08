@@ -11,7 +11,7 @@ import retrofit2.http.Query;
 public interface WordPressService {
 
 
-        public static String JEANIE_SHAW_BLOG_URL = "https://jeaniesjourneys.com/";
+        public static String JEANIE_SHAW_BLOG_URL = "http://gordonferguson.org/";
 
         @GET("/feed/")
         Call<ArticleResponse> getFeed(@Query("paged") String pageNumber);

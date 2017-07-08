@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Morning Cup</string>
+    <string name="app_name">Black Tax and White Benefits</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -8,27 +8,22 @@
     <string name="fetching_articles_message">Please wait while we load your articles.</string>
 
     <!-- This string is all the recipient see in text message and the title of email msg -->
-    <string name="invitation_title">Please try the Jeanie\'s Journeys app</string>
-    <string name="invitation_message">I think you would like this encouraging app with spiritual devotionals/thoughts.</string>
+    <string name="invitation_title">Please try this app</string>
+    <string name="invitation_message">I think you would like this  app with spiritual devotionals/thoughts.</string>
 
-    <string name="invitation_call_to_action_button_text">Try Jeanie\'s Journeys App</string>
+    <string name="invitation_call_to_action_button_text">Try BTWB App</string>
     <!-- TODO: REMOVE above? -->
     <!-- TODO: for version 1.1 and beyond->Confirm this text for all 3, and/or just use custom email per best practices -->
     <!-- see: https://firebase.google.com/docs/invites/best-practices -->
 
-    <string-array name="links">
-        <item>https://www.biblegateway.com/</item>
-        <item>http://lizzylife.com/</item>
 
-
-    </string-array>
     <string name="invitation_screen_title">Share "%s" articles.</string>
     <string name="share_article_screen_title">Share "%s".</string>
 
 
     <string name="invitation_html_email_content">
         <![CDATA[
-        Please try the Jeanie\'s Journeys App.<br/><br/>I wanted to share some great %%FEED%% articles from Jeanie\'s Journeys.<br/><br/><a href=\'%%APPINVITE_LINK_PLACEHOLDER%%\'>Open in app</a>
+        Please try the Black Tax and White Benefits App.<br/><br/><a href=\'%%APPINVITE_LINK_PLACEHOLDER%%\'>Open in app</a>
 
 
     ]]>
@@ -39,7 +34,7 @@
 
     <string name="share_article_html_email_content">
         <![CDATA[
-        Check out the article %%ARTICLE_TITLE%% articles from Jeanie\'s Journeys!
+        Check out the article %%ARTICLE_TITLE%% articles from Black Tax and White Benefits.
         <br/><br/><a href=\'%%APPINVITE_LINK_PLACEHOLDER%%\'>Install app</a>
         <hr/>
 
@@ -62,43 +57,4 @@
     <string name="share_article_fab">Share Article button</string>
 
 
-    <!-- Navdrawer iteims -->
-    <string name="locator">About</string>
-    <string name="invite_your_friends">Invite your friends.</string> <!-- best practice page by Google -->
-    <string name="highlighted">Featured</string>
-    <!-- 24-Jan-2016 Jeanie preferred featured -->
-
-    <string name="recent">Recent</string> <!-- TODO: Figure out archive by year, page 2 from scrolling, something -->
-    <string name="prayer">Prayer</string>
-
-    <string name="gratitude">Gratitude</string>
-    <string name="faith">Faith</string>
-
-
-    <string name="links">Links</string>
-    <string name="news">News</string>
-
-
-    <string name="bible_gateway">Bible Gateway</string>
-    <string name="media">Lizzie\'s Life</string>
-    <string name="books_full_text">
-
-        <b>My books:</b>
-        \n\n<b>Devotional Books with spiritual lessons from life realities:</b>
-        \n  Jacob\'s Journeys  My Morning Cup
-        \nThere\'s a Turkey at Your Door
-        \nWhen the Chicken Hits the Fan
-        \n\n<b>Spiritual Growth Books:</b>
-        \nUnderstanding Goose: \n\t\tFor anyone who has felt different, rejected, or empty
-        \nPrime Rib: Exploring a Woman\'s Value and Purpose \n\t\t(also available in Spanish)
-        \nSpiritual Leadership for Women
-        \nAn Aging Grace: Collected Wisdom on Aging Gracefully
-        \n\nChildren\'s Books:
-        \nFruity Tunes and the Adventures of Rotten Apple
-        \nRosie and Opal ( a story of friendship)
-        \nThe Helping Garden
-        \n\nContact me at shaw.jeanie@gmail.com  if you wish to read more\n\nBooks are also available on www.amazon.com/Jeanie-Shaw/e/B0057BP1JM
-
- </string>
-    <string name="books">Books</string>
 </resources>

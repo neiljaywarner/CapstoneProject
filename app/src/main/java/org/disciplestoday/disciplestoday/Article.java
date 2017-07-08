@@ -2,10 +2,8 @@ package org.disciplestoday.disciplestoday;
 
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 
 import org.disciplestoday.disciplestoday.data.ArticleResponse;
-import org.disciplestoday.disciplestoday.data.Feed;
 import org.disciplestoday.disciplestoday.data.Item;
 import org.disciplestoday.disciplestoday.data.WordPressService;
 
@@ -114,11 +112,12 @@ public class Article {
         if (TextUtils.isEmpty(fullText)) {
             fullText = item.description;
         }
-        int lastImage = item.contentList.size() -1;
-        String imageLink = item.contentList.get(lastImage).url;
-        Log.e("NJW", "imageLink1=" + imageLink);
-        imageLink = imageLink.replace("http://", "https://");
-        Log.e("NJW", "imageLink2=" + imageLink);
+        //int lastImage = item.contentList.size() -1;
+        //String imageLink = item.contentList.get(lastImage).url;
+        //Log.e("NJW", "imageLink1=" + imageLink);
+        //imageLink = imageLink.replace("http://", "https://");
+        //Log.e("NJW", "imageLink2=" + imageLink);
+        String imageLink = "http://gordonferguson.org/wp-content/uploads/2016/11/Final-Main-Header.jpg";
         return new Article(pageNum, String.valueOf(id), item.title, imageLink,
                 author, item.pubDate,
                 item.description, fullText, item.link);
