@@ -10,11 +10,13 @@ android {
         //TODO: Make default be all of them, and Jeanie's flavor be jeanie's
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 7
-        versionName "0.3"
+        versionCode 1
+        versionName "0.1"
         // 24-jan-2016 branching off the tag from jj_5_0.1b to a versioncode 6, version name 0.2 in branch jeaniesjourneys/0.2
         //NOTE: Tagging in the repo
         // Prefix VersionCode_VersionName e.g. "jj_4_0.1a" for Jeanie's Journeys versionCode 4 and versionNmae 0.1b
+
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
