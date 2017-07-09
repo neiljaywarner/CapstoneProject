@@ -131,6 +131,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
                 });
 
                 fabShare.setVisibility(View.GONE);
+                //NJW fixme, test.
 
 
                 Picasso.with(imageView.getContext()).load(mImageUrl)
