@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 //public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 public class MainActivity extends AppCompatActivity  {
 
@@ -12,20 +14,20 @@ public class MainActivity extends AppCompatActivity  {
 
     private static final int REQUEST_INVITE = 1 ;
 
-    /*
-    public FirebaseAnalytics mFirebaseAnalytics;
-    private GoogleApiClient mGoogleApiClient;
 
-*/
+    public FirebaseAnalytics mFirebaseAnalytics;
+    //private GoogleApiClient mGoogleApiClient;
+
+
     //TOODO: BUILD BACKSTACK!!! so that 'back' from about doesn't exit the app..
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Obtain the FirebaseAnalytics instance.
-        /*
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        /*
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(AppInvite.API)
                 .enableAutoManage(this, this)
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity  {
             //Handle invitations if any. (Firebase invites)
         receiveInvitations();
         */
+
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

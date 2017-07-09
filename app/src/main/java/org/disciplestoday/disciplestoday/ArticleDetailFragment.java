@@ -99,6 +99,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
             mLink = getArguments().getString(ARG_ITEM_LINK);
             mPubDate = getArguments().getString(ARG_ITEM_PUB_DATE);
             FirebaseCrash.logcat(Log.DEBUG, TAG, "Setting mPubDate to:" + mPubDate);
+            trackContentView(mArticleId, mTitle);
 
 
             mImageUrl = getArguments().getString(ARG_ITEM_IMAGE_URL);
@@ -235,6 +236,20 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
         // but built-in share event may be useful for other tools/reports.
     }
 
+
+    private void trackContentView(String id, String title) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, title);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, TRACK_TYPE_ARTICLE);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
+
+        bundle = new Bundle();
+        bundle.putString("article_id", id);
+        bundle.putString("article_title", title);
+        mFirebaseAnalytics.logEvent("view_article", bundle);
+
+    }
 
     //TODO: Should we consider sharing just introText?
     private void shareArticle(String articleid, String articleTitle, String articleLink, String fullText ) {
