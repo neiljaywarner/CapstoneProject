@@ -11,16 +11,16 @@ import retrofit2.http.Query;
 public interface WordPressService {
 
 
-        public static String JEANIE_SHAW_BLOG_URL = "http://gordonferguson.org/";
+        public static String BLOG_URL = "http://blacktaxandwhitebenefits.com/";
 
         @GET("/feed/")
         Call<ArticleResponse> getFeed(@Query("paged") String pageNumber);
         //e.g yields /feed?paged=2 if called with getFeed("2");
-        // e.g https://jeaniesjourneys.com/feed/?paged=2
+        // e.g http://blacktaxandwhitebenefits.com/feed/?paged=2
 
         @GET("/tag/{tag}/feed/")
         Call<ArticleResponse> getTagFeed(@Path("tag") String tag);
 
-        //e.g. https://jeaniesjourneys.com/tag/prayer/feed/
+        // TODO: SEARCH
 
 }

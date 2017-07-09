@@ -1,35 +1,27 @@
 {
   "project_info": {
-    "project_number": "859154256893",
-    "firebase_url": "https://jeanies-journey-app.firebaseio.com",
-    "project_id": "jeanies-journey-app",
-    "storage_bucket": "jeanies-journey-app.appspot.com"
+    "project_number": "823282339018",
+    "firebase_url": "https://black-tax-and-white-benefits.firebaseio.com",
+    "project_id": "black-tax-and-white-benefits",
+    "storage_bucket": "black-tax-and-white-benefits.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:859154256893:android:b434cd5fa64ca832",
+        "mobilesdk_app_id": "1:823282339018:android:269f067f535553f0",
         "android_client_info": {
-          "package_name": "com.jeaniesjourneys.cba"
+          "package_name": "com.blacktaxandwhitebenefits"
         }
       },
       "oauth_client": [
         {
-          "client_id": "859154256893-ffsaoaf3463io7ahq0334vjb30reus8k.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.jeaniesjourneys.cba",
-            "certificate_hash": "BD07E3D079C70FC3D6E84BF0EEF6AEB6F95F3C4B"
-          }
-        },
-        {
-          "client_id": "859154256893-3gs1n6jh3jo471hth6ib9fa6gefk8hio.apps.googleusercontent.com",
+          "client_id": "823282339018-smj93253mc40s3tcom1v90jl73a36mpb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAMGwA_X0nQvlxoOxnaQK_f4K1zLpeSOnQ"
+          "current_key": "AIzaSyAWPqo45AgRew8nKKZChpEY9YholFc1_l4"
         }
       ],
       "services": {
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "859154256893-3gs1n6jh3jo471hth6ib9fa6gefk8hio.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

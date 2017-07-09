@@ -7,7 +7,8 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.3'
 
-        classpath 'com.google.gms:google-services:3.0.0'
+        classpath 'com.google.gms:google-services:3.1.0'
+        // the above works for both Firebase and Google analytics, tells it to look for json, etc?
 
 
         // NOTE: Do not place your application dependencies here; they belong

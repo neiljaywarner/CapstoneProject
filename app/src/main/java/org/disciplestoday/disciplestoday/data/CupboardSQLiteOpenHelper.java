@@ -5,7 +5,6 @@ package org.disciplestoday.disciplestoday.data;
  * from cupboard docs.https://bitbucket.org/littlerobots/cupboard/wiki/withDatabase
  */
 
-import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -14,10 +13,10 @@ import android.util.Log;
 import org.disciplestoday.disciplestoday.Article;
 import org.disciplestoday.disciplestoday.provider.FeedContract;
 
-import nl.qbusict.cupboard.convert.EntityConverter;
+import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 public class CupboardSQLiteOpenHelper extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "morningcup.db";
+    public static final String DATABASE_NAME = "blog.db";
     private static final int DATABASE_VERSION = 1;
 
     static {

@@ -1,38 +1,29 @@
 package org.disciplestoday.disciplestoday;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.google.android.gms.appinvite.AppInvite;
-import com.google.android.gms.appinvite.AppInviteInvitation;
-import com.google.android.gms.appinvite.AppInviteInvitationResult;
-import com.google.android.gms.appinvite.AppInviteReferral;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.firebase.analytics.FirebaseAnalytics;
-
-public class MainActivity extends AppCompatActivity
-        implements GoogleApiClient.OnConnectionFailedListener {
+//public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends AppCompatActivity  {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int REQUEST_INVITE = 1 ;
 
+    /*
     public FirebaseAnalytics mFirebaseAnalytics;
     private GoogleApiClient mGoogleApiClient;
 
+*/
     //TOODO: BUILD BACKSTACK!!! so that 'back' from about doesn't exit the app..
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Obtain the FirebaseAnalytics instance.
+        /*
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -42,6 +33,7 @@ public class MainActivity extends AppCompatActivity
 
             //Handle invitations if any. (Firebase invites)
         receiveInvitations();
+        */
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -54,6 +46,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    //TODO in onSave instancestate
+
 
     private void showNewsFeedFragment() {
         String page = "1";
@@ -65,7 +59,7 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
-
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -120,5 +114,7 @@ public class MainActivity extends AppCompatActivity
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
+
+    */
 
 }

@@ -3,8 +3,6 @@ package org.disciplestoday.disciplestoday;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -24,18 +22,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.crash.FirebaseCrash;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
 import org.disciplestoday.disciplestoday.provider.FeedContract;
 
 import java.util.List;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
-import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
 
 public class ArticleListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -344,7 +338,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         intent.putExtra(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, article.getDetailImageLink());
         startActivity(intent);
     }
-
+/*
     private void trackContentSelection(Article article) {
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, article.getId());
@@ -353,6 +347,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
+    */
     // https://developers.google.com/android/reference/com/google/firebase/analytics/FirebaseAnalytics.Event.html#constants
 
 }

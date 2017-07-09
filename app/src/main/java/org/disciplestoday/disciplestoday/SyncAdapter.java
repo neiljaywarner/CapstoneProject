@@ -35,13 +35,8 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import org.disciplestoday.disciplestoday.data.ArticleResponse;
 import org.disciplestoday.disciplestoday.data.CupboardSQLiteOpenHelper;
-import org.disciplestoday.disciplestoday.data.Feed;
 import org.disciplestoday.disciplestoday.data.WordPressService;
 import org.disciplestoday.disciplestoday.provider.FeedContract;
 import org.xmlpull.v1.XmlPullParserException;
@@ -52,17 +47,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import nl.qbusict.cupboard.Cupboard;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
-import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 import static org.disciplestoday.disciplestoday.SyncUtils.PREF_LAST_PUB_DATE;
 import static org.disciplestoday.disciplestoday.SyncUtils.PREF_SETUP_COMPLETE;
 
@@ -303,7 +293,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         // https://jeaniesjourneys.com/feed/?paged=2
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(WordPressService.JEANIE_SHAW_BLOG_URL)
+                .baseUrl(WordPressService.BLOG_URL)
                 .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build();
 
@@ -327,7 +317,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
             return getCall(page);
         } else {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(WordPressService.JEANIE_SHAW_BLOG_URL)
+                    .baseUrl(WordPressService.BLOG_URL)
                     .addConverterFactory(SimpleXmlConverterFactory.create())
                     .build();
 
