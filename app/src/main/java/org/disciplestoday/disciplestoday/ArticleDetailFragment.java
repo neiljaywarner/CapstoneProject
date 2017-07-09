@@ -13,12 +13,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.graphics.Palette;
 import android.text.Html;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.URLUtil;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -32,7 +30,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crash.FirebaseCrash;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-
 
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
@@ -134,13 +131,11 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
                 });
 
                 fabShare.setVisibility(View.GONE);
-                if (!URLUtil.isValidUrl(mImageUrl)) {
-                    mImageUrl = Article.DEFAULT_IMAGE_URL;
-                }
+
 
                 Picasso.with(imageView.getContext()).load(mImageUrl)
                         .placeholder(android.R.drawable.progress_horizontal)
-                        .error(R.mipmap.ic_launcher)
+                        .error(R.drawable.black_tax_feature_graphic_njw_1)
                         .into(imageView, new Callback() {
                             @Override public void onSuccess() {
                                 Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();

@@ -118,6 +118,7 @@ public class Article {
         //imageLink = imageLink.replace("http://", "https://");
         //Log.e("NJW", "imageLink2=" + imageLink);
         String imageLink = "http://gordonferguson.org/wp-content/uploads/2016/11/Final-Main-Header.jpg";
+        imageLink = "";
         return new Article(pageNum, String.valueOf(id), item.title, imageLink,
                 author, item.pubDate,
                 item.description, fullText, item.link);

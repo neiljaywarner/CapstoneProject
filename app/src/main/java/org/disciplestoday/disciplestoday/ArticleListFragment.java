@@ -245,7 +245,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
                 Picasso.with(holder.mImageView.getContext())
                         .load(Uri.parse(imageUrl))
                         .placeholder(android.R.drawable.progress_indeterminate_horizontal)
-                        .error(R.mipmap.ic_launcher)
+                        .error(R.drawable.black_tax_feature_graphic_njw_1)
                         .into(holder.mImageView, new Callback() {
                             @Override public void onSuccess() {
                                 Bitmap bitmap = ((BitmapDrawable) holder.mImageView.getDrawable()).getBitmap();
@@ -279,6 +279,11 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
                                 Log.e(TAG, "Picasso:Error loading:" + Uri.parse(imageUrl) + "; using launcher as 'other image'");
                             }
                         });
+
+            } else {
+                if (position % 3 ==0) {
+                    holder.mImageView.setImageResource(R.mipmap.ic_launcher);
+                }
 
             }
 
