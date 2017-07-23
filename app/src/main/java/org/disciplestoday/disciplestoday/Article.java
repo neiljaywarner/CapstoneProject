@@ -7,6 +7,9 @@ import android.util.Log;
 import org.disciplestoday.disciplestoday.data.ArticleResponse;
 import org.disciplestoday.disciplestoday.data.Item;
 import org.disciplestoday.disciplestoday.data.WordPressService;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -113,19 +116,63 @@ public class Article {
         if (TextUtils.isEmpty(fullText)) {
             fullText = item.description;
         }
+        
+        
         //int lastImage = item.contentList.size() -1;
         //String imageLink = item.contentList.get(lastImage).url;
         //Log.e("NJW", "imageLink1=" + imageLink);
         //imageLink = imageLink.replace("http://", "https://");
         //Log.e("NJW", "imageLink2=" + imageLink);
-        String imageLink = "http://gordonferguson.org/wp-content/uploads/2016/11/Final-Main-Header.jpg";
-        imageLink = "";
+        String imageLink = "";
+        Log.e("NJW", "aabotu to extractImageLink");
+
+        imageLink = extractImageLink(fullText);
+        Log.e("NJW", "aabotu to removeimageHtml");
+        String newFullText = removeImageHtml(fullText, imageLink);
+        Log.e("NJW23", "newFullText=" + newFullText);
+        //imageLink = "";
         return new Article(pageNum, String.valueOf(id), item.title, imageLink,
                 author, item.pubDate,
-                item.description, fullText, item.link);
+                item.description, newFullText, item.link);
 
 
+        //TODO: Parse only once.
 
+    }
+
+    /***
+     * Remove the html for the image so image is not duplicated
+     * and so there isn't a huge image inside our webview.
+     * @param fullText
+     * @return
+     */
+    private static String removeImageHtml(String fullText, String imageLink) {
+        Log.d("NJW23", "removeImageHtml: imageLink=" + imageLink);
+        Document doc = Jsoup.parse(fullText);
+        StringBuilder stringBuilder = new StringBuilder();
+        Log.e("NJW23", "numchildren=" + doc.children().size());
+        String currentImageLink = "";
+        for (Element e : doc.select("img")) {
+            currentImageLink = e.attr("src");
+            if (currentImageLink.equalsIgnoreCase(imageLink) ) {
+                e.html("");
+            }
+            Log.e("NJW", "imageLink=" + imageLink);
+        }
+        return fullText.replace("<img", "<breakimage");
+    }
+
+    private static String extractImageLink(String fullText) {
+        Log.d("NJW23", "extractImageLink() called with: fullText = [" + fullText + "]");
+        Document doc = Jsoup.parse(fullText);
+        String imageLink = "";
+        for (Element e : doc.select("img")) {
+            imageLink = e.attr("src");
+
+            Log.e("NJW", "imageLink=" + imageLink);
+        }
+
+        return imageLink;
     }
 
     public String getImageLink() {
@@ -149,6 +196,7 @@ public class Article {
         int i=0;
         for (Item item : feed.channel.items) {
             i++;
+            Log.e("NJW23", "About to add article with newArticle");
             articles.add(newArticle(i,page, item));
         }
         return  articles;

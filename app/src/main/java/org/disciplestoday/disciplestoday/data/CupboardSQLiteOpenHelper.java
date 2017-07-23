@@ -71,7 +71,7 @@ public class CupboardSQLiteOpenHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // this will upgrade tables, adding columns and new tables.
         // Note that existing columns will not be converted
-        cupboard().withDatabase(db).upgradeTables();
+        cupboard().withDatabase(db).dropAllTables();
         // do migration work
     }
 }
