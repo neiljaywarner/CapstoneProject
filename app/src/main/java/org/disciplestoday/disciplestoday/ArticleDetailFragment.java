@@ -118,6 +118,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
                         openInBrowser(mLink);
                     }
                 });
+                /*
                 final FloatingActionButton fabShare = (FloatingActionButton) activity.findViewById(R.id.fabShareArticle);
 
                 fabShare.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +129,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
                 });
 
                 fabShare.setVisibility(View.GONE);
+                */
                 //NJW fixme, test.
                 Log.e("NJW23", "mImageUrl in ADF" + mImageUrl);
                 if (mImageUrl.length() == 0) {
@@ -142,7 +144,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
                                 Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
                                 Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
                                     public void onGenerated(Palette palette) {
-                                        updateBackground(fabShare, palette);
+                                        //updateBackground(fabShare, palette);
                                         int lightVibrantColorList = palette.getLightVibrantColor(getResources().getColor(android.R.color.white));
 
                                         imageView.setBackgroundColor(lightVibrantColorList);
@@ -155,12 +157,14 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
                             }
                         });
 
+                /*
                 fabShare.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         share();
                     }
                 });
+                */
             }
         } else {
             FirebaseCrash.logcat(Log.DEBUG, TAG, "No article title argument");

@@ -50,6 +50,8 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+    <!--
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabShareArticle"
         android:contentDescription="@string/share_article_fab"
@@ -62,5 +64,7 @@
         android:scaleType="centerCrop"
         app:layout_anchor="@+id/article_detail_container"
         app:layout_anchorGravity="bottom|end" />
+
+        -->
 
 </android.support.design.widget.CoordinatorLayout>
