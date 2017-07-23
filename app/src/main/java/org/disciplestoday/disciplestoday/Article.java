@@ -154,12 +154,14 @@ public class Article {
         String currentImageLink = "";
         for (Element e : doc.select("img")) {
             currentImageLink = e.attr("src");
+            // Hide it as 0x0 if it's already the featured/thumbnail  image
             if (currentImageLink.equalsIgnoreCase(imageLink) ) {
-                e.html("");
+                e.attr("width", "0");
+                e.attr("height", "0");
             }
             Log.e("NJW", "imageLink=" + imageLink);
         }
-        return fullText.replace("<img", "<breakimage");
+        return doc.outerHtml();
     }
 
     private static String extractImageLink(String fullText) {
