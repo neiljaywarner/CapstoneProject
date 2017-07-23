@@ -280,6 +280,8 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
                             }
                         });
 
+            } else {
+                holder.mImageView.setImageResource(R.mipmap.ic_launcher);
             }
 
             holder.mContentView.setText(item.getTitle());
