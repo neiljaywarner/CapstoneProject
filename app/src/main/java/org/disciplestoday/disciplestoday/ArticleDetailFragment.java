@@ -105,10 +105,6 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
             mImageUrl = getArguments().getString(ARG_ITEM_IMAGE_URL);
             Log.i(TAG, "mImageurl=" + mImageUrl);
 
-            if (mFullText.contains(Html.escapeHtml(mImageUrl))) {
-                mImageUrl = "invalid_url_don't_show_duplicate";
-            }
-
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
@@ -133,7 +129,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
 
                 fabShare.setVisibility(View.GONE);
                 //NJW fixme, test.
-
+                Log.e("NJW23", "mImageUrl in ADF" + mImageUrl);
 
                 Picasso.with(imageView.getContext()).load(mImageUrl)
                         .placeholder(android.R.drawable.progress_horizontal)

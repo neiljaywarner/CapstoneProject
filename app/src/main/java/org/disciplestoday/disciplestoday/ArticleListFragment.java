@@ -280,11 +280,6 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
                             }
                         });
 
-            } else {
-                if (position % 3 ==0) {
-                    holder.mImageView.setImageResource(R.mipmap.ic_launcher);
-                }
-
             }
 
             holder.mContentView.setText(item.getTitle());
@@ -340,7 +335,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
 
 
         intent.putExtra(ArticleDetailFragment.ARG_ITEM_FULLTEXT, article.getFullText());
-        intent.putExtra(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, article.getDetailImageLink());
+        intent.putExtra(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, article.getImageLink());
         startActivity(intent);
     }
 /*
