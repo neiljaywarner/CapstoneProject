@@ -70,9 +70,6 @@ public class FeedContract {
          */
         public static final String COLUMN_NAME_ARTICLE_ID = "id";
 
-        public static final String COLUMN_NAME_ID_NUMBER = "id_num"; //integer.
-
-
         public static final String COLUMN_NAME_MODULE_ID = "module_id";
         // Tag, Page, Category, whatever you want to "bucket" by...
 
