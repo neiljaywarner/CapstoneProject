@@ -106,7 +106,7 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
                 null,                               // Projection
                 selection,                          // Selection
                 selectionArgs,                      // Selection args
-                FeedContract.Entry.COLUMN_NAME_PUB_DATE + " desc "); // Sort string is optional
+                 " CAST(ID as decimal) asc "); // Sort string is optional
     }
 
     @Override

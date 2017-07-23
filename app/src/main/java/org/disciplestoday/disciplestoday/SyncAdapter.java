@@ -47,12 +47,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import nl.qbusict.cupboard.Cupboard;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
+import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 import static org.disciplestoday.disciplestoday.SyncUtils.PREF_LAST_PUB_DATE;
 import static org.disciplestoday.disciplestoday.SyncUtils.PREF_SETUP_COMPLETE;
 
@@ -200,6 +202,10 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     public void updateLocalFeedData(String moduleId, ArticleResponse feed, final SyncResult syncResult)
             throws IOException, XmlPullParserException, RemoteException,
             OperationApplicationException, ParseException {
+
+        CupboardSQLiteOpenHelper cupboardSQLiteOpenHelper = new CupboardSQLiteOpenHelper(getContext());
+        SQLiteDatabase db = cupboardSQLiteOpenHelper.getWritableDatabase();
+        cupboard().withDatabase(db).delete(Article.class, null);
 
 
         List<Article> articles = Article.getArticles(moduleId, feed);

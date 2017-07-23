@@ -2,6 +2,7 @@ package org.disciplestoday.disciplestoday;
 
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 
 import org.disciplestoday.disciplestoday.data.ArticleResponse;
 import org.disciplestoday.disciplestoday.data.Item;
