@@ -84,7 +84,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         mContentResolver = context.getContentResolver();
-        Log.i("NJW", "construct syncadapter");
+        Log.i(TAG, "construct syncadapter");
     }
 
     /**
@@ -92,7 +92,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
      */
     public SyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs) {
         super(context, autoInitialize, allowParallelSyncs);
-        Log.i("NJW", "constructs sycadapter; allowparallelsyncs:" + allowParallelSyncs);
+        Log.i(TAG, "constructs sycadapter; allowparallelsyncs:" + allowParallelSyncs);
         mContentResolver = context.getContentResolver();
     }
 
@@ -114,7 +114,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
-        Log.i("NJW", "Beginning network synchronization");
+        Log.i(TAG, "Beginning network synchronization");
 
         CupboardSQLiteOpenHelper helper = new CupboardSQLiteOpenHelper(this.getContext());
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -124,7 +124,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         // or by selection
         //cupboard().withDatabase(db).delete(Article.class, "title = ?", "android");
         // for now delete all entries in a given table
-        //Log.e("NJW", "About to delete articles");
+        //Log.e(TAG, "About to delete articles");
         //cupboard().withDatabase(db).delete(Article.class, null);
 
         // TODO: Fix magic #s, but they correspond to values in MainActivity.getModuleId() and the query parameters of the feeds
@@ -178,14 +178,14 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         /*
         int numDeleted = cupboard().withDatabase(helper.getWritableDatabase()).delete(Article.class,"module= ?", page);
-        Log.e("NJW", "numdeleted=" + numDeleted);
+        Log.e(TAG, "numdeleted=" + numDeleted);
         */
         Call<ArticleResponse> call = getCall(tag);
         try {
             Log.i("NJW9", "---About to execute call for page:" + tag);
             Response<ArticleResponse> feedResponse = call.execute();
             ArticleResponse feed = feedResponse.body();
-            Log.i("NJW", "got: feed with items size:" + feed.channel.items.size());
+            Log.i(TAG, "got: feed with items size:" + feed.channel.items.size());
 
 
             //TODO: FIXME--maybe
@@ -307,7 +307,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         Call<ArticleResponse> articleResponseCall = service.getFeed(String.valueOf(pageNum));
 
-        Log.d("NJW", "articleResponseCall url:" + articleResponseCall.request().url().toString());
+        Log.d(TAG, "articleResponseCall url:" + articleResponseCall.request().url().toString());
         return articleResponseCall;
 
     }
@@ -331,7 +331,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             Call<ArticleResponse> articleResponseCall = service.getTagFeed(tag);
 
-            Log.d("NJW", "Tag articleResponse call:" + articleResponseCall.request().url().toString());
+            Log.d(TAG, "Tag articleResponse call:" + articleResponseCall.request().url().toString());
             return articleResponseCall;
         }
         //todo: figure out how to get logging in again.

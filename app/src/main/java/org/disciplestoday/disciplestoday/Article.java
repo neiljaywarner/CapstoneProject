@@ -10,6 +10,7 @@ import org.disciplestoday.disciplestoday.data.WordPressService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -111,26 +112,16 @@ public class Article {
 
 
     public static Article newArticle(int id,String pageNum, Item item) {
-        String author = "jeanie";
+        String author = "gordon";
         String fullText = item.encoded;
         if (TextUtils.isEmpty(fullText)) {
             fullText = item.description;
         }
-        
-        
-        //int lastImage = item.contentList.size() -1;
-        //String imageLink = item.contentList.get(lastImage).url;
-        //Log.e("NJW", "imageLink1=" + imageLink);
-        //imageLink = imageLink.replace("http://", "https://");
-        //Log.e("NJW", "imageLink2=" + imageLink);
+
         String imageLink = "";
-        Log.e("NJW", "aabotu to extractImageLink");
 
         imageLink = extractImageLink(fullText);
-        Log.e("NJW", "aabotu to removeimageHtml");
         String newFullText = removeImageHtml(fullText, imageLink);
-        Log.e("NJW23", "newFullText=" + newFullText);
-        //imageLink = "";
         return new Article(pageNum, String.valueOf(id), item.title, imageLink,
                 author, item.pubDate,
                 item.description, newFullText, item.link);
@@ -147,10 +138,7 @@ public class Article {
      * @return
      */
     private static String removeImageHtml(String fullText, String imageLink) {
-        Log.d("NJW23", "removeImageHtml: imageLink=" + imageLink);
         Document doc = Jsoup.parse(fullText);
-        StringBuilder stringBuilder = new StringBuilder();
-        Log.e("NJW23", "numchildren=" + doc.children().size());
         String currentImageLink = "";
         for (Element e : doc.select("img")) {
             currentImageLink = e.attr("src");
@@ -159,19 +147,16 @@ public class Article {
                 e.attr("width", "0");
                 e.attr("height", "0");
             }
-            Log.e("NJW", "imageLink=" + imageLink);
         }
         return doc.outerHtml();
     }
 
     private static String extractImageLink(String fullText) {
-        Log.d("NJW23", "extractImageLink() called with: fullText = [" + fullText + "]");
         Document doc = Jsoup.parse(fullText);
         String imageLink = "";
-        for (Element e : doc.select("img")) {
-            imageLink = e.attr("src");
-
-            Log.e("NJW", "imageLink=" + imageLink);
+        Elements elements = doc.select("img");
+        if (elements.size() > 0) {
+            imageLink = elements.get(0).attr("src");
         }
 
         return imageLink;
@@ -198,7 +183,6 @@ public class Article {
         int i=0;
         for (Item item : feed.channel.items) {
             i++;
-            Log.e("NJW23", "About to add article with newArticle");
             articles.add(newArticle(i,page, item));
         }
         return  articles;

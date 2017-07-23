@@ -43,8 +43,7 @@ public class SyncUtils {
     public static final String PREF_LAST_PUB_DATE = "last_pub_date";
     //TODO: Refactor to prefs Manager
 
-    //  private static final String TAG = SyncUtils.class.getSimpleName();
-    private static final String TAG = "NJW";
+    private static final String TAG = SyncUtils.class.getSimpleName();
 
 
     /**
@@ -53,7 +52,7 @@ public class SyncUtils {
      * @param context Context
      */
     public static void CreateSyncAccount(Context context) {
-        Log.i("NJW9", "in Create Account");
+        Log.i(TAG, "in Create Account");
         // Create account, if it's missing. (Either first run, or user has deleted account.)
         Account account = GenericAccountService.GetAccount();
         AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
@@ -61,7 +60,7 @@ public class SyncUtils {
         boolean setupComplete = PreferenceManager
                 .getDefaultSharedPreferences(context).getBoolean(PREF_SETUP_COMPLETE, false);
         if (accountManager.addAccountExplicitly(account, null, null)) {
-            Log.e("NJW9", "Add account explicitly");
+            Log.d(TAG, "Add account explicitly");
             // Inform the system that this account supports sync
             ContentResolver.setIsSyncable(account, CONTENT_AUTHORITY, 1);
             // Inform the system that this account is eligible for auto sync when the network is up
@@ -78,7 +77,7 @@ public class SyncUtils {
         // data has been deleted. (Note that it's possible to clear app data WITHOUT affecting
         // the account list, so wee need to check both.)
         if (newAccount || ! setupComplete) {
-            Log.d("NJW9", "trigger initial refresh");
+            Log.d(TAG, "trigger initial refresh");
             TriggerRefresh(SyncAdapter.MAIN_LIST_ID);
             PreferenceManager.getDefaultSharedPreferences(context).edit()
                     .putBoolean(PREF_SETUP_COMPLETE, true).commit();

@@ -131,7 +131,6 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
                 fabShare.setVisibility(View.GONE);
                 */
                 //NJW fixme, test.
-                Log.e("NJW23", "mImageUrl in ADF" + mImageUrl);
                 if (mImageUrl.length() == 0) {
                     mImageUrl = "empty_pic";
                 }

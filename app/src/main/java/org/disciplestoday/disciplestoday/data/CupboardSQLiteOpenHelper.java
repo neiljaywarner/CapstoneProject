@@ -67,6 +67,8 @@ public class CupboardSQLiteOpenHelper extends SQLiteOpenHelper {
 
     }
 
+    //NOTE: This won't run if db version hasn't changed
+    // it still is db version=1
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // this will upgrade tables, adding columns and new tables.
