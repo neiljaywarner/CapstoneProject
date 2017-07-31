@@ -11,6 +11,9 @@ android {
         targetSdkVersion 23
         versionCode 3
         versionName "0.12"
+        //todo; tag 1.0RC1 for 1.0 release candidate
+        // with 1. Gordon's next/prev simple for now
+        // 2. the bug with notificaiton icon 'mmc'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true

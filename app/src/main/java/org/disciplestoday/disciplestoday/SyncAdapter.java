@@ -268,8 +268,8 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         // build notification
         Notification n  = new Notification.Builder(this.getContext())
                 .setContentTitle("New Article(s) for: " + this.getContext().getResources().getString(R.string.app_name))
-                .setContentText("Tap here to check out encouraging new article(s)")
-                .setSmallIcon(R.drawable.ic_stat_mmc)
+                .setContentText("Tap here to check out new article(s)")
+                .setSmallIcon(R.drawable.bw_notification_icon)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true).build();
                 // icon font is dancing script, could use more in app, it's a placeholder for now
