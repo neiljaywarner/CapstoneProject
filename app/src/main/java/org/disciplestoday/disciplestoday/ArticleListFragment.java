@@ -25,13 +25,17 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.disciplestoday.disciplestoday.data.ArticleResponse;
 import org.disciplestoday.disciplestoday.provider.FeedContract;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Response;
+
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
-public class ArticleListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ArticleListFragment extends Fragment {
 
     private static final String TAG = ArticleListFragment.class.getSimpleName();
     private static final String ARG_NAV_ID = "arg_nav_item_id";
@@ -74,10 +78,8 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
         } else {
            // mModuleId = "353"; // Highlighted feed
             //TODOFIXME
+            mModuleId = "1"; //todo: change to say page.
         }
-
-
-        SyncUtils.CreateSyncAccount(this.getContext());
 
     }
 
@@ -90,51 +92,42 @@ public class ArticleListFragment extends Fragment implements LoaderManager.Loade
             recyclerView = (RecyclerView) root;
             recyclerView.setNestedScrollingEnabled(true);
 
-            getLoaderManager().initLoader(LOADER_ID, getArguments(), this);
+            //Load with retrofit instead of from db
+            Call<ArticleResponse> articleResponseCall = SyncAdapter.getCall(mModuleId);
+            showSpinner();
+            articleResponseCall.enqueue(new retrofit2.Callback<ArticleResponse>() {
+                @Override
+                public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
+                    // TODO: Error handling dialogs
+                    mArticles = Article.getArticles(mModuleId, response.body());
+                    Log.d("NJW", "mArticles:size" + mArticles.size());
+                    updateUI();
+
+                }
+
+                @Override
+                public void onFailure(Call<ArticleResponse> call, Throwable t) {
+                    Log.e("NJW", "retrofit exception:" + t.getMessage());
+                }
+            });
+
         }
 
         return root;
     }
-    //using https://github.com/aegis123/Bettyskitchen-app/blob/master/BettysKitchen-app/src/main/java/com/bettys/kitchen/recipes/app/activities/MainActivity.java
-    @Override
-    public Loader<Cursor> onCreateLoader(int loader_id, Bundle bundle) {
-        Log.d(TAG, "Creating loader for:" + mModuleId);
-        String[] selectionArgs = new String[] {mModuleId};
-        final String selection = FeedContract.Entry.COLUMN_NAME_MODULE_ID + " = ?";
-        return new CursorLoader(getActivity(),      // Context
-                FeedContract.Entry.CONTENT_URI,     // URI
-                null,                               // Projection
-                selection,                          // Selection
-                selectionArgs,                      // Selection args
-                 " CAST(ID as decimal) asc "); // Sort string is optional
+
+    private void showSpinner() {
+        progressDialog = new ProgressDialog(this.getContext());
+        progressDialog.setTitle(R.string.fetching_articles);
+        progressDialog.setMessage(getString(R.string.fetching_articles_message));
+        progressDialog.show();
     }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.d(TAG, "Loader finished for:" + mModuleId);
-
-        mArticles = cupboard().withCursor(data).list(Article.class);
-        Log.i(TAG, "just finished loading articles, count=" + mArticles.size());
-        if (mArticles.size() == 0) {
-            Log.e(TAG, "NO Articles in the database - trigger first sync for this moduleId");
-            progressDialog = new ProgressDialog(this.getContext());
-            progressDialog.setTitle(R.string.fetching_articles);
-            progressDialog.setMessage(getString(R.string.fetching_articles_message));
-            progressDialog.show();
-            SyncUtils.TriggerRefresh(mModuleId);
-        }
-
-        updateUI();
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        // anything to do here?
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(ARG_NAV_ID, mModuleId);
+        //TODO: Put parcelable!!! so when rotate it doens't reload
         super.onSaveInstanceState(outState);
     }
         //using https://github.com/aegis123/Bettyskitchen-app/blob/master/BettysKitchen-app/src/main/java/com/bettys/kitchen/recipes/app/activities/MainActivity.java

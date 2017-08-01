@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity  {
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
-            showNewsFeedFragment();
+            showNewsFeedFragment("2"); //1
         }
 
     }
@@ -52,8 +52,7 @@ public class MainActivity extends AppCompatActivity  {
     //TODO in onSave instancestate
 
 
-    private void showNewsFeedFragment() {
-        String page = "1";
+    private void showNewsFeedFragment(String page) {
         ArticleListFragment listFragment = ArticleListFragment.newInstance(page);
 
         Log.i(TAG, "Showing list fragment:" );

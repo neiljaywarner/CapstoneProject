@@ -288,7 +288,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
      * get call based on pageNum
      * @return
      */
-    public Call<ArticleResponse> getCall(int pageNum) {
+    public static Call<ArticleResponse> getCall(int pageNum) {
         //todo: figure out how to get logging in again.
         /*
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -316,11 +316,11 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
      * get call based on pageNum
      * @return
      */
-    public Call<ArticleResponse> getCall(String tag) {
+    public static Call<ArticleResponse> getCall(String tag) {
 
         if (TextUtils.isDigitsOnly(tag)) {
             int page = Integer.valueOf(tag);
-            return getCall(page);
+            return SyncAdapter.getCall(page);
         } else {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(WordPressService.BLOG_URL)
