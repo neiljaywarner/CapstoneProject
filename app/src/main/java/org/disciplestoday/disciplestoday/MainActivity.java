@@ -4,6 +4,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -20,6 +25,7 @@ public class MainActivity extends AppCompatActivity  {
 
 
     //TOODO: BUILD BACKSTACK!!! so that 'back' from about doesn't exit the app..
+    // and fix Gordon's issue...
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +50,43 @@ public class MainActivity extends AppCompatActivity  {
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
-            showNewsFeedFragment("2"); //1
+            showNewsFeedFragment("1"); //1
         }
 
     }
 
     //TODO in onSave instancestate
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        //mMenuItemMap = menu.findItem(R.id.action_map);
+        //mMenuItemList = menu.findItem(R.id.action_list);
+        //todo: track so i can see make prev only visible if > first page
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_list:
+                //Toast.makeText(this, "prev", Toast.LENGTH_LONG).show();
+                // TODO: Use simple animators so less jarring.
+                return true;
+            case R.id.action_map:
+                //Toast.makeText(this, "next", Toast.LENGTH_LONG).show();
+                //TODO: Snack or toast them or put in the dialog what page?
+                showNewsFeedFragment("2");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    //TODO: analytics for when people go to another page
+    // or share
 
     private void showNewsFeedFragment(String page) {
         ArticleListFragment listFragment = ArticleListFragment.newInstance(page);

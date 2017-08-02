@@ -55,6 +55,8 @@
     <string name="thumbnail_image">Thumbnail Image</string>
     <string name="avatar_image">Avatar Image</string>
     <string name="share_article_fab">Share Article button</string>
+    <string name="previous">previous</string>
+    <string name="next">next</string>
 
 
 </resources>
