@@ -19,13 +19,14 @@ public class MainActivity extends AppCompatActivity  {
 
     private static final int REQUEST_INVITE = 1 ;
 
+    public static int currentPage = 1;
 
     public FirebaseAnalytics mFirebaseAnalytics;
     //private GoogleApiClient mGoogleApiClient;
 
 
     //TOODO: BUILD BACKSTACK!!! so that 'back' from about doesn't exit the app..
-    // and fix Gordon's issue...
+    // and fix Gordon's issue...if repro it.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity  {
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
-            showNewsFeedFragment("1"); //1
+            showNewsFeedFragment(currentPage); //1
         }
 
     }
@@ -58,35 +59,52 @@ public class MainActivity extends AppCompatActivity  {
     //TODO in onSave instancestate
 
 
+    MenuItem mMenuItemPrevious;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
-        //mMenuItemMap = menu.findItem(R.id.action_map);
-        //mMenuItemList = menu.findItem(R.id.action_list);
-        //todo: track so i can see make prev only visible if > first page
+        mMenuItemPrevious = menu.findItem(R.id.action_previous);
+        //the wordpress default api has no way to tell if there's a next page...
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_list:
+            case R.id.action_previous:
                 //Toast.makeText(this, "prev", Toast.LENGTH_LONG).show();
                 // TODO: Use simple animators so less jarring.
+                currentPage--;
+                updatePage();
                 return true;
-            case R.id.action_map:
+            case R.id.action_next:
                 //Toast.makeText(this, "next", Toast.LENGTH_LONG).show();
                 //TODO: Snack or toast them or put in the dialog what page?
-                showNewsFeedFragment("2");
+                currentPage++;
+                updatePage();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    private void updatePage() {
+        if (currentPage == 1) {
+            mMenuItemPrevious.setVisible(false);
+        } else {
+            mMenuItemPrevious.setVisible(true);
+        }
+        showNewsFeedFragment(currentPage);
+    }
+
     //TODO: analytics for when people go to another page
     // or share
+
+    private void showNewsFeedFragment(int page) {
+        showNewsFeedFragment(String.valueOf(page));
+    }
 
     private void showNewsFeedFragment(String page) {
         ArticleListFragment listFragment = ArticleListFragment.newInstance(page);
