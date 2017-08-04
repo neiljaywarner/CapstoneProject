@@ -7,7 +7,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -70,6 +72,8 @@ public class ArticleListFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu, menu);
         mMenuItemPrevious = menu.findItem(R.id.action_previous);
+        mMenuItemNext = menu.findItem(R.id.action_next);
+
         //the wordpress default api has no way to tell if there's a next page...
     }
 
@@ -80,6 +84,8 @@ public class ArticleListFragment extends Fragment {
                 //Toast.makeText(this, "prev", Toast.LENGTH_LONG).show();
                 // TODO: Use simple animators so less jarring.
                 mPageNumber--;
+                mMenuItemNext.setVisible(true);
+
                 updatePage();
                 return true;
             case R.id.action_next:
@@ -94,6 +100,7 @@ public class ArticleListFragment extends Fragment {
     }
 
     MenuItem mMenuItemPrevious;
+    MenuItem mMenuItemNext;
 
 
 
@@ -147,7 +154,12 @@ public class ArticleListFragment extends Fragment {
             Log.e("NJW", "exception:"  +e.getMessage());
             //TOOD: Handle code to find out if it's the wrong page?
             mPageNumber = mPreviousPage;
+
             dismissSpinner();
+            final Snackbar snackBar = Snackbar.make(recyclerView, "Can't load any more articles.", Snackbar.LENGTH_LONG );
+            snackBar.show();
+            mMenuItemNext.setVisible(false);
+
 
         }
 
