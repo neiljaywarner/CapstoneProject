@@ -59,45 +59,7 @@ public class MainActivity extends AppCompatActivity  {
     //TODO in onSave instancestate
 
 
-    MenuItem mMenuItemPrevious;
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        mMenuItemPrevious = menu.findItem(R.id.action_previous);
-        //the wordpress default api has no way to tell if there's a next page...
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_previous:
-                //Toast.makeText(this, "prev", Toast.LENGTH_LONG).show();
-                // TODO: Use simple animators so less jarring.
-                currentPage--;
-                updatePage();
-                return true;
-            case R.id.action_next:
-                //Toast.makeText(this, "next", Toast.LENGTH_LONG).show();
-                //TODO: Snack or toast them or put in the dialog what page?
-                currentPage++;
-                updatePage();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void updatePage() {
-        if (currentPage == 1) {
-            mMenuItemPrevious.setVisible(false);
-        } else {
-            mMenuItemPrevious.setVisible(true);
-        }
-        showNewsFeedFragment(currentPage);
-    }
 
     //TODO: analytics for when people go to another page
     // or share

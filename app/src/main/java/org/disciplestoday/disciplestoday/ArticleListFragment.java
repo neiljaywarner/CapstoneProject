@@ -13,10 +13,14 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -37,6 +41,7 @@ public class ArticleListFragment extends Fragment {
     private RecyclerView recyclerView;
 
     private int mPageNumber;
+    private int mPreviousPage;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -62,11 +67,53 @@ public class ArticleListFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu, menu);
+        mMenuItemPrevious = menu.findItem(R.id.action_previous);
+        //the wordpress default api has no way to tell if there's a next page...
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_previous:
+                //Toast.makeText(this, "prev", Toast.LENGTH_LONG).show();
+                // TODO: Use simple animators so less jarring.
+                mPageNumber--;
+                updatePage();
+                return true;
+            case R.id.action_next:
+                //Toast.makeText(this, "next", Toast.LENGTH_LONG).show();
+                //TODO: Snack or toast them or put in the dialog what page?
+                mPageNumber++;
+                updatePage();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    MenuItem mMenuItemPrevious;
+
+
+
+    private void updatePage() {
+        if (mPageNumber == 1) {
+            mMenuItemPrevious.setVisible(false);
+        } else {
+            mMenuItemPrevious.setVisible(true);
+        }
+        loadArticles();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         if (getArguments() != null) {
             mPageNumber = getArguments().getInt(ARG_NAV_ID, 1);
+            mPreviousPage = mPageNumber;
             Log.i(TAG, "Setting Page Number " + mPageNumber);
         } else {
             mPageNumber = 1;
@@ -95,19 +142,18 @@ public class ArticleListFragment extends Fragment {
             mArticles = Article.getArticles(String.valueOf(mPageNumber), response.body());
             Log.d("NJW", "mArticles:size" + mArticles.size());
             updateUI();
+            mPreviousPage = mPageNumber;
         } catch (Exception e) {
-            if (mPageNumber > 1) {
-                mPageNumber --;
-                loadArticles();
-            } else {
-                // TODO: Show dialog Error, and allow more robustness, e.g. if we already went there don't try again, etc.
-                Log.e("NJW", "error, exception when loading/parsing even though it's the first page and we can't go back.");
-
-            }
+            Log.e("NJW", "exception:"  +e.getMessage());
+            //TOOD: Handle code to find out if it's the wrong page?
+            mPageNumber = mPreviousPage;
+            dismissSpinner();
 
         }
 
     }
+
+
 
     private void loadArticles() {
         Call<ArticleResponse> articleResponseCall = SyncAdapter.getCall(mPageNumber);
@@ -123,7 +169,10 @@ public class ArticleListFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ArticleResponse> call, Throwable t) {
+                //NOTE: if retrofit exception, timeout.
                 Log.e("NJW", "retrofit exception:" + t.getMessage());
+                dismissSpinner();
+                //note: exception could be 'timeout', if so, try ONCE more? or does retrofit already do taht?
             }
         });
 
@@ -153,13 +202,17 @@ public class ArticleListFragment extends Fragment {
 
         setupRecyclerView(recyclerView);
 
+        dismissSpinner();
+        if (getActivity() != null) {
+            getActivity().findViewById(R.id.content_main).setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void dismissSpinner() {
         if (progressDialog!= null && progressDialog.isShowing()) {
             Log.i(TAG, "****** Dismissing spinner.");
             progressDialog.dismiss();
             progressDialog = null;
-        }
-        if (getActivity() != null) {
-            getActivity().findViewById(R.id.content_main).setVisibility(View.VISIBLE);
         }
     }
 
