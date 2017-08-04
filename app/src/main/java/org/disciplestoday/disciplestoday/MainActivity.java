@@ -103,17 +103,14 @@ public class MainActivity extends AppCompatActivity  {
     // or share
 
     private void showNewsFeedFragment(int page) {
-        showNewsFeedFragment(String.valueOf(page));
-    }
-
-    private void showNewsFeedFragment(String page) {
         ArticleListFragment listFragment = ArticleListFragment.newInstance(page);
 
         Log.i(TAG, "Showing list fragment:" );
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.article_list_container, listFragment)
-                .commit();
-    }
+                .commit();    }
+
+
 
 /*
     @Override

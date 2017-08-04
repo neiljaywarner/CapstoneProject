@@ -2,16 +2,12 @@ package org.disciplestoday.disciplestoday;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,14 +22,11 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.disciplestoday.disciplestoday.data.ArticleResponse;
-import org.disciplestoday.disciplestoday.provider.FeedContract;
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
-
-import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 public class ArticleListFragment extends Fragment {
 
@@ -43,7 +36,7 @@ public class ArticleListFragment extends Fragment {
     private List<Article> mArticles;
     private RecyclerView recyclerView;
 
-    private String mModuleId; //"353" highlighted, "288" campus
+    private int mPageNumber;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -55,14 +48,14 @@ public class ArticleListFragment extends Fragment {
 
     /**
      *
-     * @param moduleId - ModuleId for newsFeed for query string param
+     * @param pageNum - Page Num for rss feed for query string param
      * @return Instance of fragment to display list of articles
      */
-    public static ArticleListFragment newInstance(String moduleId) {
-        Log.i(TAG, "newInstance ArticlelistFragment with Navigation Menu Item:" + moduleId);
+    public static ArticleListFragment newInstance(int  pageNum) {
+        Log.i(TAG, "newInstance ArticlelistFragment with page num:" + pageNum);
         ArticleListFragment fragment = new ArticleListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_NAV_ID, moduleId);
+        args.putInt(ARG_NAV_ID, pageNum);
         fragment.setArguments(args);
 
         return fragment;
@@ -73,12 +66,10 @@ public class ArticleListFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mModuleId = getArguments().getString(ARG_NAV_ID);
-            Log.i(TAG, "Setting Module Id " + mModuleId);
+            mPageNumber = getArguments().getInt(ARG_NAV_ID, 1);
+            Log.i(TAG, "Setting Page Number " + mPageNumber);
         } else {
-           // mModuleId = "353"; // Highlighted feed
-            //TODOFIXME
-            mModuleId = "1"; //todo: change to say page.
+            mPageNumber = 1;
         }
 
     }
@@ -92,30 +83,51 @@ public class ArticleListFragment extends Fragment {
             recyclerView = (RecyclerView) root;
             recyclerView.setNestedScrollingEnabled(true);
 
-            //Load with retrofit instead of from db
-            Call<ArticleResponse> articleResponseCall = SyncAdapter.getCall(mModuleId);
-            showSpinner();
-            articleResponseCall.enqueue(new retrofit2.Callback<ArticleResponse>() {
-                @Override
-                public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
-                    // TODO: Error handling dialogs
-                    mArticles = Article.getArticles(mModuleId, response.body());
-                    Log.d("NJW", "mArticles:size" + mArticles.size());
-                    updateUI();
-
-                }
-
-                @Override
-                public void onFailure(Call<ArticleResponse> call, Throwable t) {
-                    Log.e("NJW", "retrofit exception:" + t.getMessage());
-                }
-            });
-
+            loadArticles();
         }
 
         return root;
     }
 
+    private void loadArticlesFromResponse(Response<ArticleResponse> response) {
+        // TODO: Error handling dialogs
+        try {
+            mArticles = Article.getArticles(String.valueOf(mPageNumber), response.body());
+            Log.d("NJW", "mArticles:size" + mArticles.size());
+            updateUI();
+        } catch (Exception e) {
+            if (mPageNumber > 1) {
+                mPageNumber --;
+                loadArticles();
+            } else {
+                // TODO: Show dialog Error, and allow more robustness, e.g. if we already went there don't try again, etc.
+                Log.e("NJW", "error, exception when loading/parsing even though it's the first page and we can't go back.");
+
+            }
+
+        }
+
+    }
+
+    private void loadArticles() {
+        Call<ArticleResponse> articleResponseCall = SyncAdapter.getCall(mPageNumber);
+        showSpinner();
+        articleResponseCall.enqueue(new retrofit2.Callback<ArticleResponse>() {
+            @Override
+            public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
+                Log.d("NJW", "call is:" + call.request().toString());
+                loadArticlesFromResponse(response);
+
+                // TODO:Kotlinify w/ anko to avoid callback hell and get readability straight through!
+            }
+
+            @Override
+            public void onFailure(Call<ArticleResponse> call, Throwable t) {
+                Log.e("NJW", "retrofit exception:" + t.getMessage());
+            }
+        });
+
+    }
     private void showSpinner() {
         progressDialog = new ProgressDialog(this.getContext());
         progressDialog.setTitle(R.string.fetching_articles);
@@ -124,9 +136,10 @@ public class ArticleListFragment extends Fragment {
     }
 
 
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString(ARG_NAV_ID, mModuleId);
+        outState.putInt(ARG_NAV_ID, mPageNumber);
         //TODO: Put parcelable!!! so when rotate it doens't reload
         super.onSaveInstanceState(outState);
     }
