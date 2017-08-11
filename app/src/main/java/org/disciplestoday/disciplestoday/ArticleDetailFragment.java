@@ -118,7 +118,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
                         openInBrowser(mLink);
                     }
                 });
-                /*
+
                 final FloatingActionButton fabShare = (FloatingActionButton) activity.findViewById(R.id.fabShareArticle);
 
                 fabShare.setOnClickListener(new View.OnClickListener() {
@@ -128,8 +128,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
                     }
                 });
 
-                fabShare.setVisibility(View.GONE);
-                */
+
                 //NJW fixme, test.
                 if (mImageUrl.length() == 0) {
                     mImageUrl = "empty_pic";
@@ -156,14 +155,14 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
                             }
                         });
 
-                /*
+
                 fabShare.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         share();
                     }
                 });
-                */
+
             }
         } else {
             FirebaseCrash.logcat(Log.DEBUG, TAG, "No article title argument");
@@ -177,6 +176,7 @@ public class ArticleDetailFragment extends Fragment implements  GoogleApiClient.
         startActivity(browserIntent);
     }
 
+    //** TODO: Should i add the pic to the emamil for share?
     private void share() {
         shareArticle(mArticleId, mTitle, mLink, mFullText);
         trackContentShare(mArticleId, mTitle);
