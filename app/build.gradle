@@ -9,8 +9,8 @@ android {
         applicationId "com.blacktaxandwhitebenefits"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 3
-        versionName "0.12"
+        versionCode 4
+        versionName "0.2"
         //todo; tag 1.0RC1 for 1.0 release candidate
         // with 1. Gordon's next/prev simple for now
         // 2. the bug with notificaiton icon 'mmc'
@@ -58,7 +58,7 @@ dependencies {
 
     //TODO: Put firebase invites back.
     compile 'com.google.guava:guava:14.0.1'
-    compile 'com.android.support.test.espresso:espresso-contrib:2.2.2'
+    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     testCompile 'junit:junit:4.12'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
