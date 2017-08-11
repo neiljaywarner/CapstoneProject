@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -33,6 +34,8 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
+
+import static org.disciplestoday.disciplestoday.Article.TRACK_TYPE_ARTICLE;
 
 public class ArticleListFragment extends Fragment {
 
@@ -87,10 +90,13 @@ public class ArticleListFragment extends Fragment {
                 mMenuItemNext.setVisible(true);
 
                 updatePage();
+                trackTapPreviousPage(mPageNumber);
                 return true;
             case R.id.action_next:
                 //Toast.makeText(this, "next", Toast.LENGTH_LONG).show();
                 //TODO: Snack or toast them or put in the dialog what page?
+                trackTapNextPage(mPageNumber);
+
                 mPageNumber++;
                 updatePage();
                 return true;
@@ -98,6 +104,8 @@ public class ArticleListFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 
     MenuItem mMenuItemPrevious;
     MenuItem mMenuItemNext;
@@ -397,7 +405,7 @@ public class ArticleListFragment extends Fragment {
     }
 
     private void showArticle(Article article) {
-        //trackContentSelection(article);
+        trackContentSelection(article);
         //simple and speedy...
         Intent intent = new Intent(this.getActivity(), ArticleDetailActivity.class);
 
@@ -411,7 +419,7 @@ public class ArticleListFragment extends Fragment {
         intent.putExtra(ArticleDetailFragment.ARG_ITEM_IMAGE_URL, article.getImageLink());
         startActivity(intent);
     }
-/*
+
     private void trackContentSelection(Article article) {
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, article.getId());
@@ -420,7 +428,24 @@ public class ArticleListFragment extends Fragment {
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
-    */
+
+
+    private void trackTapPreviousPage(int page) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("page", page);
+
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.mFirebaseAnalytics.logEvent("GoToPreviousPage", bundle);
+    }
+
+    private void trackTapNextPage(int page) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("page", page);
+
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.mFirebaseAnalytics.logEvent("GoToNextPage", bundle);
+    }
+
     // https://developers.google.com/android/reference/com/google/firebase/analytics/FirebaseAnalytics.Event.html#constants
 
 }
