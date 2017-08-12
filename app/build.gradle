@@ -10,7 +10,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 4
-        versionName "0.2_neiltest"
+        versionName "0.2"
         //todo; tag 1.0RC1 for 1.0 release candidate
         // with 1. Gordon's next/prev simple for now
         // 2. the bug with notificaiton icon 'mmc'
