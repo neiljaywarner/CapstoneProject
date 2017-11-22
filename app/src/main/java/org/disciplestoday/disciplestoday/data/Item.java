@@ -12,6 +12,7 @@ import java.util.List;
 @Root(name = "item", strict = false) //strict=false keeps us from having to put everything
 public class Item {
     //https://jeaniesjourneys.com/feed/?paged=3
+
     @Element(name = "title")
     public String title;
 

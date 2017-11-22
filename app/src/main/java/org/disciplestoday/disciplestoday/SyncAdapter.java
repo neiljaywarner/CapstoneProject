@@ -298,7 +298,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-
+bu
 */
 
         // https://jeaniesjourneys.com/feed/?paged=2
